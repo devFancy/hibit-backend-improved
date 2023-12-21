@@ -1,0 +1,24 @@
+package com.hibitbackendrefactor.profile.domain;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+
+import java.util.Optional;
+
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
+
+    default Profile getById(final Long id) {
+        return this.findById(id)
+                .orElseThrow(NotFoundProfileException::new);
+    }
+
+    @Query("SELECT p "
+            + "FROM Profile p "
+            + "WHERE p.member.id = :memberId")
+    Optional<Profile> findByMemberId(@Param("memberId") Long memberId);
+
+    boolean existsByNickname(String nickname);
+}
