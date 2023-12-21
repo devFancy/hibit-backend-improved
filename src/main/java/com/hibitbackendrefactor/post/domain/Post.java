@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class Post extends BaseEntity {
     @Column(name = "exhibition_attendance", nullable = false)
     private int exhibitionAttendance;
 
+    @Column(nullable = false)
+    private LocalDateTime possibleTime;
+
     @Column(name = "open_chat_url", nullable = false)
     private String openChatUrl;
 
@@ -51,27 +55,23 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
-    @Column(nullable = false)
-    private String possibleTime;
-
     protected Post() {
     }
 
     @Builder
-    public Post(Member member, Title title, Exhibition exhibition, int exhibitionAttendance,
-                String openChatUrl, TogetherActivity togetherActivity, Content content,
-                List<PostImage> postImages , PostStatus postStatus,
-                String possibleTime) {
+    public Post(Member member, String title, String exhibition, int exhibitionAttendance,
+                LocalDateTime possibleTime, String openChatUrl, TogetherActivity togetherActivity,
+                String content, List<PostImage> postImages , PostStatus postStatus) {
         this.member = member;
-        this.title = title;
-        this.exhibition = exhibition;
+        this.title = new Title(title);
+        this.exhibition = new Exhibition(exhibition);
         this.exhibitionAttendance = exhibitionAttendance;
+        this.possibleTime = possibleTime;
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
-        this.content = content;
+        this.content = new Content(content);
         this.postImages = postImages;
         this.postStatus = postStatus;
-        this.possibleTime = possibleTime;
     }
 
     public Long getId() {
@@ -94,6 +94,10 @@ public class Post extends BaseEntity {
         return exhibitionAttendance;
     }
 
+    public LocalDateTime getPossibleTime() {
+        return possibleTime;
+    }
+
     public String getOpenChatUrl() {
         return openChatUrl;
     }
@@ -112,9 +116,5 @@ public class Post extends BaseEntity {
 
     public PostStatus getPostStatus() {
         return postStatus;
-    }
-
-    public String getPossibleTime() {
-        return possibleTime;
     }
 }

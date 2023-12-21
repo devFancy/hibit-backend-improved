@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Embeddable
 public class Exhibition {
-    private static final int MAX_EXHIBITION_LENGTH = 50;
+    private static final int MAX_EXHIBITION_LENGTH = 30;
 
     @Column(name = "exhibition", nullable = false)
     @Lob

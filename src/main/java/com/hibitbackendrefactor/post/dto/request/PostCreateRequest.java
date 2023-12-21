@@ -2,7 +2,6 @@ package com.hibitbackendrefactor.post.dto.request;
 
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.domain.TogetherActivity;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
@@ -23,15 +22,14 @@ public class PostCreateRequest {
 
     private PostStatus postStatus;
     private int exhibitionAttendance;
+    private LocalDateTime possibleTime;
     private String openChatUrl;
     private TogetherActivity togetherActivity;
-    private LocalDateTime possibleTime;
     private List<MultipartFile> imageUrls;
 
     protected PostCreateRequest() {
     }
 
-    @Builder
     public PostCreateRequest(String title, String content,
                              String exhibition, PostStatus postStatus,
                              int exhibitionAttendance, String openChatUrl,

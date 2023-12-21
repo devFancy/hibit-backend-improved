@@ -1,8 +1,5 @@
 package com.hibitbackendrefactor.post.domain;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 
 @Table(name = "post_images")
