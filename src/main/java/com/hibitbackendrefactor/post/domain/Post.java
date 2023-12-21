@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "posts")
@@ -43,12 +44,8 @@ public class Post extends BaseEntity {
     @Embedded
     private Content content;
 
-    @Column(name = "main_image", nullable = false)
-    private String mainImage;
-
-    @Column(name = "sub_image", nullable = false)
-    @ElementCollection
-    private List<String> subImage;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostImage> postImages = new ArrayList<>();
 
     @Column(name = "post_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -63,7 +60,7 @@ public class Post extends BaseEntity {
     @Builder
     public Post(Member member, Title title, Exhibition exhibition, int exhibitionAttendance,
                 String openChatUrl, TogetherActivity togetherActivity, Content content,
-                String mainImage, List<String> subImage, PostStatus postStatus,
+                List<PostImage> postImages , PostStatus postStatus,
                 String possibleTime) {
         this.member = member;
         this.title = title;
@@ -72,8 +69,7 @@ public class Post extends BaseEntity {
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
         this.content = content;
-        this.mainImage = mainImage;
-        this.subImage = subImage;
+        this.postImages = postImages;
         this.postStatus = postStatus;
         this.possibleTime = possibleTime;
     }
@@ -110,12 +106,8 @@ public class Post extends BaseEntity {
         return content;
     }
 
-    public String getMainImage() {
-        return mainImage;
-    }
-
-    public List<String> getSubImage() {
-        return subImage;
+    public List<PostImage> getPostImages() {
+        return postImages;
     }
 
     public PostStatus getPostStatus() {
