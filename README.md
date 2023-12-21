@@ -1,3 +1,11 @@
+📌 해당 Repository는 `hibit-backend` 프로젝트를 기반으로 **개선 작업**을 진행하고 있는 저장소입니다.
+
+현재는 백엔드의 코드와 인프라적인 구조를 고민하고 개선하는 작업을 진행하고 있습니다.
+
+프로젝트 배포는 AWS를 통해 진행할 예정입니다.
+
+기존 브랜치 전략은 `Git Flow` 정책을 사용하였는데, 현재 저장소에서는 `GitHub Flow`를 기반으로 Master와 Feature(Fix, Refactor, Docs) 브랜치로만 브랜치를 분류하여 운영하고 있습니다.
+
 <img width="300" alt="Hibit_profile" src="./docs/readme/hibit-logo-bg.png">
 
 예술 기반의 소셜 디스커버리 🎨 서비스
