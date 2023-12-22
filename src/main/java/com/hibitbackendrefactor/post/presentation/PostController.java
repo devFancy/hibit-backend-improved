@@ -31,12 +31,11 @@ public class PostController {
             @Parameter(name = "title", description = "제목", example = "디뮤지엄 전시 보러가요"),
             @Parameter(name = "exhibition", description = "가고싶은 전시회", example = "오스틴리 전시회"),
             @Parameter(name = "exhibitionAttendance", description = "전시 관람 인원", example = "4"),
-            @Parameter(name = "desiredDate", description = "관람 희망 날짜", example = "[\n" + "{\n" + "    \"date\": \"2023-12-24\",\n" + "    \"timeSlot\": \"AM\"\n" + "  }" + "\n]"),
+            @Parameter(name = "possibleTime", description = "관람 희망 날짜", example = "[\"2023-12-25\"]"),
             @Parameter(name = "openChatUrl", description = "오픈 채팅방 URL", example = "http://kakao"),
             @Parameter(name = "togetherActivity", description = "함께 하고싶은 활동", example = "EAT"),
             @Parameter(name = "content", description = "상세 내용", example = "오스린리 전시회 보러가실 분 있나요?"),
-            @Parameter(name = "mainImage", description = "메인 이미지 URL", example = "image1"),
-            @Parameter(name = "subImage", description = "서브 이미지 리스트 URL", example = "[\"image2\", \"image3\"]")
+            @Parameter(name = "postImages", description = "게시글 이미지 리스트 URL", example = "[\"image1\", \"image2\", \"image3\"]")
     })
     public ResponseEntity<Post> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember, @RequestBody PostCreateRequest request) {
         Post post = postService.save(request, loginMember.getId());
