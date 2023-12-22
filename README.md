@@ -1,4 +1,4 @@
-📌 해당 Repository는 `hibit-backend` 프로젝트를 기반으로 **개선 작업**을 진행하고 있는 저장소입니다.
+📌 해당 Repository는 [hibit-backend](https://github.com/hibit-team/hibit-backend) 프로젝트를 기반으로 **개선 작업**을 진행하고 있는 저장소입니다.
 
 현재는 백엔드의 코드와 인프라적인 구조를 고민하고 개선하는 작업을 진행하고 있습니다.
 
