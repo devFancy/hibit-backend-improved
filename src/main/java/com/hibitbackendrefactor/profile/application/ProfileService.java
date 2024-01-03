@@ -64,8 +64,7 @@ public class ProfileService {
     }
 
     private void updateMemberInfo(final Member member, final Profile profile) {
-        member.updateNickname(profile.getNickname());
-        member.updateMainImg(profile.getMainImg());
+        member.updateDisplayName(profile.getNickname());
         member.updateIsprofile();
         memberRepository.save(member);
     }
@@ -82,8 +81,7 @@ public class ProfileService {
 
         Member member = memberRepository.getById(memberId);
 
-        member.updateNickname(request.getNickname());
-        member.updateMainImg(request.getMainImg());
+        member.updateDisplayName(request.getNickname());
         memberRepository.save(member);
 
         Profile profile = profileRepository.findByMemberId(memberId)

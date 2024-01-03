@@ -47,7 +47,7 @@ public class GoogleOAuthClient implements OAuthClient {
         UserInfo userInfo = parseUserInfo(payload);
 
         String refreshToken = googleTokenResponse.getRefreshToken();
-        return new OAuthMember(userInfo.getEmail(), userInfo.getName(), userInfo.getPicture(), refreshToken);
+        return new OAuthMember(userInfo.getEmail(), userInfo.getName(), refreshToken);
     }
 
     private GoogleTokenResponse requestGoogleToken(final String code, final String redirectUri) {

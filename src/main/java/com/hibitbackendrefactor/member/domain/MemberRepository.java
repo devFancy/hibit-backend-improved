@@ -24,7 +24,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             throw new NotFoundMemberException();
         }
     }
-    Optional<Member> findByNickname(String nickname);
-
 
 }
