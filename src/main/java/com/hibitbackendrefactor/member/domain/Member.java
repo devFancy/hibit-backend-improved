@@ -17,27 +17,16 @@ public class Member {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nickname", nullable = true)
-    private String nickname;
 
     @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "display_name", nullable = false)
-    private String displayName;
-
-    @Column(name = "profile_image_url", nullable = false)
-    private String profileImageUrl;
+    private String displayName; // 구글로부터 가져오는 닉네임
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "social_type", nullable = false)
     private SocialType socialType;
-
-    @Column(name = "mainimg", nullable = true)
-    private String mainImg;
-
-    @Column(nullable = false, columnDefinition = "integer default 0")
-    private int report;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isProfile;
@@ -46,14 +35,13 @@ public class Member {
     protected Member() {
     }
 
-    public Member(String email, String displayName, String profileImageUrl, SocialType socialType) {
+    public Member(String email, String displayName, SocialType socialType) {
 
         validateEmail(email);
         validateDisplayName(displayName);
 
         this.email = email;
         this.displayName = displayName;
-        this.profileImageUrl = profileImageUrl;
         this.socialType = socialType;
     }
 
@@ -81,30 +69,13 @@ public class Member {
         return displayName;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
     public SocialType getSocialType() {
         return socialType;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void updateDisplayName(String nickname) {
+        this.displayName = nickname;
     }
-
-    public void setNickname(String nickname) {this.nickname = nickname;}
-
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-    }
-    public String getMainImg() {
-        return mainImg;
-    }
-
-    public void updateMainImg(String mainImg) {
-        this.mainImg = mainImg;
-    }
-    public void AddReport(){this.report += 1;}
     public boolean getIsprofile(){ return isProfile;}
     public void updateIsprofile(){this.isProfile=true;}
 }
