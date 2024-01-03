@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.member.domain;
 
+import com.hibitbackendrefactor.common.BaseEntity;
 import com.hibitbackendrefactor.member.exception.InvalidMemberException;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
 
 @Table(name = "members")
 @Entity
-public class Member {
+public class Member extends BaseEntity {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
     private static final int MAX_DISPLAY_NAME_LENGTH = 20;
     @Id
