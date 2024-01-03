@@ -2,8 +2,11 @@ package com.hibitbackendrefactor.profile.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public enum AddressDistrict {
 
     SEOUL_JONGRO("서울특별시", "110", "종로구"),
@@ -296,33 +299,4 @@ public enum AddressDistrict {
     private final String cityName;
     private final String distinctCode;
     private final String districtName;
-
-    AddressDistrict(String cityName, String distinctCode, String districtName) {
-        this.cityName = cityName;
-        this.distinctCode = distinctCode;
-        this.districtName = districtName;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public String getDistinctCode() {
-        return distinctCode;
-    }
-
-    @JsonValue
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    @JsonCreator
-    public static AddressDistrict from(final String value) {
-        for (AddressDistrict status : AddressDistrict.values()) {
-            if (status.getDistrictName().equals(value)) {
-                return status;
-            }
-        }
-        return null;
-    }
 }

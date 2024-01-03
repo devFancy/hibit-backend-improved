@@ -1,9 +1,11 @@
 package com.hibitbackendrefactor.profile.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public enum AddressCity {
 
     SEOUL("서울특별시"),
@@ -24,24 +26,5 @@ public enum AddressCity {
     GYEONGNAM("경상남도"),
     JEJU("제주특별시");
 
-    private final String name;
-
-    AddressCity(String name) {
-        this.name = name;
-    }
-
-    @JsonValue
-    public String getName() {
-        return name;
-    }
-
-    @JsonCreator
-    public static AddressCity from(final String value) {
-        for (AddressCity status : AddressCity.values()) {
-            if (status.getName().equals(value)) {
-                return status;
-            }
-        }
-        return null;
-    }
+    private final String text;
 }

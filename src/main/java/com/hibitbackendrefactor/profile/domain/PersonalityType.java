@@ -1,8 +1,10 @@
 package com.hibitbackendrefactor.profile.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public enum PersonalityType {
 
     TYPE_1("지적한"),
@@ -30,24 +32,5 @@ public enum PersonalityType {
     TYPE_23("계획적인"),
     TYPE_24("진취적인");
 
-    private final String contents;
-
-    PersonalityType(final String contents) {
-        this.contents = contents;
-    }
-
-    @JsonCreator
-    public static PersonalityType from(final String value) {
-        for (PersonalityType status : PersonalityType.values()) {
-            if (status.getContents().equals(value)) {
-                return status;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    public String getContents() {
-        return contents;
-    }
+    private final String text;
 }
