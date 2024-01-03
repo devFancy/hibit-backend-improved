@@ -6,15 +6,15 @@ import com.hibitbackendrefactor.member.domain.Member;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Table(name = "oauth_tokens")
 @Entity
 public class OAuthToken extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "oauth_token_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "members_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
     @Column(name = "refresh_token")
     private String refreshToken;
