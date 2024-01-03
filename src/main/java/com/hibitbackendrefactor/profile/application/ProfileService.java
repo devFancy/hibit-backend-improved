@@ -53,7 +53,7 @@ public class ProfileService {
                 .personality(request.getPersonality())
                 .introduce(request.getIntroduce())
                 .mainImg(request.getMainImg())
-                .subImg(request.getSubImg())
+                .subImages(request.getSubImages())
                 .job(request.getJob())
                 .addressCity(request.getAddressCity())
                 .addressDistrict(request.getAddressDistrict())
@@ -93,7 +93,7 @@ public class ProfileService {
         profile.updatePersonality(request.getPersonality());
         profile.updateIntroduce(request.getIntroduce());
         profile.updateMainImg(request.getMainImg());
-        profile.updateSubImg(request.getSubImg());
+        profile.updateSubImages(request.getSubImages());
         profile.updateJob(request.getJob());
         profile.updateAddressCity(request.getAddressCity());
         profile.updateAddressDistinct(request.getAddressDistrict());

@@ -3,7 +3,7 @@ package com.hibitbackendrefactor.profile.dto.request;
 import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.hibitbackendrefactor.profile.domain.SubImage;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -31,7 +31,7 @@ public class ProfileRegisterRequest {
     @NotBlank(message = "공백일 수 없습니다.")
     private String mainImg;
 
-    private List<String> subImg;
+    private List<SubImage> subImages;
 
     private String job;
 
@@ -49,7 +49,7 @@ public class ProfileRegisterRequest {
     }
 
     public ProfileRegisterRequest(final String nickname, final int age, final int gender, final List<PersonalityType> personality,
-                                  final String introduce, final String mainImg, final List<String> subImg, final String job, final AddressCity addressCity,
+                                  final String introduce, final String mainImg, final List<SubImage> subImages, final String job, final AddressCity addressCity,
                                   final AddressDistrict addressDistrict,
                                   final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.nickname = nickname;
@@ -58,7 +58,7 @@ public class ProfileRegisterRequest {
         this.personality = personality;
         this.introduce = introduce;
         this.mainImg = mainImg;
-        this.subImg = subImg;
+        this.subImages = subImages;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;

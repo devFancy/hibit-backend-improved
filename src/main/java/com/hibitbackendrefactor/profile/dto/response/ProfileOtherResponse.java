@@ -1,9 +1,6 @@
 package com.hibitbackendrefactor.profile.dto.response;
 
-import com.hibitbackendrefactor.profile.domain.AddressCity;
-import com.hibitbackendrefactor.profile.domain.AddressDistrict;
-import com.hibitbackendrefactor.profile.domain.PersonalityType;
-import com.hibitbackendrefactor.profile.domain.Profile;
+import com.hibitbackendrefactor.profile.domain.*;
 import lombok.Getter;
 
 import java.util.List;
@@ -19,7 +16,7 @@ public class ProfileOtherResponse {
     private int age;
 
     // 선택 노출 정보(공개/비공개)
-    private List<String> subImg;
+    private List<SubImage> subImages;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
     private String job;
@@ -37,7 +34,7 @@ public class ProfileOtherResponse {
                 profile.getPersonality(),
                 profile.getIntroduce(),
                 profile.getMainImg(),
-                profile.getSubImg(),
+                profile.getSubImages(),
                 profile.getAge(),
                 profile.getAddressCity(),
                 profile.getAddressDistrict(),
@@ -48,7 +45,7 @@ public class ProfileOtherResponse {
 
         // 공개 여부에 따라 값 설정
         if (profile.getSubImgVisible() == 0 ) {
-            this.subImg = null;
+            this.subImages = null;
         }
         if (profile.getAddressVisible() == 0 ) {
             this.addressCity = null;
@@ -59,7 +56,7 @@ public class ProfileOtherResponse {
         }
     }
 
-    public ProfileOtherResponse(final String nickname, final int gender, final List<PersonalityType> personality, final String introduce, final String mainImg, final List<String> subImg,
+    public ProfileOtherResponse(final String nickname, final int gender, final List<PersonalityType> personality, final String introduce, final String mainImg, final List<SubImage> subImages,
                                 final int age, final AddressCity addressCity, final AddressDistrict addressDistrict, final String job,
                                 final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.nickname = nickname;
@@ -67,7 +64,7 @@ public class ProfileOtherResponse {
         this.personality = personality;
         this.introduce = introduce;
         this.mainImg = mainImg;
-        this.subImg = subImg;
+        this.subImages = subImages;
         this.age = age;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;

@@ -8,9 +8,9 @@ import com.hibitbackendrefactor.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "profiles")
 @Entity
 public class Profile extends BaseEntity {
 
@@ -19,11 +19,11 @@ public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "profile_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "members_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(name = "nickname", length = 20, unique = true)
@@ -46,8 +46,8 @@ public class Profile extends BaseEntity {
     @Column(name = "main_img", length = 100)
     private String mainImg;
 
-    @ElementCollection
-    private List<String> subImg;
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<SubImage> subImages = new ArrayList<>();
 
     @Column(name = "job", length = 50)
     private String job;
@@ -77,7 +77,7 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile(final Member member, final String nickname, final int age, final int gender, final List<PersonalityType> personality,
-                   final String introduce, final String mainImg, final List<String> subImg, final String job, final AddressCity addressCity,
+                   final String introduce, final String mainImg, final List<SubImage> subImages, final String job, final AddressCity addressCity,
                    final AddressDistrict addressDistrict, final int jobVisible, final int subImgVisible, final int addressVisible) {
         validateNickName(nickname);
         validatePersonality(personality);
@@ -88,7 +88,7 @@ public class Profile extends BaseEntity {
         this.personality = personality;
         this.introduce = introduce;
         this.mainImg = mainImg;
-        this.subImg = subImg;
+        this.subImages = subImages;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
@@ -141,8 +141,8 @@ public class Profile extends BaseEntity {
         return mainImg;
     }
 
-    public List<String> getSubImg() {
-        return subImg;
+    public List<SubImage> getSubImages() {
+        return subImages;
     }
 
     public String getJob() {
@@ -199,8 +199,8 @@ public class Profile extends BaseEntity {
         this.mainImg = mainImg;
     }
 
-    public void updateSubImg(final List<String> subImg) {
-        this.subImg = subImg;
+    public void updateSubImages(final List<SubImage> subImages) {
+        this.subImages = subImages;
     }
 
     public void updateJob(final String job) {

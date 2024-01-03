@@ -1,9 +1,6 @@
 package com.hibitbackendrefactor.profile.dto.response;
 
-import com.hibitbackendrefactor.profile.domain.AddressCity;
-import com.hibitbackendrefactor.profile.domain.AddressDistrict;
-import com.hibitbackendrefactor.profile.domain.PersonalityType;
-import com.hibitbackendrefactor.profile.domain.Profile;
+import com.hibitbackendrefactor.profile.domain.*;
 import lombok.Getter;
 
 import java.util.List;
@@ -18,7 +15,7 @@ public class ProfileRegisterResponse {
     private List<PersonalityType> personality;
     private String introduce;
     private String mainImg;
-    private List<String> subImg;
+    private List<SubImage> subImages;
     private String job;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
@@ -28,7 +25,7 @@ public class ProfileRegisterResponse {
 
     public ProfileRegisterResponse(final Long id, final String nickname, final int age, final int gender
             , final List<PersonalityType> personality, final String introduce
-            , final String mainImg, final List<String> subImg, final String job
+            , final String mainImg, final List<SubImage> subImages, final String job
             , final AddressCity addressCity, final AddressDistrict addressDistrict
             , final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
         this.id = id;
@@ -38,7 +35,7 @@ public class ProfileRegisterResponse {
         this.personality = personality;
         this.introduce = introduce;
         this.mainImg = mainImg;
-        this.subImg = subImg;
+        this.subImages = subImages;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
@@ -55,7 +52,7 @@ public class ProfileRegisterResponse {
         this.personality = saveProfile.getPersonality();
         this.introduce = saveProfile.getIntroduce();
         this.mainImg = saveProfile.getMainImg();
-        this.subImg = saveProfile.getSubImg();
+        this.subImages = saveProfile.getSubImages();
         this.job = saveProfile.getJob();
         this.addressCity = saveProfile.getAddressCity();
         this.addressDistrict = saveProfile.getAddressDistrict();
