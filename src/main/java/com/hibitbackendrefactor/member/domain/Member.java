@@ -1,7 +1,6 @@
 package com.hibitbackendrefactor.member.domain;
 
 import com.hibitbackendrefactor.member.exception.InvalidMemberException;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
 import java.util.regex.Matcher;
@@ -19,11 +18,9 @@ public class Member {
     private Long id;
 
     @Column(name = "nickname", nullable = true)
-    @Schema(description = "닉네임", example = "아아아")
     private String nickname;
 
     @Column(name = "email", nullable = false)
-    @Schema(description = "이메일", example = "teamhibit@gmail.com")
     private String email;
 
     @Column(name = "display_name", nullable = false)
@@ -34,19 +31,15 @@ public class Member {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "social_type", nullable = false)
-    @Schema(description = "소셜 로그인 유형", example = "GOOGLE")
     private SocialType socialType;
 
     @Column(name = "mainimg", nullable = true)
-    @Schema(description = "대표 이미지", example = "http")
     private String mainImg;
 
     @Column(nullable = false, columnDefinition = "integer default 0")
-    @Schema(description = "신고 수", example = "0")
     private int report;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    @Schema(description = "프로필 작성", example = "0")
     private boolean isProfile;
 
 
