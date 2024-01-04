@@ -62,21 +62,17 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/me/{profileId}")
-    @Operation(summary = "/me/1", description = "본인 프로필을 수정한다.") // 닉네임, 나이, 성별, 성격, 자기소개, 직업 혹은 학교, 주소, 나의 사진
+    @PutMapping("/me/{id}")
+    @Operation(summary = "/me/1", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                       @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
-        profileService.updateProfile(loginMember.getId(), profileUpdateRequest);
+                                       @PathVariable(name = "id") final Long profileId,
+                                       @Valid @RequestPart final ProfileUpdateRequest request,
+                                       @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(request.getNickname(), request.getAge(), request.getGender()
+                , request.getPersonality(), request.getIntroduce(), multipartFiles
+                , request.getJob(), request.getAddressCity(), request.getAddressDistrict()
+                , request.isJobVisibility(), request.isAddressVisibility(), request.isMyImageVisibility());
+        profileService.updateProfile(loginMember.getId(), profileId, profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping(value = "/nickname/exists", params = "nickname")
-    public ResponseEntity<UniqueResponse> validateUniqueNickname(@RequestParam String nickname) {
-        try {
-            profileService.validateUniqueNickname(nickname);
-            return ResponseEntity.ok(new UniqueResponse(true));
-        } catch (NicknameAlreadyTakenException ex) {
-            return ResponseEntity.ok(new UniqueResponse(false));
-        }
     }
 }

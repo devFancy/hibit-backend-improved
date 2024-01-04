@@ -54,7 +54,6 @@ public class ProfileService {
         ProfileCreateRequest newRequest = createProfileCreateRequest(request, multipartFiles);
         Profile newProfile = profileRepository.save(newRequest.toEntity(foundMember, newRequest));
 
-        Profile newProfile = createProfile(foundMember, request);
         updateMemberInfo(foundMember, newProfile);
         // 저장한 프로필ID를 가져와서 프로필 이미지 저장
         saveProfileImages(newProfile.getId(), newRequest.getImages());
@@ -110,29 +109,40 @@ public class ProfileService {
         return savedImageUrl;
     }
 
-        member.updateDisplayName(request.getNickname());
-        memberRepository.save(member);
+    @Transactional
+    public void updateProfile(final Long memberId, final Long profileId, final ProfileUpdateRequest request) throws IOException {
+        Member foundMember = memberRepository.getById(memberId);
+        foundMember.updateDisplayName(request.getNickname());
+        memberRepository.save(foundMember);
 
         Profile profile = profileRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
+                .orElseThrow(NotFoundProfileException::new);
+
+        deleteProfileImageByProfileId(profileId);
+        profileImageRepository.deleteByProfileId(profileId);
 
         profile.updateNickname(request.getNickname());
         profile.updateAge(request.getAge());
         profile.updateGender(request.getGender());
         profile.updatePersonality(request.getPersonality());
         profile.updateIntroduce(request.getIntroduce());
-        profile.updateMainImg(request.getMainImg());
-        profile.updateSubImages(request.getSubImages());
         profile.updateJob(request.getJob());
         profile.updateAddressCity(request.getAddressCity());
         profile.updateAddressDistinct(request.getAddressDistrict());
-        profile.updateJobVisible(request.getJobVisibility());
-        profile.updateSubImgVisible(request.getSubImgVisibility());
-        profile.updateAddressVisible(request.getAddressVisibility());
+        profile.updateJobVisible(request.isJobVisibility());
+        profile.updateAddressVisible(request.isAddressVisibility());
+        profile.updateMyImageVisibility(request.isMyImageVisibility());
+        saveProfileImages(profileId, request.getImages());
         profileRepository.save(profile);
     }
 
-    public ProfileResponse findProfileByMemberId(final Long memberId) {
+    private void deleteProfileImageByProfileId(final Long profileId) throws MalformedURLException {
+        List<ProfileImage> profileImages = profileImageRepository.findByProfileId(profileId);
+        for(ProfileImage profileImage : profileImages) {
+            s3UploadService.deleteFile(profileImage.getImageUrl());
+        }
+    }
+
     public ProfileResponse findMyProfile(final Long memberId) {
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
