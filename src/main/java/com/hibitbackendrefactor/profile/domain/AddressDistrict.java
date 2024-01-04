@@ -2,10 +2,10 @@ package com.hibitbackendrefactor.profile.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
 public enum AddressDistrict {
 
@@ -299,4 +299,19 @@ public enum AddressDistrict {
     private final String cityName;
     private final String distinctCode;
     private final String districtName;
+
+    @JsonValue
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    @JsonCreator
+    public static AddressDistrict from(final String value) {
+        for (AddressDistrict status : AddressDistrict.values()) {
+            if (status.getDistrictName().equals(value)) {
+                return status;
+            }
+        }
+        return null;
+    }
 }
