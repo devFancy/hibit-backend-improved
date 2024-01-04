@@ -1,76 +1,66 @@
 package com.hibitbackendrefactor.profile.dto.response;
 
-import com.hibitbackendrefactor.profile.domain.*;
+import com.hibitbackendrefactor.profile.domain.AddressCity;
+import com.hibitbackendrefactor.profile.domain.AddressDistrict;
+import com.hibitbackendrefactor.profile.domain.PersonalityType;
+import com.hibitbackendrefactor.profile.domain.Profile;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileOtherResponse {
-    // 필수 노출 정보
     private String nickname;
+    private int age;
     private int gender;
     private List<PersonalityType> personality;
     private String introduce;
-    private String mainImg;
-    private int age;
 
-    // 선택 노출 정보(공개/비공개)
-    private List<SubImage> subImages;
+    private String job;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
-    private String job;
+    private List<String> imageUrl;
+    private boolean jobVisibility;
+    private boolean addressVisibility;
+    private boolean myImageVisibility;
 
-    private int jobVisibility;
-    private int subImgVisibility;
-    private int addressVisibility;
-  
-    public ProfileOtherResponse() {
-    }
-
-    public ProfileOtherResponse(final Profile profile) {
-        this(profile.getNickname(),
-                profile.getGender(),
-                profile.getPersonality(),
-                profile.getIntroduce(),
-                profile.getMainImg(),
-                profile.getSubImages(),
-                profile.getAge(),
-                profile.getAddressCity(),
-                profile.getAddressDistrict(),
-                profile.getJob(),
-                profile.getJobVisible(),
-                profile.getSubImgVisible(),
-                profile.getAddressVisible());
-
-        // 공개 여부에 따라 값 설정
-        if (profile.getSubImgVisible() == 0 ) {
-            this.subImages = null;
-        }
-        if (profile.getAddressVisible() == 0 ) {
-            this.addressCity = null;
-            this.addressDistrict = null;
-        }
-        if (profile.getJobVisible() == 0 ) {
-            this.job = null;
-        }
-    }
-
-    public ProfileOtherResponse(final String nickname, final int gender, final List<PersonalityType> personality, final String introduce, final String mainImg, final List<SubImage> subImages,
-                                final int age, final AddressCity addressCity, final AddressDistrict addressDistrict, final String job,
-                                final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
+    @Builder
+    public ProfileOtherResponse(final String nickname, final int age, final int gender, final List<PersonalityType> personality, String introduce
+            , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl
+            , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
+        this.age = age;
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
-        this.mainImg = mainImg;
-        this.subImages = subImages;
-        this.age = age;
+        this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
-        this.job = job;
+        this.imageUrl = imageUrl;
         this.jobVisibility = jobVisibility;
-        this.subImgVisibility = subImgVisibility;
         this.addressVisibility = addressVisibility;
+        this.myImageVisibility = myImageVisibility;
+    }
+
+    public static ProfileOtherResponse of(final Profile profile, final List<String> imageUrls) {
+        return ProfileOtherResponse.builder()
+                .nickname(profile.getNickname())
+                .age(profile.getAge())
+                .gender(profile.getGender())
+                .personality(profile.getPersonality())
+                .introduce(profile.getIntroduce())
+                .job(profile.getJob())
+                .addressCity(profile.getAddressCity())
+                .addressDistrict(profile.getAddressDistrict())
+                .imageUrl(imageUrls)
+                .jobVisibility(profile.isJobVisible())
+                .addressVisibility(profile.isAddressVisible())
+                .myImageVisibility(profile.isMyImageVisibility())
+                .build();
+
     }
 }

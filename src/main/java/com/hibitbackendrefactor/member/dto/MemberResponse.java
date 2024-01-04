@@ -9,6 +9,7 @@ public class MemberResponse {
     private String email;
     private String displayName;
     private SocialType socialType;
+
     public MemberResponse(Long id, String email, String displayName, SocialType socialType) {
         this.id = id;
         this.email = email;

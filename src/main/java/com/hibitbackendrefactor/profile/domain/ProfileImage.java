@@ -1,26 +1,34 @@
 package com.hibitbackendrefactor.profile.domain;
 
 import com.hibitbackendrefactor.common.BaseEntity;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 @Entity
-public class SubImage extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ProfileImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sub_image_id")
+    @Column(name = "profile_image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile profile;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
-    protected SubImage() {
+    public ProfileImage(final String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public SubImage(Profile profile, String imageUrl) {
+    public ProfileImage(final Profile profile, final String imageUrl) {
         this.profile = profile;
         this.imageUrl = imageUrl;
     }

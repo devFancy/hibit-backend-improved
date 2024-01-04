@@ -27,13 +27,15 @@ public class MemberController {
         this.memberService = memberService;
         this.memberRepository = memberRepository;
     }
+
     @GetMapping("/me")
     public ResponseEntity<MemberResponse> findMe(@AuthenticationPrincipal final LoginMember loginMember) {
         MemberResponse response = memberService.findById(loginMember.getId());
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/find")
-    public ResponseEntity<MemberIsProfileResponse> findIdx(@AuthenticationPrincipal final LoginMember loginMember){
+    public ResponseEntity<MemberIsProfileResponse> findIdx(@AuthenticationPrincipal final LoginMember loginMember) {
         Member member = memberRepository.findById(loginMember.getId())
                 .orElseThrow(NotFoundMemberException::new);
 
