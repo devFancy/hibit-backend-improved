@@ -5,18 +5,19 @@ import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
 import com.hibitbackendrefactor.profile.application.ProfileService;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
-import com.hibitbackendrefactor.profile.dto.request.ProfileRegisterRequest;
+import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
 import com.hibitbackendrefactor.profile.dto.request.ProfileUpdateRequest;
 import com.hibitbackendrefactor.profile.dto.response.*;
-import com.hibitbackendrefactor.profile.exception.NicknameAlreadyTakenException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -32,10 +33,11 @@ public class ProfileController {
 
     @PostMapping
     @Operation(description = "본인 프로필을 등록한다.")
-    public ResponseEntity<ProfileRegisterResponse> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                                                 @Valid @RequestBody final ProfileRegisterRequest profileRegisterRequest) {
-        ProfileRegisterResponse response = profileService.saveMyProfile(loginMember.getId(), profileRegisterRequest);
-        return ResponseEntity.created(URI.create("/api/profiles/" + response.getId())).body(response);
+    public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
+                                                               @Valid @RequestPart final ProfileCreateRequest request,
+                                                               @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
+        Long profileId = profileService.saveMyProfile(loginMember.getId(), request, multipartFiles);
+        return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
     }
 
     @GetMapping("/personalities")
