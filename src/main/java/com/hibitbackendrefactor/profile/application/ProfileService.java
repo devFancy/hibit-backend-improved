@@ -145,16 +145,15 @@ public class ProfileService {
         return ProfileResponse.of(profile, imageUrls);
     }
 
-    public ProfileOtherResponse findOtherProfileByMemberId(final Long otherMemberId) {
+    public ProfileOtherResponse findOtherProfile(final Long otherMemberId) {
         Profile profile = profileRepository.findByMemberId(otherMemberId)
                 .orElseThrow(() -> new NotFoundProfileException("타인의 프로필을 찾을 수 없습니다."));
 
-        return new ProfileOtherResponse(profile);
-    }
+        List<String> imageUrls = profileImageRepository.findByProfile(profile)
+                .stream()
+                .map(ProfileImage::getImageUrl)
+                .collect(Collectors.toList());
 
-    public void validateUniqueNickname(final String nickname) {
-        if (profileRepository.existsByNickname(nickname)) {
-            throw new NicknameAlreadyTakenException("이미 사용중인 닉네임 입니다.");
-        }
+        return ProfileOtherResponse.of(profile, imageUrls);
     }
 }

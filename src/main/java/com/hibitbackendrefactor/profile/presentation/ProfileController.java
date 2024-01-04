@@ -54,11 +54,11 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/other/{otherMemberId}")
+    @GetMapping("/other/{id}")
     @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
-    public ResponseEntity<ProfileOtherResponse> findOtherProfileByMemberId(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                                                           @PathVariable final Long otherMemberId) {
-        ProfileOtherResponse response = profileService.findOtherProfileByMemberId(otherMemberId);
+    public ResponseEntity<ProfileOtherResponse> findOtherProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
+                                                                           @PathVariable(name = "id") final Long otherMemberId) {
+        ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
         return ResponseEntity.ok(response);
     }
 
