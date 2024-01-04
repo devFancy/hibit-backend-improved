@@ -133,10 +133,16 @@ public class ProfileService {
     }
 
     public ProfileResponse findProfileByMemberId(final Long memberId) {
+    public ProfileResponse findMyProfile(final Long memberId) {
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundProfileException("프로필을 찾을 수 없습니다."));
 
-        return new ProfileResponse(profile);
+        List<String> imageUrls = profileImageRepository.findByProfile(profile)
+                .stream()
+                .map(ProfileImage::getImageUrl)
+                .collect(Collectors.toList());
+
+        return ProfileResponse.of(profile, imageUrls);
     }
 
     public ProfileOtherResponse findOtherProfileByMemberId(final Long otherMemberId) {

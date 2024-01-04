@@ -41,23 +41,16 @@ public class ProfileController {
     }
 
     @GetMapping("/personalities")
-    @Operation(summary = "/personalities", description = "사용자에게 선택할 수 있는 성격 목록을 반환합니다.")
+    @Operation(summary = "/personalities", description = "사용자에게 선택할 수 있는 성격 목록을 반환한다.")
     public ResponseEntity<List<PersonalityType>> getAvailablePersonalities() {
         List<PersonalityType> personalities = Arrays.asList(PersonalityType.values());
         return ResponseEntity.ok(personalities);
     }
 
-    @GetMapping
-    @Operation(description = "등록된 프로필 전체를 조회한다.")
-    public ResponseEntity<ProfilesResponse> findProfiles() {
-        ProfilesResponse response = profileService.findProfilesByIdAndMemberId();
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/me")
     @Operation(summary = "/me", description = "본인 프로필을 조회한다.")
-    public ResponseEntity<ProfileResponse> findProfileByMemberId(@AuthenticationPrincipal final LoginMember loginMember) {
-        ProfileResponse response = profileService.findProfileByMemberId(loginMember.getId());
+    public ResponseEntity<ProfileResponse> findMyProfile(@AuthenticationPrincipal final LoginMember loginMember) {
+        ProfileResponse response = profileService.findMyProfile(loginMember.getId());
         return ResponseEntity.ok(response);
     }
 
