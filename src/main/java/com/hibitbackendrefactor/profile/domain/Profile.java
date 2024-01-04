@@ -6,11 +6,14 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.exception.InvalidNicknameException;
 import com.hibitbackendrefactor.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
+import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 public class Profile extends BaseEntity {
 
@@ -19,11 +22,12 @@ public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id")
+    @Column(name = "profile_id", unique = true)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @Column(name = "nickname", length = 20, unique = true)
@@ -43,12 +47,6 @@ public class Profile extends BaseEntity {
     @Column(name = "introduce", length = 200)
     private String introduce;
 
-    @Column(name = "main_img", length = 100)
-    private String mainImg;
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<SubImage> subImages = new ArrayList<>();
-
     @Column(name = "job", length = 50)
     private String job;
 
@@ -60,25 +58,23 @@ public class Profile extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AddressDistrict addressDistrict;
 
-    @Column(name = "ban")
-    private int ban;
-
     @Column(name = "job_visible")
-    private int jobVisible;
-
-    @Column(name = "sub_img_visible")
-    private int subImgVisible;
+    private boolean jobVisible;
 
     @Column(name = "address_visible")
-    private int addressVisible;
+    private boolean addressVisible;
+
+    @Column(name = "my_image_visibility")
+    private boolean myImageVisibility;
 
     protected Profile() {
     }
 
     @Builder
-    public Profile(final Member member, final String nickname, final int age, final int gender, final List<PersonalityType> personality,
-                   final String introduce, final String mainImg, final List<SubImage> subImages, final String job, final AddressCity addressCity,
-                   final AddressDistrict addressDistrict, final int jobVisible, final int subImgVisible, final int addressVisible) {
+    public Profile(final Member member, final String nickname, final int age
+            , final int gender, final List<PersonalityType> personality,final String introduce
+            , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
+            , final boolean jobVisible, final boolean addressVisible, final boolean myImageVisibility) {
         validateNickName(nickname);
         validatePersonality(personality);
         this.member = member;
@@ -87,14 +83,12 @@ public class Profile extends BaseEntity {
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
-        this.mainImg = mainImg;
-        this.subImages = subImages;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
         this.jobVisible = jobVisible;
-        this.subImgVisible = subImgVisible;
         this.addressVisible = addressVisible;
+        this.myImageVisibility = myImageVisibility;
     }
 
     private void validateNickName(final String nickname) {
@@ -107,70 +101,6 @@ public class Profile extends BaseEntity {
         if(personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
             throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
         }
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public List<PersonalityType> getPersonality() {
-        return personality;
-    }
-
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public String getMainImg() {
-        return mainImg;
-    }
-
-    public List<SubImage> getSubImages() {
-        return subImages;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public AddressCity getAddressCity() {
-        return addressCity;
-    }
-
-    public AddressDistrict getAddressDistrict() {
-        return addressDistrict;
-    }
-
-    public int getBan() {
-        return ban;
-    }
-
-    public int getJobVisible() {
-        return jobVisible;
-    }
-
-    public int getSubImgVisible() {
-        return subImgVisible;
-    }
-
-    public int getAddressVisible() {
-        return addressVisible;
     }
 
     public void updateNickname(final String nickname) {
@@ -195,14 +125,6 @@ public class Profile extends BaseEntity {
         this.introduce = introduce;
     }
 
-    public void updateMainImg(final String mainImg) {
-        this.mainImg = mainImg;
-    }
-
-    public void updateSubImages(final List<SubImage> subImages) {
-        this.subImages = subImages;
-    }
-
     public void updateJob(final String job) {
         this.job = job;
     }
@@ -214,13 +136,16 @@ public class Profile extends BaseEntity {
     public void updateAddressDistinct(final AddressDistrict addressDistrict) {
         this.addressDistrict = addressDistrict;
     }
-    public void updateJobVisible(final int jobVisible) {
+
+    public void updateJobVisible(final boolean jobVisible) {
         this.jobVisible = jobVisible;
     }
-    public void updateSubImgVisible(final int subImgVisible) {
-        this.subImgVisible = subImgVisible;
-    }
-    public void updateAddressVisible(final int addressVisible) {
+
+    public void updateAddressVisible(final boolean addressVisible) {
         this.addressVisible = addressVisible;
+    }
+
+    public void updateMyImageVisibility(final boolean myImageVisibility) {
+        this.myImageVisibility = myImageVisibility;
     }
 }
