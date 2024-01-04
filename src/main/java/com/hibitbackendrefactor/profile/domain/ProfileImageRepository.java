@@ -15,3 +15,10 @@ public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long
     @Query("SELECT pi FROM ProfileImage pi WHERE pi.profile = :profile")
     List<ProfileImage> findByProfile(@Param("profile") final Profile profile);
 
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "" +
+        "DELETE FROM profile_image " +
+        "WHERE profile_id = :profileId", nativeQuery = true)
+    void deleteByProfileId(@Param("profileId") final Long profileId);
+}
