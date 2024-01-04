@@ -47,7 +47,7 @@ public class Member extends BaseEntity {
 
     private void validateEmail(final String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
-        if(!matcher.matches()) {
+        if (!matcher.matches()) {
             throw new InvalidMemberException("이메일 형식이 올바르지 않습니다.");
         }
     }
@@ -57,6 +57,7 @@ public class Member extends BaseEntity {
             throw new InvalidMemberException(String.format("이름은 1자 이상 1자 %d이하여야 합니다.", MAX_DISPLAY_NAME_LENGTH));
         }
     }
+
     public Long getId() {
         return id;
     }
@@ -76,6 +77,12 @@ public class Member extends BaseEntity {
     public void updateDisplayName(String nickname) {
         this.displayName = nickname;
     }
-    public boolean getIsprofile(){ return isProfile;}
-    public void updateIsprofile(){this.isProfile=true;}
+
+    public boolean getIsprofile() {
+        return isProfile;
+    }
+
+    public void updateIsprofile() {
+        this.isProfile = true;
+    }
 }

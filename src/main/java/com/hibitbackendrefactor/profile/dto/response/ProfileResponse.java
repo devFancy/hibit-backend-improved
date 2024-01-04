@@ -27,6 +27,7 @@ public class ProfileResponse {
     private boolean jobVisibility;
     private boolean addressVisibility;
     private boolean myImageVisibility;
+
     @Builder
     public ProfileResponse(final String nickname, final int age, final int gender, final List<PersonalityType> personality, String introduce
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl

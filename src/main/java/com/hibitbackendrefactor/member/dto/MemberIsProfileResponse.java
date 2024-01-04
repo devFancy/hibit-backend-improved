@@ -12,9 +12,9 @@ public class MemberIsProfileResponse {
     private Long idx;
     private boolean Isprofile;
 
-    public MemberIsProfileResponse(@NotNull Member entity){
+    public MemberIsProfileResponse(@NotNull Member entity) {
         this.idx = entity.getId();
-        this.Isprofile=entity.getIsprofile();
+        this.Isprofile = entity.getIsprofile();
     }
 
 }

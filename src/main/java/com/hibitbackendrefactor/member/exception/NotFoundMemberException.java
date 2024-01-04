@@ -1,6 +1,6 @@
 package com.hibitbackendrefactor.member.exception;
 
-public class NotFoundMemberException extends RuntimeException{
+public class NotFoundMemberException extends RuntimeException {
 
     public NotFoundMemberException(final String message) {
         super(message);

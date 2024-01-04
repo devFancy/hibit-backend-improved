@@ -1,6 +1,6 @@
 package com.hibitbackendrefactor.profile.exception;
 
-public class InvalidNicknameException extends RuntimeException{
+public class InvalidNicknameException extends RuntimeException {
     public InvalidNicknameException(final String message) {
         super(message);
     }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileOtherResponse {
@@ -26,6 +27,7 @@ public class ProfileOtherResponse {
     private boolean jobVisibility;
     private boolean addressVisibility;
     private boolean myImageVisibility;
+
     @Builder
     public ProfileOtherResponse(final String nickname, final int age, final int gender, final List<PersonalityType> personality, String introduce
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl

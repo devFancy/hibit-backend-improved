@@ -72,7 +72,7 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile(final Member member, final String nickname, final int age
-            , final int gender, final List<PersonalityType> personality,final String introduce
+            , final int gender, final List<PersonalityType> personality, final String introduce
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisible, final boolean addressVisible, final boolean myImageVisibility) {
         validateNickName(nickname);
@@ -92,13 +92,13 @@ public class Profile extends BaseEntity {
     }
 
     private void validateNickName(final String nickname) {
-        if(nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
+        if (nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
             throw new InvalidNicknameException(String.format("이름은 1자 이상 1자 %d 이하여야 합니다.", MAX_NICK_NAME_LENGTH));
         }
     }
 
     private void validatePersonality(final List<PersonalityType> personality) {
-        if(personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
+        if (personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
             throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
         }
     }

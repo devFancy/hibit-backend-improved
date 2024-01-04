@@ -85,17 +85,17 @@ public class ProfileService {
     private void updateMemberInfo(final Member member, final Profile profile) {
         member.updateDisplayName(profile.getNickname());
 
-        if(!member.getIsprofile()) {
+        if (!member.getIsprofile()) {
             member.updateIsprofile();
         }
         memberRepository.save(member);
     }
 
-    private void saveProfileImages(final Long profileId, final List<MultipartFile> images) throws IOException{
+    private void saveProfileImages(final Long profileId, final List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
 
-        for(MultipartFile image : images) {
-            if(!image.isEmpty())
+        for (MultipartFile image : images) {
+            if (!image.isEmpty())
                 savedImages.add(saveProfileImage(profileId, image));
         }
     }
@@ -138,7 +138,7 @@ public class ProfileService {
 
     private void deleteProfileImageByProfileId(final Long profileId) throws MalformedURLException {
         List<ProfileImage> profileImages = profileImageRepository.findByProfileId(profileId);
-        for(ProfileImage profileImage : profileImages) {
+        for (ProfileImage profileImage : profileImages) {
             s3UploadService.deleteFile(profileImage.getImageUrl());
         }
     }

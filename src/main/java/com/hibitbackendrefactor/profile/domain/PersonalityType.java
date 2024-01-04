@@ -37,8 +37,8 @@ public enum PersonalityType {
 
     @JsonCreator
     public static PersonalityType from(final String text) {
-        for(PersonalityType status : PersonalityType.values()) {
-            if(status.getText().equals(text)) {
+        for (PersonalityType status : PersonalityType.values()) {
+            if (status.getText().equals(text)) {
                 return status;
             }
         }

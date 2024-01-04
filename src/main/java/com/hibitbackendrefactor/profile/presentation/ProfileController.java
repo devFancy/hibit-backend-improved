@@ -27,6 +27,7 @@ import java.util.List;
 @RequestMapping("/api/profiles")
 public class ProfileController {
     private final ProfileService profileService;
+
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
@@ -34,8 +35,8 @@ public class ProfileController {
     @PostMapping
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                                               @Valid @RequestPart final ProfileCreateRequest request,
-                                                               @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
+                                              @Valid @RequestPart final ProfileCreateRequest request,
+                                              @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
         Long profileId = profileService.saveMyProfile(loginMember.getId(), request, multipartFiles);
         return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
     }
@@ -57,7 +58,7 @@ public class ProfileController {
     @GetMapping("/other/{id}")
     @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findOtherProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                                                           @PathVariable(name = "id") final Long otherMemberId) {
+                                                                 @PathVariable(name = "id") final Long otherMemberId) {
         ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
         return ResponseEntity.ok(response);
     }
