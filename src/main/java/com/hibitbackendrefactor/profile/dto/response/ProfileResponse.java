@@ -1,65 +1,65 @@
 package com.hibitbackendrefactor.profile.dto.response;
 
 
+import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.domain.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileResponse {
 
-    // 필수 노출 정보
     private String nickname;
+    private int age;
     private int gender;
     private List<PersonalityType> personality;
     private String introduce;
-    private String mainImg;
-    private List<SubImage> subImages;
 
-    // 선택 노출 정보
-    private int age;
+    private String job;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
-    private String job;
-    private int jobVisibility;
-    private int subImgVisibility;
-    private int addressVisibility;
-    public ProfileResponse() {
-    }
-
-    public ProfileResponse(final String nickname, final int gender, final List<PersonalityType> personality
-            , final String introduce, final String mainImg, final List<SubImage> subImages
-            , final int age, final AddressCity addressCity, final AddressDistrict addressDistrict, final String job
-            , final int jobVisibility, final int subImgVisibility, final int addressVisibility) {
+    private List<String> imageUrl;
+    private boolean jobVisibility;
+    private boolean addressVisibility;
+    private boolean myImageVisibility;
+    @Builder
+    public ProfileResponse(final String nickname, final int age, final int gender, final List<PersonalityType> personality, String introduce
+            , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl
+            , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
+        this.age = age;
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
-        this.mainImg = mainImg;
-        this.subImages = subImages;
-        this.age = age;
+        this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
-        this.job = job;
+        this.imageUrl = imageUrl;
         this.jobVisibility = jobVisibility;
-        this.subImgVisibility = subImgVisibility;
         this.addressVisibility = addressVisibility;
+        this.myImageVisibility = myImageVisibility;
     }
 
-    public ProfileResponse(Profile profile) {
-        this(profile.getNickname(),
-                profile.getGender(),
-                profile.getPersonality(),
-                profile.getIntroduce(),
-                profile.getMainImg(),
-                profile.getSubImages(),
-                profile.getAge(),
-                profile.getAddressCity(),
-                profile.getAddressDistrict(),
-                profile.getJob(),
-                profile.getJobVisible(),
-                profile.getSubImgVisible(),
-                profile.getAddressVisible());
+    public static ProfileResponse of(final Profile profile, final List<String> imageUrls) {
+        return ProfileResponse.builder()
+                .nickname(profile.getNickname())
+                .age(profile.getAge())
+                .gender(profile.getGender())
+                .personality(profile.getPersonality())
+                .introduce(profile.getIntroduce())
+                .job(profile.getJob())
+                .addressCity(profile.getAddressCity())
+                .addressDistrict(profile.getAddressDistrict())
+                .imageUrl(imageUrls)
+                .jobVisibility(profile.isJobVisible())
+                .addressVisibility(profile.isAddressVisible())
+                .myImageVisibility(profile.isMyImageVisibility())
+                .build();
+
     }
 }
