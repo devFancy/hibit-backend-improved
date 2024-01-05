@@ -3,11 +3,8 @@ package com.hibitbackendrefactor.post.domain;
 import com.hibitbackendrefactor.common.BaseEntity;
 import com.hibitbackendrefactor.member.domain.Member;
 import lombok.Builder;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +23,10 @@ public class Post extends BaseEntity {
     @Embedded
     private Title title;
 
+    @Column(name = "content", nullable = false)
+    @Embedded
+    private Content content;
+
     @Column(name = "exhibition", nullable = false)
     @Embedded
     private Exhibition exhibition;
@@ -33,8 +34,10 @@ public class Post extends BaseEntity {
     @Column(name = "exhibition_attendance", nullable = false)
     private int exhibitionAttendance;
 
+    @ElementCollection
+    @CollectionTable(name = "post_possible_times", joinColumns = @JoinColumn(name = "post_id"))
     @Column(nullable = false)
-    private LocalDateTime possibleTime;
+    private List<PostPossibleTime> possibleTimes = new ArrayList<>();
 
     @Column(name = "open_chat_url", nullable = false)
     private String openChatUrl;
@@ -43,11 +46,7 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TogetherActivity togetherActivity;
 
-    @Column(name = "content", nullable = false)
-    @Embedded
-    private Content content;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PostImage> postImages = new ArrayList<>();
 
     @Column(name = "post_status", nullable = false)
@@ -58,17 +57,17 @@ public class Post extends BaseEntity {
     }
 
     @Builder
-    public Post(Member member, String title, String exhibition, int exhibitionAttendance,
-                LocalDateTime possibleTime, String openChatUrl, TogetherActivity togetherActivity,
-                String content, List<PostImage> postImages , PostStatus postStatus) {
+    public Post(final Member member,  String title, final String content, final String exhibition, final int exhibitionAttendance
+            , final List<PostPossibleTime> possibleTimes, final String openChatUrl, final TogetherActivity togetherActivity
+            , final List<PostImage> postImages , final PostStatus postStatus) {
         this.member = member;
         this.title = new Title(title);
+        this.content = new Content(content);
         this.exhibition = new Exhibition(exhibition);
         this.exhibitionAttendance = exhibitionAttendance;
-        this.possibleTime = possibleTime;
+        this.possibleTimes = possibleTimes;
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
-        this.content = new Content(content);
         this.postImages = postImages;
         this.postStatus = postStatus;
     }
@@ -85,6 +84,10 @@ public class Post extends BaseEntity {
         return title;
     }
 
+    public Content getContent() {
+        return content;
+    }
+
     public Exhibition getExhibition() {
         return exhibition;
     }
@@ -93,8 +96,8 @@ public class Post extends BaseEntity {
         return exhibitionAttendance;
     }
 
-    public LocalDateTime getPossibleTime() {
-        return possibleTime;
+    public List<PostPossibleTime> getPossibleTimes() {
+        return possibleTimes;
     }
 
     public String getOpenChatUrl() {
@@ -103,10 +106,6 @@ public class Post extends BaseEntity {
 
     public TogetherActivity getTogetherActivity() {
         return togetherActivity;
-    }
-
-    public Content getContent() {
-        return content;
     }
 
     public List<PostImage> getPostImages() {
