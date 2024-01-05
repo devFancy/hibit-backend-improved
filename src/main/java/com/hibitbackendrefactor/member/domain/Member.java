@@ -2,6 +2,7 @@ package com.hibitbackendrefactor.member.domain;
 
 import com.hibitbackendrefactor.common.BaseEntity;
 import com.hibitbackendrefactor.member.exception.InvalidMemberException;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.util.regex.Matcher;
@@ -35,6 +36,7 @@ public class Member extends BaseEntity {
     protected Member() {
     }
 
+    @Builder
     public Member(String email, String displayName, SocialType socialType) {
 
         validateEmail(email);

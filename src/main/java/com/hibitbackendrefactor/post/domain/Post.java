@@ -15,7 +15,7 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -80,16 +80,16 @@ public class Post extends BaseEntity {
         return member;
     }
 
-    public Title getTitle() {
-        return title;
+    public String getTitle() {
+        return title.getValue();
     }
 
-    public Content getContent() {
-        return content;
+    public String getContent() {
+        return content.getValue();
     }
 
-    public Exhibition getExhibition() {
-        return exhibition;
+    public String getExhibition() {
+        return exhibition.getTitle();
     }
 
     public int getExhibitionAttendance() {

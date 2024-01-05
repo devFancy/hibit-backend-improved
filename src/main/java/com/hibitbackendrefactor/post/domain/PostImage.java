@@ -20,6 +20,10 @@ public class PostImage {
     protected PostImage() {
     }
 
+    public PostImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public PostImage(Post post, String imageUrl) {
         this.post = post;
         this.imageUrl = imageUrl;

@@ -6,17 +6,24 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.*;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.response.PostResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
@@ -35,6 +42,7 @@ public class PostService {
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     public Long save(final Long memberId, final PostCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
         validateMember(memberId);
         Member foundMember = memberRepository.getById(memberId);
@@ -83,5 +91,20 @@ public class PostService {
         PostImage postImage = new PostImage(postRepository.getById(postId), savedImageUrl);
         postImageRepository.save(postImage);
         return savedImageUrl;
+    }
+
+    public PostsResponse findAllByPosts(Pageable pageable) {
+        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc(pageable);
+        List<PostResponse> responses = getPosts(posts);
+        return new PostsResponse(responses);
+    }
+
+    private List<PostResponse> getPosts(List<Post> posts) {
+        return posts.stream()
+                .map(post -> {
+                    String imageUrl = postImageRepository.findOneImageUrlByPostId(post.getId());
+                    return PostResponse.of(post, imageUrl);
+                })
+                .collect(Collectors.toList());
     }
 }
