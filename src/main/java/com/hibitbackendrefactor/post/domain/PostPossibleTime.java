@@ -1,6 +1,5 @@
 package com.hibitbackendrefactor.post.domain;
 
-import com.hibitbackendrefactor.common.BaseEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
