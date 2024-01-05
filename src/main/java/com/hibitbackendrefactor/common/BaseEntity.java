@@ -21,11 +21,11 @@ public abstract class BaseEntity {
     @Column(name = "updated_date_time", nullable = false)
     private LocalDateTime updateDateTime;
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public LocalDateTime getUpdateDateTime() {
         return updateDateTime;
     }
 }
