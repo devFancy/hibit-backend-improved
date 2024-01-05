@@ -2,6 +2,7 @@ package com.hibitbackendrefactor.post.domain;
 
 import javax.persistence.*;
 
+@Table(name = "post_image")
 @Entity
 public class PostImage {
     @Id
