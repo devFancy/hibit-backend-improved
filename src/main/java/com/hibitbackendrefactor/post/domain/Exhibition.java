@@ -15,14 +15,14 @@ public class Exhibition {
 
     @Column(name = "exhibition", nullable = false)
     @Lob
-    private String value;
+    private String title;
 
     protected Exhibition() {
     }
 
-    public Exhibition(String value) {
-        validate(value);
-        this.value = value;
+    public Exhibition(String title) {
+        validate(title);
+        this.title = title;
     }
 
     private void validate(String value) {
@@ -43,11 +43,11 @@ public class Exhibition {
             return false;
         }
         Exhibition exhibition = (Exhibition) o;
-        return Objects.equals(value, exhibition.value);
+        return Objects.equals(title, exhibition.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(title);
     }
 }
