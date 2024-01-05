@@ -21,6 +21,12 @@ public abstract class BaseEntity {
     @Column(name = "updated_date_time", nullable = false)
     private LocalDateTime updateDateTime;
 
+    // 생성자 추가
+    protected BaseEntity() {
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
+
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
