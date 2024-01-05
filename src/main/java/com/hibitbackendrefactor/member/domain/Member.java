@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     }
 
     public Member(String email, String displayName, SocialType socialType) {
-
+        super();
         validateEmail(email);
         validateDisplayName(displayName);
 
