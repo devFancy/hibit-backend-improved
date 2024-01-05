@@ -22,6 +22,7 @@ public class PostResponse {
     private LocalDate createDateTime;
 
 
+    @Builder
     public PostResponse(Long id, String title, String exhibition
             , List<String> exhibitionAttendanceAndTogetherActivity, PostStatus postStatus
             , String postImage, LocalDate createDateTime) {
@@ -34,3 +35,21 @@ public class PostResponse {
         this.createDateTime = createDateTime;
     }
 
+    public static PostResponse of(final Post post, final String imageUrl) {
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .exhibition(post.getExhibition())
+                .exhibitionAttendanceAndTogetherActivity(AttendanceAndTogetherActivity(post.getExhibitionAttendance(), post.getTogetherActivity()))
+                .postStatus(post.getPostStatus())
+                .postImage(imageUrl)
+                .createDateTime(post.getCreateDateTime().toLocalDate())
+                .build();
+    }
+    private static List<String> AttendanceAndTogetherActivity(int exhibitionAttendance, TogetherActivity togetherActivity) {
+        List<String> attendanceAndTogetherActivity = new ArrayList<>();
+        attendanceAndTogetherActivity.add(exhibitionAttendance + "인 관람");
+        attendanceAndTogetherActivity.add(togetherActivity.getText());
+        return attendanceAndTogetherActivity;
+    }
+}
