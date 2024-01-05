@@ -26,7 +26,7 @@ public class PostService {
     private final ProfileRepository profileRepository;
 
     public PostService(final PostRepository postRepository, final MemberRepository memberRepository,
-            final PostImageRepository postImageRepository, final S3UploadService s3UploadService,
+                       final PostImageRepository postImageRepository, final S3UploadService s3UploadService,
                        final ProfileRepository profileRepository) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
@@ -50,7 +50,7 @@ public class PostService {
     }
 
     private void validateMember(final Long memberId) {
-        if(!existProfile(memberId)) {
+        if (!existProfile(memberId)) {
             throw new NotFoundProfileException("프로필을 등록해야 게시글을 저장할 수 있습니다.");
         }
     }
@@ -61,9 +61,9 @@ public class PostService {
     }
 
     private static PostCreateRequest createPostRequest(final PostCreateRequest request, final List<MultipartFile> multipartFiles) {
-        return new PostCreateRequest (
+        return new PostCreateRequest(
                 request.getTitle(), request.getContent(), request.getExhibition(), request.getExhibitionAttendance(),
-                request.getOpenChatUrl(),request.getTogetherActivity(), request.getPossibleTimes(),
+                request.getOpenChatUrl(), request.getTogetherActivity(), request.getPossibleTimes(),
                 multipartFiles, request.getPostStatus());
     }
 

@@ -20,7 +20,7 @@ public class PostCreateResponse {
     private TogetherActivity togetherActivity;
 
     public PostCreateResponse(final Long id, final Title title, final Content content, final Exhibition exhibition, final int exhibitionAttendance,
-                              final List<PostPossibleTime>  possibleTimes, final String openChatUrl, final TogetherActivity togetherActivity) {
+                              final List<PostPossibleTime> possibleTimes, final String openChatUrl, final TogetherActivity togetherActivity) {
         this.id = id;
         this.title = title;
         this.content = content;
