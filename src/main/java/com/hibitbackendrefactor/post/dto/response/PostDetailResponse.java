@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.post.dto.response;
 
+import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.domain.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,6 +14,8 @@ import static com.hibitbackendrefactor.post.dto.response.PostResponse.Attendance
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDetailResponse {
+    private static final String HIBIT_BASIC_IMAGE = "https://hibitbucket.s3.ap-northeast-2.amazonaws.com/hibit-image.png";
+
     private Long id;
     private Long writerId;
     private String writerName;
@@ -34,7 +37,7 @@ public class PostDetailResponse {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
-//        this.writerImage = writerImage;
+        this.writerImage = writerImage;
         this.title = title;
         this.content = content;
         this.exhibition = exhibition;
@@ -50,7 +53,7 @@ public class PostDetailResponse {
                 .id(post.getId())
                 .id(post.getMember().getId())
                 .writerName(post.getMember().getDisplayName())
-                // 게시글 작성자 이미지 추가해야함
+                .writerImage(findWriterImage(post.getMember()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .exhibition(post.getExhibition())
@@ -60,5 +63,12 @@ public class PostDetailResponse {
                 .postStatus(post.getPostStatus())
                 .postImages(imageUrls)
                 .build();
+    }
+
+    private static String findWriterImage(final Member member) {
+        if(!member.getMainImage().isEmpty()) {
+            return member.getMainImage();
+        }
+        return HIBIT_BASIC_IMAGE;
     }
 }
