@@ -1,12 +1,15 @@
 package com.hibitbackendrefactor.post.dto.response;
 
 import com.hibitbackendrefactor.post.domain.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDetailResponse {
     private Long id;
     private String writerName;
@@ -22,6 +25,7 @@ public class PostDetailResponse {
     private PostStatus postStatus;
     private List<PostImage> postImage;
 
+    @Builder
     public PostDetailResponse(final Long id, final String writerName, final Long writerId, String writerImage
             , final String title, final String content, final String exhibition
             , final int exhibitionAttendance, final List<PostPossibleTime> possibleTimes
@@ -42,4 +46,21 @@ public class PostDetailResponse {
         this.postImage = postImage;
     }
 
+    public static PostDetailResponse of(final Post post) {
+        return PostDetailResponse.builder()
+                .id(post.getId())
+                .writerName(post.getMember().getDisplayName())
+                .id(post.getMember().getId())
+                // 게시글 작성자 이미지 추가해야함
+                .title(post.getTitle())
+                .content(post.getContent())
+                .exhibition(post.getExhibition())
+                .exhibitionAttendance(post.getExhibitionAttendance())
+                .possibleTimes(post.getPossibleTimes())
+                .openChatUrl(post.getOpenChatUrl())
+                .togetherActivity(post.getTogetherActivity())
+                .postStatus(post.getPostStatus())
+                .postImage(post.getPostImages())
+                .build();
+    }
 }

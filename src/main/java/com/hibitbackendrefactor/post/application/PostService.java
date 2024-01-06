@@ -6,6 +6,7 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.*;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
@@ -106,5 +107,10 @@ public class PostService {
                     return PostResponse.of(post, imageUrl);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public PostDetailResponse findPost(final Long postId) {
+        Post post = postRepository.getById(postId);
+        return PostDetailResponse.of(post);
     }
 }

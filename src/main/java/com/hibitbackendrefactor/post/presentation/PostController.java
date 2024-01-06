@@ -5,6 +5,8 @@ import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
 import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
+import com.hibitbackendrefactor.post.dto.response.PostResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,4 +50,12 @@ public class PostController {
         PostsResponse responses = postService.findAllByPosts(pageable);
         return ResponseEntity.ok().body(responses);
     }
+
+    @GetMapping("api/posts/{id}")
+    @Operation(summary = "/api/posts/{id}", description = "게시글에 대한 상세 페이지를 조회한다.")
+    public ResponseEntity<PostDetailResponse> findPost(@PathVariable Long postId) {
+        PostDetailResponse response = postService.findPost(postId);
+        return ResponseEntity.ok(response);
+    }
+
 }
