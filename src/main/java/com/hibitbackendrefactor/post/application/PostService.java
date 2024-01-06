@@ -12,7 +12,6 @@ import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
