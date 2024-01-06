@@ -32,12 +32,14 @@ public class Member extends BaseEntity {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isProfile;
 
+    @Column(name = "main_image", nullable = true)
+    private String mainImage;
 
     protected Member() {
     }
 
     @Builder
-    public Member(String email, String displayName, SocialType socialType) {
+    public Member(final String email, final String displayName, final SocialType socialType) {
         super();
         validateEmail(email);
         validateDisplayName(displayName);
@@ -76,7 +78,11 @@ public class Member extends BaseEntity {
         return socialType;
     }
 
-    public void updateDisplayName(String nickname) {
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void updateDisplayName(final String nickname) {
         this.displayName = nickname;
     }
 
@@ -86,5 +92,9 @@ public class Member extends BaseEntity {
 
     public void updateIsprofile() {
         this.isProfile = true;
+    }
+
+    public void updateMainImage(final String mainImage) {
+        this.mainImage = mainImage;
     }
 }

@@ -22,9 +22,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-@Tag(name = "profile", description = "프로필")
+@Tag(name = "profiles", description = "프로필")
 @RestController
-@RequestMapping("/api/profiles")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -32,7 +31,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping
+    @PostMapping("/api/profiles")
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                               @Valid @RequestPart final ProfileCreateRequest request,
@@ -41,30 +40,30 @@ public class ProfileController {
         return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
     }
 
-    @GetMapping("/personalities")
+    @GetMapping("/api/profiles/personalities")
     @Operation(summary = "/personalities", description = "사용자에게 선택할 수 있는 성격 목록을 반환한다.")
     public ResponseEntity<List<PersonalityType>> getAvailablePersonalities() {
         List<PersonalityType> personalities = Arrays.asList(PersonalityType.values());
         return ResponseEntity.ok(personalities);
     }
 
-    @GetMapping("/me")
-    @Operation(summary = "/me", description = "본인 프로필을 조회한다.")
+    @GetMapping("/api/profiles/me")
+    @Operation(summary = "/api/profiles/me", description = "본인 프로필을 조회한다.")
     public ResponseEntity<ProfileResponse> findMyProfile(@AuthenticationPrincipal final LoginMember loginMember) {
         ProfileResponse response = profileService.findMyProfile(loginMember.getId());
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/other/{id}")
-    @Operation(summary = "other/2", description = "타인 프로필을 조회한다.")
+    @GetMapping("/api/profiles/other/{id}")
+    @Operation(summary = "/api/profiles/other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findOtherProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                                                  @PathVariable(name = "id") final Long otherMemberId) {
         ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/me/{id}")
-    @Operation(summary = "/me/1", description = "본인 프로필을 수정한다.")
+    @PutMapping("/api/profiles/me/{id}")
+    @Operation(summary = "/api/profiles/me/1", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                        @PathVariable(name = "id") final Long profileId,
                                        @Valid @RequestPart final ProfileUpdateRequest request,

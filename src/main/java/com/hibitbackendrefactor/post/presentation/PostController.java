@@ -5,14 +5,13 @@ import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
 import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,8 +43,16 @@ public class PostController {
 
     @GetMapping("api/posts")
     @Operation(summary = "/api/posts", description = "등록된 게시글 전체를 조회한다.")
-    public ResponseEntity<PostsResponse> findAllProducts(@PageableDefault(size = PAGE_SIZE) Pageable pageable) {
+    public ResponseEntity<PostsResponse> findAllPosts(@PageableDefault(size = PAGE_SIZE) Pageable pageable) {
         PostsResponse responses = postService.findAllByPosts(pageable);
         return ResponseEntity.ok().body(responses);
     }
+
+    @GetMapping("api/posts/{id}")
+    @Operation(summary = "/api/posts/{id}", description = "게시글에 대한 상세 페이지를 조회한다.")
+    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") Long postId) {
+        PostDetailResponse response = postService.findPost(postId);
+        return ResponseEntity.ok(response);
+    }
+
 }
