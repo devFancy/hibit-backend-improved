@@ -53,7 +53,7 @@ public class PostController {
 
     @GetMapping("api/posts/{id}")
     @Operation(summary = "/api/posts/{id}", description = "게시글에 대한 상세 페이지를 조회한다.")
-    public ResponseEntity<PostDetailResponse> findPost(@PathVariable Long postId) {
+    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") Long postId) {
         PostDetailResponse response = postService.findPost(postId);
         return ResponseEntity.ok(response);
     }
