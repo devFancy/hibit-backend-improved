@@ -94,13 +94,13 @@ public class PostService {
         return savedImageUrl;
     }
 
-    public PostsResponse findAllByPosts(Pageable pageable) {
+    public PostsResponse findAllByPosts(final Pageable pageable) {
         List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc(pageable);
         List<PostResponse> responses = getPosts(posts);
         return new PostsResponse(responses);
     }
 
-    private List<PostResponse> getPosts(List<Post> posts) {
+    private List<PostResponse> getPosts(final List<Post> posts) {
         return posts.stream()
                 .map(post -> {
                     String imageUrl = postImageRepository.findOneImageUrlByPostId(post.getId());
