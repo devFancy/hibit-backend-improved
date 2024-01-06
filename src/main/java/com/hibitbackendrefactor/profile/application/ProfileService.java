@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class ProfileService {
@@ -81,15 +82,6 @@ public class ProfileService {
                 request.isMyImageVisibility());
     }
 
-    private void updateMemberInfo(final Member member, final Profile profile) {
-        member.updateDisplayName(profile.getNickname());
-
-        if (!member.getIsprofile()) {
-            member.updateIsprofile();
-        }
-        memberRepository.save(member);
-    }
-
     private void saveProfileImages(final Long profileId, final List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
 
@@ -108,12 +100,27 @@ public class ProfileService {
         return savedImageUrl;
     }
 
+    private void updateMemberInfo(final Member member, final Profile profile) {
+        member.updateDisplayName(profile.getNickname());
+        member.updateIsprofile();
+
+        // ProfileImageRepository를 사용하여 프로필 이미지를 조회
+        List<ProfileImage> profileImages =  profileImageRepository.findByProfileId(profile.getId());
+
+        // 프로필 이미지가 존재하면 첫 번째 이미지를 사용하여 회원 정보 업데이트
+        if (!profileImages.isEmpty()) {
+            ProfileImage firstImage = profileImages.get(0);
+            member.updateMainImage(firstImage.getImageUrl());
+            log.info("firstImage : {}", firstImage.getImageUrl());
+        }
+
+        memberRepository.save(member);
+    }
+
     @Transactional
     public void updateProfile(final Long memberId, final Long profileId, final ProfileUpdateRequest request) throws IOException {
         validateExistByNickname(request.getNickname());
         Member foundMember = memberRepository.getById(memberId);
-        foundMember.updateDisplayName(request.getNickname());
-        memberRepository.save(foundMember);
 
         Profile profile = profileRepository.findByMemberId(memberId)
                 .orElseThrow(NotFoundProfileException::new);
@@ -134,6 +141,9 @@ public class ProfileService {
         profile.updateMyImageVisibility(request.isMyImageVisibility());
         saveProfileImages(profileId, request.getImages());
         profileRepository.save(profile);
+
+        updateMemberInfo(foundMember, profile);
+        memberRepository.save(foundMember);
     }
 
     private void deleteProfileImageByProfileId(final Long profileId) throws MalformedURLException {
