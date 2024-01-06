@@ -24,7 +24,6 @@ import java.util.List;
 
 @Tag(name = "profiles", description = "프로필")
 @RestController
-@RequestMapping("/api/profiles")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -32,7 +31,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping
+    @PostMapping("/api/profiles")
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                               @Valid @RequestPart final ProfileCreateRequest request,
@@ -48,14 +47,14 @@ public class ProfileController {
         return ResponseEntity.ok(personalities);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/api/profiles/me")
     @Operation(summary = "/api/profiles/me", description = "본인 프로필을 조회한다.")
     public ResponseEntity<ProfileResponse> findMyProfile(@AuthenticationPrincipal final LoginMember loginMember) {
         ProfileResponse response = profileService.findMyProfile(loginMember.getId());
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/other/{id}")
+    @GetMapping("/api/profiles/other/{id}")
     @Operation(summary = "/api/profiles/other/2", description = "타인 프로필을 조회한다.")
     public ResponseEntity<ProfileOtherResponse> findOtherProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                                                  @PathVariable(name = "id") final Long otherMemberId) {
@@ -63,7 +62,7 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/me/{id}")
+    @PutMapping("/api/profiles/me/{id}")
     @Operation(summary = "/api/profiles/me/1", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                        @PathVariable(name = "id") final Long profileId,
