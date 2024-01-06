@@ -44,7 +44,7 @@ public class PostController {
 
     @GetMapping("api/posts")
     @Operation(summary = "/api/posts", description = "등록된 게시글 전체를 조회한다.")
-    public ResponseEntity<PostsResponse> findAllProducts(@PageableDefault(size = PAGE_SIZE) Pageable pageable) {
+    public ResponseEntity<PostsResponse> findAllPosts(@PageableDefault(size = PAGE_SIZE) Pageable pageable) {
         PostsResponse responses = postService.findAllByPosts(pageable);
         return ResponseEntity.ok().body(responses);
     }
