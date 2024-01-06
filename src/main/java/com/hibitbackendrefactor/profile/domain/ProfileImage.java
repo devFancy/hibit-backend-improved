@@ -18,7 +18,6 @@ public class ProfileImage extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile profile;
 
     @Column(name = "image_url")
