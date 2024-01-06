@@ -51,7 +51,7 @@ public class PostDetailResponse {
     public static PostDetailResponse of(final Post post, List<String> imageUrls) {
         return PostDetailResponse.builder()
                 .id(post.getId())
-                .id(post.getMember().getId())
+                .writerId(post.getMember().getId())
                 .writerName(post.getMember().getDisplayName())
                 .writerImage(findWriterImage(post.getMember()))
                 .title(post.getTitle())
