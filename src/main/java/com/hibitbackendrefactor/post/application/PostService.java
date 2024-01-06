@@ -111,6 +111,11 @@ public class PostService {
 
     public PostDetailResponse findPost(final Long postId) {
         Post post = postRepository.getById(postId);
-        return PostDetailResponse.of(post);
+        List<String> imageUrls = getImageUrls(post);
+        return PostDetailResponse.of(post, imageUrls);
+    }
+
+    private List<String> getImageUrls(Post post) {
+        return postImageRepository.findAllImageUrlsByPostId(post.getId());
     }
 }
