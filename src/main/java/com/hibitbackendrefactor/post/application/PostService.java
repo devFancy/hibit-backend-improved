@@ -115,7 +115,7 @@ public class PostService {
         return PostDetailResponse.of(post, imageUrls);
     }
 
-    private List<String> getImageUrls(Post post) {
+    private List<String> getImageUrls(final Post post) {
         return postImageRepository.findAllImageUrlsByPostId(post.getId());
     }
 }
