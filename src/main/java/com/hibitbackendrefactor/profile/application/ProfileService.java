@@ -15,7 +15,6 @@ import com.hibitbackendrefactor.profile.dto.response.ProfileResponse;
 import com.hibitbackendrefactor.profile.exception.InvalidProfileAlreadyException;
 import com.hibitbackendrefactor.profile.exception.NicknameAlreadyTakenException;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,7 +103,7 @@ public class ProfileService {
         member.updateIsprofile();
 
         // ProfileImageRepository를 사용하여 프로필 이미지를 조회
-        List<ProfileImage> profileImages =  profileImageRepository.findByProfileId(profile.getId());
+        List<ProfileImage> profileImages = profileImageRepository.findByProfileId(profile.getId());
 
         // 프로필 이미지가 존재하면 첫 번째 이미지를 사용하여 회원 정보 업데이트
         if (!profileImages.isEmpty()) {
@@ -126,17 +125,7 @@ public class ProfileService {
         deleteProfileImageByProfileId(profileId);
         profileImageRepository.deleteByProfileId(profileId);
 
-        profile.updateNickname(request.getNickname());
-        profile.updateAge(request.getAge());
-        profile.updateGender(request.getGender());
-        profile.updatePersonality(request.getPersonality());
-        profile.updateIntroduce(request.getIntroduce());
-        profile.updateJob(request.getJob());
-        profile.updateAddressCity(request.getAddressCity());
-        profile.updateAddressDistinct(request.getAddressDistrict());
-        profile.updateJobVisible(request.isJobVisibility());
-        profile.updateAddressVisible(request.isAddressVisibility());
-        profile.updateMyImageVisibility(request.isMyImageVisibility());
+        updateProfileInfo(profile, request);
         saveProfileImages(profileId, request.getImages());
         profileRepository.save(profile);
 
@@ -149,6 +138,20 @@ public class ProfileService {
         for (ProfileImage profileImage : profileImages) {
             s3UploadService.deleteFile(profileImage.getImageUrl());
         }
+    }
+
+    private void updateProfileInfo(final Profile profile, final ProfileUpdateRequest request) {
+        profile.updateNickname(request.getNickname());
+        profile.updateAge(request.getAge());
+        profile.updateGender(request.getGender());
+        profile.updatePersonality(request.getPersonality());
+        profile.updateIntroduce(request.getIntroduce());
+        profile.updateJob(request.getJob());
+        profile.updateAddressCity(request.getAddressCity());
+        profile.updateAddressDistinct(request.getAddressDistrict());
+        profile.updateJobVisible(request.isJobVisibility());
+        profile.updateAddressVisible(request.isAddressVisibility());
+        profile.updateMyImageVisibility(request.isMyImageVisibility());
     }
 
     public ProfileResponse findMyProfile(final Long memberId) {
