@@ -15,9 +15,9 @@ assignees: ''
 
 ## 세부 작업 내용
 
--[ ] To-do 1
--[ ] To-do 2
--[ ] To-do 3
+- [ ] To-do 1
+- [ ] To-do 2
+- [ ] To-do 3
 
 ## 참고 자료
 
