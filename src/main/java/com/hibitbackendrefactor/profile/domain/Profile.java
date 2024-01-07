@@ -3,6 +3,7 @@ package com.hibitbackendrefactor.profile.domain;
 
 import com.hibitbackendrefactor.common.BaseEntity;
 import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.profile.exception.InvalidIntroduceException;
 import com.hibitbackendrefactor.profile.exception.InvalidNicknameException;
 import com.hibitbackendrefactor.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public class Profile extends BaseEntity {
 
     private static final int MAX_NICK_NAME_LENGTH = 20;
     private static final int MAX_PERSONALITY_COUNT = 5;
+    private static final int MAX_INTRODUCE_LENGTH = 200;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +78,7 @@ public class Profile extends BaseEntity {
             , final boolean jobVisible, final boolean addressVisible, final boolean myImageVisibility) {
         validateNickName(nickname);
         validatePersonality(personality);
+        validateIntroduce(introduce);
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -98,7 +101,16 @@ public class Profile extends BaseEntity {
 
     private void validatePersonality(final List<PersonalityType> personality) {
         if (personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
-            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
+            throw new InvalidPersonalityException(String.format("성격은 최대 %d개만 선택할 수 있습니다.", MAX_PERSONALITY_COUNT));
+        }
+    }
+
+    private void validateIntroduce(final String introduce) {
+        if(introduce.isBlank()) {
+            throw new InvalidIntroduceException();
+        }
+        if(introduce.length() > MAX_INTRODUCE_LENGTH) {
+            throw new InvalidIntroduceException();
         }
     }
 
@@ -121,6 +133,7 @@ public class Profile extends BaseEntity {
     }
 
     public void updateIntroduce(final String introduce) {
+        validateIntroduce(introduce);
         this.introduce = introduce;
     }
 

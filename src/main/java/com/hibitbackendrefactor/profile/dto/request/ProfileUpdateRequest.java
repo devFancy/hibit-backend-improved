@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileUpdateRequest {
 
-    @NotBlank(message = "닉네임을 입력해 주세요.")
+    @NotBlank(message = "닉네임은 1자 이상 10자 이하로 입력해 주어야 합니다.")
     private String nickname;
 
     @NotNull(message = "나이를 입력해 주세요.")
@@ -29,7 +29,7 @@ public class ProfileUpdateRequest {
     @NotEmpty(message = "성격을 골라주세요.( 최대 5개)")
     private List<PersonalityType> personality;
 
-    @NotBlank(message = "메이트에게 자신을 소개해 주세요.")
+    @NotBlank(message = "자기소개는 200자 이어야 합니다.")
     private String introduce;
 
     private List<MultipartFile> images;
