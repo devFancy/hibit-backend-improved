@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class ProfileService {
@@ -111,7 +110,6 @@ public class ProfileService {
         if (!profileImages.isEmpty()) {
             ProfileImage firstImage = profileImages.get(0);
             member.updateMainImage(firstImage.getImageUrl());
-            log.info("firstImage : {}", firstImage.getImageUrl());
         }
 
         memberRepository.save(member);

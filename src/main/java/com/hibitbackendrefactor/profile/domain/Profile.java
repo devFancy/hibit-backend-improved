@@ -27,7 +27,6 @@ public class Profile extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @Column(name = "nickname", length = 20, unique = true)
