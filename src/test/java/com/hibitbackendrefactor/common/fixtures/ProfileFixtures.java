@@ -1,11 +1,15 @@
 package com.hibitbackendrefactor.common.fixtures;
 
+import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
+import com.hibitbackendrefactor.profile.domain.Profile;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 
 public class ProfileFixtures {
 
@@ -28,4 +32,21 @@ public class ProfileFixtures {
     public static final boolean 직업_공개여부 = true;
     public static final boolean 주소_공개여부 = false;
     public static final boolean 이미지_공개여부 = false;
+
+    public static Profile 팬시_프로필() {
+        return Profile.builder()
+                .member(팬시())
+                .nickname(팬시_닉네임)
+                .age(팬시_나이  )
+                .gender(팬시_성별)
+                .personality(팬시_성격들)
+                .introduce(팬시_자기소개)
+                .job(팬시_직업)
+                .addressCity(팬시_사는도시)
+                .addressDistrict(팬시_사는지역)
+                .jobVisible(직업_공개여부)
+                .addressVisible(주소_공개여부)
+                .myImageVisibility(이미지_공개여부)
+                .build();
+    }
 }
