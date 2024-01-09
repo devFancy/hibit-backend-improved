@@ -25,7 +25,7 @@ public class Profile extends BaseEntity {
     @Column(name = "profile_id", unique = true)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // 프로필이 저장될 때, 연관된 Member 엔티티도 함께 저장
     @JoinColumn(name = "member_id")
     private Member member;
 
