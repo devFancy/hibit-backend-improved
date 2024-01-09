@@ -8,8 +8,6 @@ import com.hibitbackendrefactor.profile.exception.InvalidNicknameException;
 import com.hibitbackendrefactor.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -94,7 +92,7 @@ public class Profile extends BaseEntity {
     }
 
     private void validateNickName(final String nickname) {
-        if (nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
+        if (nickname.isBlank() || nickname.length() > MAX_NICK_NAME_LENGTH) {
             throw new InvalidNicknameException(String.format("이름은 1자 이상 1자 %d 이하여야 합니다.", MAX_NICK_NAME_LENGTH));
         }
     }
@@ -106,10 +104,10 @@ public class Profile extends BaseEntity {
     }
 
     private void validateIntroduce(final String introduce) {
-        if(introduce.isBlank()) {
+        if (introduce.isBlank()) {
             throw new InvalidIntroduceException();
         }
-        if(introduce.length() > MAX_INTRODUCE_LENGTH) {
+        if (introduce.length() > MAX_INTRODUCE_LENGTH) {
             throw new InvalidIntroduceException();
         }
     }
