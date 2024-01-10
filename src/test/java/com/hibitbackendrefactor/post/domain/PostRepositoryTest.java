@@ -27,9 +27,9 @@ class PostRepositoryTest {
 
     @DisplayName("등록된 모든 게시글을 조회한다.")
     @Test
-    void findAllByPosts() {
+    void 등록된_모든_게시글을_조회한다() {
         // given
-        Post post1 = createPost(팬시(), 게시글제목, 게시글내용, 전시회제목, 전시관람인원, 전시관람희망날짜, 오픈채팅방Url, 함께하고싶은활동, 게시글이미지1, 모집상태);
+        Post post1 = createPost(팬시(), 게시글제목1, 게시글내용1, 전시회제목1, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1);
         Post post2 = createPost(브루스(), 게시글제목2, 게시글내용2, 전시회제목2, 전시관람인원2, 전시관람희망날짜2, 오픈채팅방Url2, 함께하고싶은활동2, 게시글이미지2, 모집상태2);
 
         postRepository.saveAll(List.of(post1, post2));
