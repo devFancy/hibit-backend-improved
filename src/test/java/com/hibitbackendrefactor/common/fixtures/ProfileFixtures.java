@@ -17,13 +17,7 @@ public class ProfileFixtures {
     public static final String 팬시_닉네임 = "팬시";
     public static final int 팬시_나이 = 28;
     public static final int 팬시_성별 = 0;
-    public static final List<PersonalityType> 팬시_성격들 = Arrays.asList(
-            PersonalityType.TYPE_1,
-            PersonalityType.TYPE_2,
-            PersonalityType.TYPE_3,
-            PersonalityType.TYPE_4,
-            PersonalityType.TYPE_5
-    );
+    public static final PersonalityType 팬시_성격 = PersonalityType.TYPE_1;
     public static final String 팬시_자기소개 = "안녕하세요. 저는 소프트웨어 개발자 팬시입니다.";
     public static final String 팬시_직업 = "소프트웨어 개발자";
     public static final AddressCity 팬시_사는도시 = AddressCity.SEOUL;
@@ -39,7 +33,7 @@ public class ProfileFixtures {
                 .nickname(팬시_닉네임)
                 .age(팬시_나이  )
                 .gender(팬시_성별)
-                .personality(팬시_성격들)
+                .personality(팬시_성격)
                 .introduce(팬시_자기소개)
                 .job(팬시_직업)
                 .addressCity(팬시_사는도시)
