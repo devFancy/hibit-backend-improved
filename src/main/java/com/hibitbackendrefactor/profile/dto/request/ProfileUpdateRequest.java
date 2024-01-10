@@ -27,7 +27,7 @@ public class ProfileUpdateRequest {
     private int gender;
 
     @NotEmpty(message = "성격을 골라주세요.( 최대 5개)")
-    private List<PersonalityType> personality;
+    private PersonalityType personality;
 
     @NotBlank(message = "자기소개는 200자 이어야 합니다.")
     private String introduce;
@@ -47,7 +47,7 @@ public class ProfileUpdateRequest {
     private boolean myImageVisibility;
 
     public ProfileUpdateRequest(final String nickname, final int age, final int gender
-            , final List<PersonalityType> personality, final String introduce, final List<MultipartFile> images
+            , final PersonalityType personality, final String introduce, final List<MultipartFile> images
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;

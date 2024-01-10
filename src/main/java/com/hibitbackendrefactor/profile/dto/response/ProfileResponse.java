@@ -17,7 +17,7 @@ public class ProfileResponse {
     private String nickname;
     private int age;
     private int gender;
-    private List<PersonalityType> personality;
+    private PersonalityType personality;
     private String introduce;
 
     private String job;
@@ -29,7 +29,7 @@ public class ProfileResponse {
     private boolean myImageVisibility;
 
     @Builder
-    public ProfileResponse(final String nickname, final int age, final int gender, final List<PersonalityType> personality, String introduce
+    public ProfileResponse(final String nickname, final int age, final int gender, final PersonalityType personality, String introduce
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
