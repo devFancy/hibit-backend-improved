@@ -46,8 +46,7 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TogetherActivity togetherActivity;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PostImage> postImages = new ArrayList<>();
+    private String imageName;
 
     @Column(name = "post_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -59,7 +58,7 @@ public class Post extends BaseEntity {
     @Builder
     public Post(final Member member, String title, final String content, final String exhibition, final int exhibitionAttendance
             , final List<PostPossibleTime> possibleTimes, final String openChatUrl, final TogetherActivity togetherActivity
-            , final List<PostImage> postImages, final PostStatus postStatus) {
+            , final String imageName, final PostStatus postStatus) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
@@ -68,7 +67,7 @@ public class Post extends BaseEntity {
         this.possibleTimes = possibleTimes;
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
-        this.postImages = postImages;
+        this.imageName = imageName;
         this.postStatus = postStatus;
     }
 
@@ -108,8 +107,8 @@ public class Post extends BaseEntity {
         return togetherActivity;
     }
 
-    public List<PostImage> getPostImages() {
-        return postImages;
+    public String getImageName() {
+        return imageName;
     }
 
     public PostStatus getPostStatus() {
