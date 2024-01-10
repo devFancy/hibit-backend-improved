@@ -42,6 +42,9 @@ public class Profile extends BaseEntity {
     @Column(name = "introduce", length = 200)
     private String introduce;
 
+    @Column(name = "image_name")
+    private String imageName;
+
     @Column(name = "job", length = 50)
     private String job;
 
@@ -67,7 +70,7 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile(final Member member, final String nickname, final int age
-            , final int gender, final PersonalityType personality, final String introduce
+            , final int gender, final PersonalityType personality, final String introduce, final String imageName
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisible, final boolean addressVisible, final boolean myImageVisibility) {
         validateNickName(nickname);
@@ -78,6 +81,7 @@ public class Profile extends BaseEntity {
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
+        this.imageName = imageName;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
@@ -121,6 +125,9 @@ public class Profile extends BaseEntity {
     public void updateIntroduce(final String introduce) {
         validateIntroduce(introduce);
         this.introduce = introduce;
+    }
+    public void updateImageName(final String imageName) {
+        this.imageName = imageName;
     }
 
     public void updateJob(final String job) {

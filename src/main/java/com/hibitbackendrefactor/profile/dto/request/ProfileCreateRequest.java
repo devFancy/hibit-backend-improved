@@ -35,7 +35,7 @@ public class ProfileCreateRequest {
     @NotBlank(message = "메이트에게 자신을 소개해 주세요.")
     private String introduce;
 
-    private List<MultipartFile> images;
+    private String imageName;
 
     private String job;
 
@@ -52,7 +52,7 @@ public class ProfileCreateRequest {
 
     @Builder
     public ProfileCreateRequest(final String nickname, final int age, final int gender
-            , final PersonalityType personality, final String introduce, final List<MultipartFile> images
+            , final PersonalityType personality, final String introduce, final String imageName
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
@@ -60,7 +60,7 @@ public class ProfileCreateRequest {
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
-        this.images = images;
+        this.imageName = imageName;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;

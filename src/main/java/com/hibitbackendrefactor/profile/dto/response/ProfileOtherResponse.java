@@ -23,14 +23,14 @@ public class ProfileOtherResponse {
     private String job;
     private AddressCity addressCity;
     private AddressDistrict addressDistrict;
-    private List<String> imageUrl;
+    private String imageName;
     private boolean jobVisibility;
     private boolean addressVisibility;
     private boolean myImageVisibility;
 
     @Builder
     public ProfileOtherResponse(final String nickname, final int age, final int gender, final PersonalityType personality, String introduce
-            , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final List<String> imageUrl
+            , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict, final String imageName
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
         this.age = age;
@@ -40,13 +40,13 @@ public class ProfileOtherResponse {
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
-        this.imageUrl = imageUrl;
+        this.imageName = imageName;
         this.jobVisibility = jobVisibility;
         this.addressVisibility = addressVisibility;
         this.myImageVisibility = myImageVisibility;
     }
 
-    public static ProfileOtherResponse of(final Profile profile, final List<String> imageUrls) {
+    public static ProfileOtherResponse of(final Profile profile) {
         return ProfileOtherResponse.builder()
                 .nickname(profile.getNickname())
                 .age(profile.getAge())
@@ -56,7 +56,7 @@ public class ProfileOtherResponse {
                 .job(profile.getJob())
                 .addressCity(profile.getAddressCity())
                 .addressDistrict(profile.getAddressDistrict())
-                .imageUrl(imageUrls)
+                .imageName(profile.getImageName())
                 .jobVisibility(profile.isJobVisible())
                 .addressVisibility(profile.isAddressVisible())
                 .myImageVisibility(profile.isMyImageVisibility())

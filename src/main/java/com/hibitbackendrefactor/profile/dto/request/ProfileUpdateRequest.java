@@ -27,13 +27,13 @@ public class ProfileUpdateRequest {
     @NotNull(message = "성별을 선택해 주세요.")
     private int gender;
 
-    @NotEmpty(message = "성격을 골라주세요.( 최대 5개)")
+    @NotNull(message = "성격을 골라주세요.( 최대 5개)")
     private PersonalityType personality;
 
     @NotBlank(message = "자기소개는 200자 이어야 합니다.")
     private String introduce;
 
-    private List<MultipartFile> images;
+    private String imageName;
 
     private String job;
 
@@ -49,7 +49,7 @@ public class ProfileUpdateRequest {
 
     @Builder
     public ProfileUpdateRequest(final String nickname, final int age, final int gender
-            , final PersonalityType personality, final String introduce, final List<MultipartFile> images
+            , final PersonalityType personality, final String introduce, final String imageName
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
@@ -57,7 +57,7 @@ public class ProfileUpdateRequest {
         this.gender = gender;
         this.personality = personality;
         this.introduce = introduce;
-        this.images = images;
+        this.imageName = imageName;
         this.job = job;
         this.addressCity = addressCity;
         this.addressDistrict = addressDistrict;
