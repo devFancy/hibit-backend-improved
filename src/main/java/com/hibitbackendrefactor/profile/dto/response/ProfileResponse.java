@@ -1,13 +1,14 @@
 package com.hibitbackendrefactor.profile.dto.response;
 
 
-import com.hibitbackendrefactor.profile.domain.*;
+import com.hibitbackendrefactor.profile.domain.AddressCity;
+import com.hibitbackendrefactor.profile.domain.AddressDistrict;
+import com.hibitbackendrefactor.profile.domain.PersonalityType;
+import com.hibitbackendrefactor.profile.domain.Profile;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

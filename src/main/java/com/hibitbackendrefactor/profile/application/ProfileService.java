@@ -83,10 +83,6 @@ public class ProfileService {
         profileRepository.save(profile);
         memberRepository.save(foundMember);
     }
-    private Profile findProfileObject(final Long profileId) {
-        return profileRepository.findById(profileId)
-                .orElseThrow(NotFoundProfileException::new);
-    }
 
     private void updateProfileInfo(final Profile profile, final ProfileUpdateRequest request) {
         profile.updateNickname(request.getNickname());
