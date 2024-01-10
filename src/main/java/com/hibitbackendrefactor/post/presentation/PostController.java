@@ -14,12 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 
 @Tag(name = "posts", description = "매칭 게시글")
 @RestController
@@ -35,9 +32,8 @@ public class PostController {
     @PostMapping("/api/posts/new")
     @Operation(summary = "/api/posts/new", description = "게시글을 등록한다.")
     public ResponseEntity<Post> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember
-            , @Valid @RequestPart PostCreateRequest request
-            , @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
-        Long postId = postService.save(loginMember.getId(), request, multipartFiles);
+            , @Valid @RequestBody PostCreateRequest request) {
+        Long postId = postService.save(loginMember.getId(), request);
         return ResponseEntity.created(URI.create("/posts/" + postId)).build();
     }
 
