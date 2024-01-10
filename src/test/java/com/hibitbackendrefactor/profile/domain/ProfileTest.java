@@ -24,7 +24,7 @@ class ProfileTest {
 
         // when & then
         assertDoesNotThrow(() -> new Profile(팬시, 팬시_닉네임, 팬시_나이
-                , 팬시_성별, 팬시_성격, 팬시_자기소개
+                , 팬시_성별, 팬시_성격, 팬시_자기소개, 팬시_이미지
                 , 팬시_직업, 팬시_사는도시, 팬시_사는지역
                 , 직업_공개여부, 주소_공개여부, 이미지_공개여부));
     }
@@ -41,7 +41,7 @@ class ProfileTest {
         // isBlank - 문자열이 null or 비어있거나 or 공백 문자가 포함되는 경우 (Java 11)
         assertThatThrownBy(
                 () -> new Profile(팬시, 잘못된_닉네임, 팬시_나이
-                        , 팬시_성별, 팬시_성격, 팬시_자기소개
+                        , 팬시_성별, 팬시_성격, 팬시_자기소개, 팬시_이미지
                         , 팬시_직업, 팬시_사는도시, 팬시_사는지역
                         , 직업_공개여부, 주소_공개여부, 이미지_공개여부)
         ).isInstanceOf(InvalidNicknameException.class);
@@ -57,7 +57,7 @@ class ProfileTest {
         // when & then
         assertThatThrownBy(
                 () -> new Profile(팬시, 팬시_닉네임, 팬시_나이
-                        , 팬시_성별, 팬시_성격, 잘못된_자기소개_길이
+                        , 팬시_성별, 팬시_성격, 잘못된_자기소개_길이, 팬시_이미지
                         , 팬시_직업, 팬시_사는도시, 팬시_사는지역
                         , 직업_공개여부, 주소_공개여부, 이미지_공개여부)
         ).isInstanceOf(InvalidIntroduceException.class);
@@ -73,7 +73,7 @@ class ProfileTest {
         // when & then
         assertThatThrownBy(
                 () -> new Profile(팬시, 팬시_닉네임, 팬시_나이
-                        , 팬시_성별, 팬시_성격, 잘못된_자기소개_길이
+                        , 팬시_성별, 팬시_성격, 잘못된_자기소개_길이, 팬시_이미지
                         , 팬시_직업, 팬시_사는도시, 팬시_사는지역
                         , 직업_공개여부, 주소_공개여부, 이미지_공개여부)
         ).isInstanceOf(InvalidIntroduceException.class);

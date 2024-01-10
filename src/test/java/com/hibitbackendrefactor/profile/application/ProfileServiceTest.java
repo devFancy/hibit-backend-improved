@@ -1,26 +1,20 @@
 package com.hibitbackendrefactor.profile.application;
 
-import com.hibitbackendrefactor.global.s3.S3UploadService;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.profile.domain.*;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
 import com.hibitbackendrefactor.profile.dto.response.ProfileResponse;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.*;
@@ -41,30 +35,18 @@ class ProfileServiceTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-    @MockBean
-    private S3UploadService s3UploadService;
-
-    @Autowired
-    private ProfileImageRepository profileImageRepository;
-
     @AfterEach
     void tearDown() {
-        profileImageRepository.deleteAllInBatch();
         profileRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
 
     @DisplayName("프로필을 등록한다.")
     @Test
-    void 프로필을_등록한다() throws IOException {
+    void 프로필을_등록한다()  {
         // given
         Member 팬시 = 팬시();
         memberRepository.save(팬시);
-
-        List<MultipartFile> multipartFiles = Arrays.asList(
-                createMockMultipartFile("image1.jpg", "image/jpeg"),
-                createMockMultipartFile("image2.png", "image/png")
-        );
 
         ProfileCreateRequest request = ProfileCreateRequest.builder()
                 .nickname("devFancy")
@@ -72,7 +54,7 @@ class ProfileServiceTest {
                 .gender(0)
                 .personality(PersonalityType.TYPE_1)
                 .introduce("안녕하세요 개발자 팬시입니다.")
-                .images(null)
+                .imageName("image.png")
                 .job("개발자")
                 .addressCity(AddressCity.SEOUL)
                 .addressDistrict(AddressDistrict.SEOUL_GANGNAM)
@@ -82,25 +64,13 @@ class ProfileServiceTest {
                 .build();
 
         // when
-        Long newProfileId = profileService.saveMyProfile(팬시.getId(), request, multipartFiles);
+        Long newProfileId = profileService.saveMyProfile(팬시.getId(), request);
         Profile savedProfile = profileRepository.findByMemberId(팬시.getId()).orElse(null);
-        List<ProfileImage> savedImages = profileImageRepository.findByProfileId(savedProfile.getId());
 
         // then
         assertThat(newProfileId).isNotNull();
         assertNotNull(savedProfile);
         assertEquals("devFancy", savedProfile.getNickname());
-        assertEquals(2, savedImages.size());
-    }
-
-    // MockMultipartFile 생성 메서드
-    private MockMultipartFile createMockMultipartFile(String fileName, String contentType) throws IOException {
-        return new MockMultipartFile(
-                "images",
-                fileName,
-                contentType,
-                "test image content".getBytes()
-        );
     }
 
     @DisplayName("본인의 프로필을 조회한다.")
