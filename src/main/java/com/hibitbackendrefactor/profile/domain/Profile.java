@@ -3,31 +3,27 @@ package com.hibitbackendrefactor.profile.domain;
 
 import com.hibitbackendrefactor.common.BaseEntity;
 import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.profile.exception.InvalidIntroduceException;
 import com.hibitbackendrefactor.profile.exception.InvalidNicknameException;
-import com.hibitbackendrefactor.profile.exception.InvalidPersonalityException;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
-
 @Getter
 @Entity
 public class Profile extends BaseEntity {
 
     private static final int MAX_NICK_NAME_LENGTH = 20;
-    private static final int MAX_PERSONALITY_COUNT = 5;
+    private static final int PERSONALITY_COUNT = 1;
+    private static final int MAX_INTRODUCE_LENGTH = 200;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id", unique = true)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // 프로필이 저장될 때, 연관된 Member 엔티티도 함께 저장
     @JoinColumn(name = "member_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @Column(name = "nickname", length = 20, unique = true)
@@ -41,8 +37,7 @@ public class Profile extends BaseEntity {
 
     @Column(name = "personality")
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = PersonalityType.class)
-    private List<PersonalityType> personality;
+    private PersonalityType personality;
 
     @Column(name = "introduce", length = 200)
     private String introduce;
@@ -72,11 +67,11 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile(final Member member, final String nickname, final int age
-            , final int gender, final List<PersonalityType> personality, final String introduce
+            , final int gender, final PersonalityType personality, final String introduce
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisible, final boolean addressVisible, final boolean myImageVisibility) {
         validateNickName(nickname);
-        validatePersonality(personality);
+        validateIntroduce(introduce);
         this.member = member;
         this.nickname = nickname;
         this.age = age;
@@ -92,14 +87,17 @@ public class Profile extends BaseEntity {
     }
 
     private void validateNickName(final String nickname) {
-        if (nickname.isEmpty() || nickname.length() > MAX_NICK_NAME_LENGTH) {
+        if (nickname.isBlank() || nickname.length() > MAX_NICK_NAME_LENGTH) {
             throw new InvalidNicknameException(String.format("이름은 1자 이상 1자 %d 이하여야 합니다.", MAX_NICK_NAME_LENGTH));
         }
     }
 
-    private void validatePersonality(final List<PersonalityType> personality) {
-        if (personality.isEmpty() || personality.size() > MAX_PERSONALITY_COUNT) {
-            throw new InvalidPersonalityException(String.format("성격은 최대 %d개 입니다.", MAX_PERSONALITY_COUNT));
+    private void validateIntroduce(final String introduce) {
+        if (introduce.isBlank()) {
+            throw new InvalidIntroduceException();
+        }
+        if (introduce.length() > MAX_INTRODUCE_LENGTH) {
+            throw new InvalidIntroduceException();
         }
     }
 
@@ -116,12 +114,12 @@ public class Profile extends BaseEntity {
         this.gender = gender;
     }
 
-    public void updatePersonality(final List<PersonalityType> personality) {
-        validatePersonality(personality);
+    public void updatePersonality(final PersonalityType personality) {
         this.personality = personality;
     }
 
     public void updateIntroduce(final String introduce) {
+        validateIntroduce(introduce);
         this.introduce = introduce;
     }
 

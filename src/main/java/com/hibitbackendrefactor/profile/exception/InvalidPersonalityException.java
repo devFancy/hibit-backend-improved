@@ -6,7 +6,7 @@ public class InvalidPersonalityException extends RuntimeException {
     }
 
     public InvalidPersonalityException() {
-        this("최대 5개의 성격만 선택할 수 있습니다.");
+        this("성격은 1개만 선택할 수 있습니다.");
     }
 
 }

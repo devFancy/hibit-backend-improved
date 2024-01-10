@@ -4,6 +4,7 @@ import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileUpdateRequest {
 
-    @NotBlank(message = "닉네임을 입력해 주세요.")
+    @NotBlank(message = "닉네임은 1자 이상 10자 이하로 입력해 주어야 합니다.")
     private String nickname;
 
     @NotNull(message = "나이를 입력해 주세요.")
@@ -27,9 +28,9 @@ public class ProfileUpdateRequest {
     private int gender;
 
     @NotEmpty(message = "성격을 골라주세요.( 최대 5개)")
-    private List<PersonalityType> personality;
+    private PersonalityType personality;
 
-    @NotBlank(message = "메이트에게 자신을 소개해 주세요.")
+    @NotBlank(message = "자기소개는 200자 이어야 합니다.")
     private String introduce;
 
     private List<MultipartFile> images;
@@ -46,8 +47,9 @@ public class ProfileUpdateRequest {
 
     private boolean myImageVisibility;
 
+    @Builder
     public ProfileUpdateRequest(final String nickname, final int age, final int gender
-            , final List<PersonalityType> personality, final String introduce, final List<MultipartFile> images
+            , final PersonalityType personality, final String introduce, final List<MultipartFile> images
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;

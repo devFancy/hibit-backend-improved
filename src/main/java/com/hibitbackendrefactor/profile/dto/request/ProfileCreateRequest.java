@@ -29,8 +29,8 @@ public class ProfileCreateRequest {
     @NotNull(message = "성별을 선택해 주세요.")
     private int gender;
 
-    @NotEmpty(message = "성격을 골라주세요.( 최대 5개)")
-    private List<PersonalityType> personality;
+    @NotNull(message = "성격을 골라주세요.(1개)")
+    private PersonalityType personality;
 
     @NotBlank(message = "메이트에게 자신을 소개해 주세요.")
     private String introduce;
@@ -52,7 +52,7 @@ public class ProfileCreateRequest {
 
     @Builder
     public ProfileCreateRequest(final String nickname, final int age, final int gender
-            , final List<PersonalityType> personality, final String introduce, final List<MultipartFile> images
+            , final PersonalityType personality, final String introduce, final List<MultipartFile> images
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
             , final boolean jobVisibility, final boolean addressVisibility, final boolean myImageVisibility) {
         this.nickname = nickname;
