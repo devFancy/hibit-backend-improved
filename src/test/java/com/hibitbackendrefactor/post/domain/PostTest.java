@@ -3,9 +3,9 @@ package com.hibitbackendrefactor.post.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
+import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 class PostTest {
 
     @DisplayName("게시글을 등록한다.")
