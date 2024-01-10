@@ -70,26 +70,11 @@ public class PostService {
 
     public PostsResponse findAllByPosts(final Pageable pageable) {
         List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc(pageable);
-        List<PostResponse> responses = getPosts(posts);
-        return new PostsResponse(responses);
-    }
-
-    private List<PostResponse> getPosts(final List<Post> posts) {
-        return posts.stream()
-                .map(post -> {
-                    String imageUrl = postImageRepository.findOneImageUrlByPostId(post.getId());
-                    return PostResponse.of(post, imageUrl);
-                })
-                .collect(Collectors.toList());
+        return PostsResponse.of(posts);
     }
 
     public PostDetailResponse findPost(final Long postId) {
         Post post = postRepository.getById(postId);
-        List<String> imageUrls = getImageUrls(post);
-        return PostDetailResponse.of(post, imageUrls);
-    }
-
-    private List<String> getImageUrls(final Post post) {
-        return postImageRepository.findAllImageUrlsByPostId(post.getId());
+        return PostDetailResponse.of(post);
     }
 }
