@@ -34,9 +34,8 @@ public class ProfileController {
     @PostMapping("/api/profiles")
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                              @Valid @RequestPart final ProfileCreateRequest request,
-                                              @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
-        Long profileId = profileService.saveMyProfile(loginMember.getId(), request, multipartFiles);
+                                              @Valid @RequestBody final ProfileCreateRequest request) {
+        Long profileId = profileService.saveMyProfile(loginMember.getId(), request);
         return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
     }
 
@@ -62,17 +61,11 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/profiles/me/{id}")
-    @Operation(summary = "/api/profiles/me/1", description = "본인 프로필을 수정한다.")
+    @PutMapping("/api/profiles/me")
+    @Operation(summary = "/api/profiles/me", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
-                                       @PathVariable(name = "id") final Long profileId,
-                                       @Valid @RequestPart final ProfileUpdateRequest request,
-                                       @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(request.getNickname(), request.getAge(), request.getGender()
-                , request.getPersonality(), request.getIntroduce(), multipartFiles
-                , request.getJob(), request.getAddressCity(), request.getAddressDistrict()
-                , request.isJobVisibility(), request.isAddressVisibility(), request.isMyImageVisibility());
-        profileService.updateProfile(loginMember.getId(), profileId, profileUpdateRequest);
+                                       @Valid @RequestBody final ProfileUpdateRequest request) {
+        profileService.updateProfile(loginMember.getId(), request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
