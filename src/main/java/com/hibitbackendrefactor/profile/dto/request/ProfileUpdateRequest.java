@@ -4,6 +4,7 @@ import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ public class ProfileUpdateRequest {
 
     private boolean myImageVisibility;
 
+    @Builder
     public ProfileUpdateRequest(final String nickname, final int age, final int gender
             , final PersonalityType personality, final String introduce, final List<MultipartFile> images
             , final String job, final AddressCity addressCity, final AddressDistrict addressDistrict
