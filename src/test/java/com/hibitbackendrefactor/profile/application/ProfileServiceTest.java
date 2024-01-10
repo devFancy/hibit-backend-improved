@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
-import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.*;
+import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_프로필;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;

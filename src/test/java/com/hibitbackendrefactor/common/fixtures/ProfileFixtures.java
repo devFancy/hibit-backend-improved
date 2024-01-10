@@ -1,13 +1,9 @@
 package com.hibitbackendrefactor.common.fixtures;
 
-import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import com.hibitbackendrefactor.profile.domain.Profile;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 

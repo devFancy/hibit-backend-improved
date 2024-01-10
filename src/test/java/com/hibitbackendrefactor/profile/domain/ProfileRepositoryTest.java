@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_프로필;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
