@@ -30,7 +30,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @PostMapping("/api/profiles")
+    @PostMapping("/api/profiles/new")
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                               @Valid @RequestBody final ProfileCreateRequest request) {
