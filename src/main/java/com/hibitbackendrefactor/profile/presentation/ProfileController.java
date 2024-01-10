@@ -7,11 +7,11 @@ import com.hibitbackendrefactor.profile.application.ProfileService;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
 import com.hibitbackendrefactor.profile.dto.request.ProfileUpdateRequest;
-import com.hibitbackendrefactor.profile.dto.response.*;
+import com.hibitbackendrefactor.profile.dto.response.ProfileOtherResponse;
+import com.hibitbackendrefactor.profile.dto.response.ProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,6 +73,6 @@ public class ProfileController {
                 , request.getJob(), request.getAddressCity(), request.getAddressDistrict()
                 , request.isJobVisibility(), request.isAddressVisibility(), request.isMyImageVisibility());
         profileService.updateProfile(loginMember.getId(), profileId, profileUpdateRequest);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
