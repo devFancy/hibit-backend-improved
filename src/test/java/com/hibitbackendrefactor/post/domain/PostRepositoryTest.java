@@ -12,10 +12,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.*;
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.브루스;
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
