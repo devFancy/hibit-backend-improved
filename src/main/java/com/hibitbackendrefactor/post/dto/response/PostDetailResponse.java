@@ -27,13 +27,13 @@ public class PostDetailResponse {
     private List<PostPossibleTime> possibleTimes;
     private String openChatUrl;
     private PostStatus postStatus;
-    private List<String> postImages;
+    private String imageName;
 
     @Builder
     public PostDetailResponse(final Long id, final Long writerId, final String writerName, String writerImage
             , final String title, final String content, final String exhibition
             , final List<String> exhibitionAttendanceAndTogetherActivity, final List<PostPossibleTime> possibleTimes
-            , final String openChatUrl, final PostStatus postStatus, final List<String> postImages) {
+            , final String openChatUrl, final PostStatus postStatus, final String imageName) {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
@@ -45,10 +45,10 @@ public class PostDetailResponse {
         this.possibleTimes = possibleTimes;
         this.openChatUrl = openChatUrl;
         this.postStatus = postStatus;
-        this.postImages = postImages;
+        this.imageName = imageName;
     }
 
-    public static PostDetailResponse of(final Post post, List<String> imageUrls) {
+    public static PostDetailResponse of(final Post post) {
         return PostDetailResponse.builder()
                 .id(post.getId())
                 .writerId(post.getMember().getId())
@@ -61,7 +61,7 @@ public class PostDetailResponse {
                 .possibleTimes(post.getPossibleTimes())
                 .openChatUrl(post.getOpenChatUrl())
                 .postStatus(post.getPostStatus())
-                .postImages(imageUrls)
+                .imageName(post.getImageName())
                 .build();
     }
 

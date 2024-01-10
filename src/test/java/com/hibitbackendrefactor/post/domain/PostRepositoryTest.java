@@ -29,8 +29,8 @@ class PostRepositoryTest {
     @Test
     void findAllByPosts() {
         // given
-        Post post1 = createPost(팬시(), 게시글제목, 게시글내용, 전시회제목, 전시관람인원, 전시관람희망날짜, 오픈채팅방Url, 함께하고싶은활동, 게시글이미지들, 모집상태);
-        Post post2 = createPost(브루스(), 게시글제목2, 게시글내용2, 전시회제목2, 전시관람인원2, 전시관람희망날짜2, 오픈채팅방Url2, 함께하고싶은활동2, 게시글이미지들2, 모집상태2);
+        Post post1 = createPost(팬시(), 게시글제목, 게시글내용, 전시회제목, 전시관람인원, 전시관람희망날짜, 오픈채팅방Url, 함께하고싶은활동, 게시글이미지1, 모집상태);
+        Post post2 = createPost(브루스(), 게시글제목2, 게시글내용2, 전시회제목2, 전시관람인원2, 전시관람희망날짜2, 오픈채팅방Url2, 함께하고싶은활동2, 게시글이미지2, 모집상태2);
 
         postRepository.saveAll(List.of(post1, post2));
 
@@ -50,7 +50,7 @@ class PostRepositoryTest {
 
      private Post createPost(Member member, String title, String content,
                              String exhibition, int exhibitionAttendance, List<PostPossibleTime> postPossibleTimes,
-                             String openChatUrl, TogetherActivity togetherActivity, List<PostImage> postImages, PostStatus postStatus) {
+                             String openChatUrl, TogetherActivity togetherActivity, String imageName, PostStatus postStatus) {
 
         Post post1 = Post.builder()
                 .member(member)
@@ -61,7 +61,7 @@ class PostRepositoryTest {
                 .possibleTimes(postPossibleTimes)
                 .openChatUrl(openChatUrl)
                 .togetherActivity(togetherActivity)
-                .postImages(postImages)
+                .imageName(imageName)
                 .postStatus(postStatus)
                 .build();
         return post1;

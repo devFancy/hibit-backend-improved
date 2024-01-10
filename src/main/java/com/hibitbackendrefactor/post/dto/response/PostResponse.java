@@ -18,31 +18,31 @@ public class PostResponse {
     private String exhibition;
     private List<String> exhibitionAttendanceAndTogetherActivity;
     private PostStatus postStatus;
-    private String postImage;
+    private String imageName;
     private LocalDate createDateTime;
 
 
     @Builder
     public PostResponse(Long id, String title, String exhibition
             , List<String> exhibitionAttendanceAndTogetherActivity, PostStatus postStatus
-            , String postImage, LocalDate createDateTime) {
+            , String imageName, LocalDate createDateTime) {
         this.id = id;
         this.title = title;
         this.exhibition = exhibition;
         this.exhibitionAttendanceAndTogetherActivity = exhibitionAttendanceAndTogetherActivity;
         this.postStatus = postStatus;
-        this.postImage = postImage;
+        this.imageName = imageName;
         this.createDateTime = createDateTime;
     }
 
-    public static PostResponse of(final Post post, final String imageUrl) {
+    public static PostResponse of(final Post post) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .exhibition(post.getExhibition())
                 .exhibitionAttendanceAndTogetherActivity(AttendanceAndTogetherActivity(post.getExhibitionAttendance(), post.getTogetherActivity()))
                 .postStatus(post.getPostStatus())
-                .postImage(imageUrl)
+                .imageName(post.getImageName())
                 .createDateTime(post.getCreateDateTime().toLocalDate())
                 .build();
     }

@@ -25,10 +25,7 @@ public class PostFixtures {
     public static final String 오픈채팅방Url = "http://projecthashtag.net/";
     public static final TogetherActivity 함께하고싶은활동 = TogetherActivity.EAT;
 
-    public static final List<PostImage> 게시글이미지들 = Arrays.asList(
-            new PostImage(imageUrl1),
-            new PostImage(imageUrl2)
-    );
+    public static final String 게시글이미지1 = "postImage1.png";
     public static final PostStatus 모집상태 = PostStatus.HOLDING;
 
 
@@ -49,10 +46,8 @@ public class PostFixtures {
     public static final String 오픈채팅방Url2 = "http://ostin.net/";
     public static final TogetherActivity 함께하고싶은활동2 = TogetherActivity.EAT;
 
-    public static final List<PostImage> 게시글이미지들2 = Arrays.asList(
-            new PostImage(imageUrl11),
-            new PostImage(imageUrl22)
-    );
+    public static final String 게시글이미지2 = "postImage2.png";
+
     public static final PostStatus 모집상태2 = PostStatus.HOLDING;
 
 
