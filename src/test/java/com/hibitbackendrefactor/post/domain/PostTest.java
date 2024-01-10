@@ -21,7 +21,7 @@ class PostTest {
                 .possibleTimes(전시관람희망날짜)
                 .openChatUrl(오픈채팅방Url)
                 .togetherActivity(함께하고싶은활동)
-                .postImages(게시글이미지들)
+                .imageName(게시글이미지1)
                 .postStatus(모집상태)
                 .build());
      }
