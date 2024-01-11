@@ -38,7 +38,7 @@ public class PostController {
     @Operation(summary = "/api/posts", description = "등록된 게시글을 모두 조회한다.")
     public ResponseEntity<PostsResponse> findPosts() {
         PostsResponse responses = postService.findPosts();
-        return ResponseEntity.ok().body(responses);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("api/posts/{id}")
