@@ -6,8 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -35,8 +33,7 @@ class PostRepositoryTest {
         postRepository.saveAll(List.of(post1, post2));
 
         // when
-        Pageable pageable = PageRequest.of(0, 3);
-        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc(pageable);
+        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc();
 
         // then
         Assertions.assertThat(posts).hasSize(2)

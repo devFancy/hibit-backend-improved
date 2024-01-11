@@ -10,8 +10,6 @@ import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +19,6 @@ import java.net.URI;
 @Tag(name = "posts", description = "매칭 게시글")
 @RestController
 public class PostController {
-    private static final int PAGE_SIZE = 6;
 
     private final PostService postService;
 
@@ -38,9 +35,9 @@ public class PostController {
     }
 
     @GetMapping("api/posts")
-    @Operation(summary = "/api/posts", description = "등록된 게시글 전체를 조회한다.")
-    public ResponseEntity<PostsResponse> findAllPosts(@PageableDefault(size = PAGE_SIZE) Pageable pageable) {
-        PostsResponse responses = postService.findAllByPosts(pageable);
+    @Operation(summary = "/api/posts", description = "등록된 게시글을 모두 조회한다.")
+    public ResponseEntity<PostsResponse> findPosts() {
+        PostsResponse responses = postService.findPosts();
         return ResponseEntity.ok().body(responses);
     }
 

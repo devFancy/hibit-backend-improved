@@ -1,7 +1,6 @@
 package com.hibitbackendrefactor.post.domain;
 
 import com.hibitbackendrefactor.post.exception.NotFoundPostException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT * " +
             "FROM post p " +
             "ORDER BY p.created_date_time DESC", nativeQuery = true)
-    List<Post> findAllByOrderByCreatedDateTimeDesc(final Pageable pageable);
+    List<Post> findAllByOrderByCreatedDateTimeDesc();
 
     @Query("SELECT p "
             + "FROM Post p "
