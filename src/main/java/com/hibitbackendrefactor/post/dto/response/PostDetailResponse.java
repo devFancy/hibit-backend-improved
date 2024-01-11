@@ -1,7 +1,9 @@
 package com.hibitbackendrefactor.post.dto.response;
 
 import com.hibitbackendrefactor.member.domain.Member;
-import com.hibitbackendrefactor.post.domain.*;
+import com.hibitbackendrefactor.post.domain.Post;
+import com.hibitbackendrefactor.post.domain.PostPossibleTime;
+import com.hibitbackendrefactor.post.domain.PostStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

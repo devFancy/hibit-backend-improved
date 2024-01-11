@@ -19,12 +19,12 @@ public class Title {
     protected Title() {
     }
 
-    public Title(String value) {
+    public Title(final String value) {
         validate(value);
         this.value = value;
     }
 
-    private void validate(String value) {
+    private void validate(final String value) {
         if (value == null || value.isBlank()) {
             throw new InvalidTitleException();
         }

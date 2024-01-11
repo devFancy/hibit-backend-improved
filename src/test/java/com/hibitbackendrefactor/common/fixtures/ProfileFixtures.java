@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.common.fixtures;
 
+import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
@@ -27,6 +28,23 @@ public class ProfileFixtures {
     public static Profile 팬시_프로필() {
         return Profile.builder()
                 .member(팬시())
+                .nickname(팬시_닉네임)
+                .age(팬시_나이  )
+                .gender(팬시_성별)
+                .personality(팬시_성격)
+                .introduce(팬시_자기소개)
+                .imageName(팬시_이미지)
+                .job(팬시_직업)
+                .addressCity(팬시_사는도시)
+                .addressDistrict(팬시_사는지역)
+                .jobVisible(직업_공개여부)
+                .addressVisible(주소_공개여부)
+                .myImageVisibility(이미지_공개여부)
+                .build();
+    }
+    public static Profile 팬시_프로필(final Member 팬시) {
+        return Profile.builder()
+                .member(팬시)
                 .nickname(팬시_닉네임)
                 .age(팬시_나이  )
                 .gender(팬시_성별)

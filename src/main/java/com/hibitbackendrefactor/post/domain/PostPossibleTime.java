@@ -2,7 +2,9 @@ package com.hibitbackendrefactor.post.domain;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDate;
 
 

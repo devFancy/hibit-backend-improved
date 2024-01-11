@@ -61,7 +61,7 @@ class ProfileServiceTest {
                 .build();
 
         // when
-        Long newProfileId = profileService.saveMyProfile(팬시.getId(), request);
+        Long newProfileId = profileService.save(팬시.getId(), request);
         Profile savedProfile = profileRepository.findByMemberId(팬시.getId()).orElse(null);
 
         // then

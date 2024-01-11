@@ -1,28 +1,74 @@
 package com.hibitbackendrefactor.post.domain;
 
+import com.hibitbackendrefactor.post.exception.InvalidContentException;
+import com.hibitbackendrefactor.post.exception.InvalidExhibitionException;
+import com.hibitbackendrefactor.post.exception.InvalidTitleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class PostTest {
 
     @DisplayName("게시글을 등록한다.")
     @Test
-    void createPost() {
+    void 게시글을_등록한다() {
         // given & when & then
-        assertDoesNotThrow(() -> Post.builder()
-                .member(팬시())
-                .title(게시글제목)
-                .content(게시글내용)
-                .exhibition(전시회제목)
-                .exhibitionAttendance(전시관람인원)
-                .possibleTimes(전시관람희망날짜)
-                .openChatUrl(오픈채팅방Url)
-                .togetherActivity(함께하고싶은활동)
-                .imageName(게시글이미지1)
-                .postStatus(모집상태)
-                .build());
-     }
+        assertDoesNotThrow(() -> 프로젝트_해시테크());
+    }
+
+    @DisplayName("게시글 제목이 공백인 경우 예외를 던진다.")
+    @Test
+    void 게시글_제목이_공백인_경우_예외를_던진다() {
+        // given
+        String title = "";
+
+        // when & then
+        assertThatThrownBy(() -> new Post(팬시(), title, 게시글내용1, 전시회제목1, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1))
+                .isInstanceOf(InvalidTitleException.class);
+
+    }
+
+    @DisplayName("게시글 제목이 30을 초과한 경우 예외를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일", "예술전시회기반매칭서비스 예술전시회기반매칭서비스 예술전시회기반매칭서비스"})
+    void 게시글_제목이_30을_초과한_경우_예외를_던진다(final String title) {
+        // given & when & then
+        assertThatThrownBy(() -> new Post(팬시(), title, 게시글내용1, 전시회제목1, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1))
+                .isInstanceOf(InvalidTitleException.class);
+    }
+
+    @DisplayName("게시글 내용이 공백인 경우 경우 예외를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", " "})
+    void 게시글_내용이_공백인_경우_예외를_던진다(final String content) {
+        // given & when & then
+        assertThatThrownBy(() -> new Post(팬시(), 게시글제목1, content, 전시회제목1, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1))
+                .isInstanceOf(InvalidContentException.class);
+    }
+
+    @DisplayName("전시회 제목이 공백인 경우 예외를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", " "})
+    void 전시회_제목이_공백인_경우_예외를_던진다(final String exhibition) {
+        // when & then
+        assertThatThrownBy(() -> new Post(팬시(), 게시글제목1, 게시글내용1, exhibition, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1))
+                .isInstanceOf(InvalidExhibitionException.class);
+
+    }
+
+    @DisplayName("전시회 제목이 50을 초과한 경우 예외를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"일이삼사오육칠팔구십 일이삼사오육칠팔구십 일이삼사오육칠팔구십 일이삼사오육칠팔구십 일이삼사오육칠팔구십 일", "123456789012345678901234567890123456789012345678901"})
+    void 전시회_제목이_50을_초과한_경우_예외를_던진다(final String exhibition) {
+        // when & then
+        assertThatThrownBy(() -> new Post(팬시(), 게시글제목1, 게시글내용1, exhibition, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1, 함께하고싶은활동1, 게시글이미지1, 모집상태1))
+                .isInstanceOf(InvalidExhibitionException.class);
+
+    }
 }

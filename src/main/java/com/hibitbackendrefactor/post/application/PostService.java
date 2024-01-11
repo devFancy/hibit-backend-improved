@@ -11,7 +11,6 @@ import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,6 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class PostService {
-
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
@@ -68,8 +66,8 @@ public class PostService {
         return profile != null;
     }
 
-    public PostsResponse findAllByPosts(final Pageable pageable) {
-        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc(pageable);
+    public PostsResponse findPosts() {
+        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc();
         return PostsResponse.of(posts);
     }
 

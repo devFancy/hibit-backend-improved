@@ -34,7 +34,7 @@ public class ProfileController {
     @Operation(description = "본인 프로필을 등록한다.")
     public ResponseEntity<Void> saveMyProfile(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                               @Valid @RequestBody final ProfileCreateRequest request) {
-        Long profileId = profileService.saveMyProfile(loginMember.getId(), request);
+        Long profileId = profileService.save(loginMember.getId(), request);
         return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
     }
 
@@ -64,7 +64,7 @@ public class ProfileController {
     @Operation(summary = "/api/profiles/me", description = "본인 프로필을 수정한다.")
     public ResponseEntity<Void> update(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember,
                                        @Valid @RequestBody final ProfileUpdateRequest request) {
-        profileService.updateProfile(loginMember.getId(), request);
+        profileService.update(loginMember.getId(), request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
