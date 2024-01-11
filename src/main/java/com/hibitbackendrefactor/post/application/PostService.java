@@ -19,7 +19,6 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class PostService {
-    private static final int PAGE_SIZE = 3;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
