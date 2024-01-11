@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hibitbackendrefactor.auth.application.AuthService;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.application.PostService;
-import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostResponse;
@@ -82,12 +81,12 @@ class PostControllerTest {
     void 등록된_게시글을_모두_조회한다() throws Exception {
         // given
         List<PostResponse> responses = Collections.singletonList(PostResponse.builder()
-                .id(1L)
-                .title("게시글 제목")
-                .exhibition("전시회 제목")
+                .id(팬시().getId())
+                .title(게시글제목1)
+                .exhibition(전시회제목1)
                 .exhibitionAttendanceAndTogetherActivity(Collections.singletonList("4인 관람"))
-                .postStatus(PostStatus.HOLDING)
-                .imageName("이미지 이름")
+                .postStatus(모집상태1)
+                .imageName(게시글이미지1)
                 .createDateTime(LocalDate.now())
                 .build());
 
@@ -101,9 +100,9 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.posts").isArray())
-                .andExpect(jsonPath("$.posts[0].id").value(1L))
-                .andExpect(jsonPath("$.posts[0].title").value("게시글 제목"))
-                .andExpect(jsonPath("$.posts[0].exhibition").value("전시회 제목"))
+                .andExpect(jsonPath("$.posts[0].id").value(팬시().getId()))
+                .andExpect(jsonPath("$.posts[0].title").value(게시글제목1))
+                .andExpect(jsonPath("$.posts[0].exhibition").value(전시회제목1))
                 .andReturn();
     }
 
