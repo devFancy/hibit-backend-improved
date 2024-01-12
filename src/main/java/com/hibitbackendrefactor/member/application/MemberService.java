@@ -17,20 +17,6 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    @Transactional
-    public Member save(final Member member) {
-        return memberRepository.save(member);
-    }
-
-    public Member findByEmail(final String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(NotFoundMemberException::new);
-    }
-
-    public boolean existByEmail(final String email) {
-        return memberRepository.existsByEmail(email);
-    }
-
     public MemberResponse findById(final Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(NotFoundMemberException::new);
