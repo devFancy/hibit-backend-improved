@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.member.domain;
 
+import com.hibitbackendrefactor.member.exception.NotFoundMemberException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시_이메일;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
@@ -40,5 +42,27 @@ class MemberRepositoryTest {
 
         // then
         Assertions.assertThat(actual).isTrue();
+    }
+
+    @DisplayName("존재하지 않는 email을 조회할 경우 예외를 던진다.")
+    @Test
+    void 존재하지_않는_email을_조회할_경우_예외를_던진다() {
+        // given
+        String email = "devfancy@gmail.com";
+
+        // given & when & then
+        assertThatThrownBy(() -> memberRepository.getByEmail(email))
+                .isInstanceOf(NotFoundMemberException.class);
+    }
+
+    @DisplayName("존재하지 않는 id이면 예외를 던진다.")
+    @Test
+    void 존재하지_않는_id이면_예외를_던진다() {
+        // given
+        Long id = 0L;
+
+        // when & then
+        assertThatThrownBy(() -> memberRepository.validateExistById(id))
+                .isInstanceOf(NotFoundMemberException.class);
     }
 }
