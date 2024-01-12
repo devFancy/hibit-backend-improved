@@ -1,7 +1,5 @@
-package com.hibitbackendrefactor.auth.repository;
+package com.hibitbackendrefactor.auth.domain;
 
-import com.hibitbackendrefactor.auth.domain.InMemoryAuthTokenRepository;
-import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.auth.exception.NotFoundTokenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
