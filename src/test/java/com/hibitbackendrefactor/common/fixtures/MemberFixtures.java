@@ -2,6 +2,7 @@ package com.hibitbackendrefactor.common.fixtures;
 
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.SocialType;
+import com.hibitbackendrefactor.member.dto.MemberResponse;
 
 public class MemberFixtures {
 
@@ -9,6 +10,9 @@ public class MemberFixtures {
     public static final String 팬시_이메일 = "fancy@gmail.com";
     public static final String 팬시_닉네임 = "팬시";
     public static final SocialType 소셜로그인유형 = SocialType.GOOGLE;
+
+    public static final MemberResponse 팬시_응답 = new MemberResponse(1L, 팬시_이메일, 팬시_닉네임, 소셜로그인유형);
+
 
     /* 브루스 */
     public static final String 브루스_이메일 = "fancy@gmail.com";

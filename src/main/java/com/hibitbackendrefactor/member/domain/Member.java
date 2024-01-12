@@ -56,9 +56,13 @@ public class Member extends BaseEntity {
         }
     }
 
+    /**
+     * isEmpty() 는 "" 에 대한 문자열을 확인 -> 비어있는 경우 true 반환
+     * isBlank() "", " " 에 대한 문자열을 확인 -> 비어있는 경우 true 반환
+    */
     private void validateDisplayName(final String displayName) {
-        if (displayName.isEmpty() || displayName.length() > MAX_DISPLAY_NAME_LENGTH) {
-            throw new InvalidMemberException(String.format("이름은 1자 이상 1자 %d이하여야 합니다.", MAX_DISPLAY_NAME_LENGTH));
+        if (displayName.isBlank() || displayName.length() > MAX_DISPLAY_NAME_LENGTH) {
+            throw new InvalidMemberException(String.format("이름은 1자 이상 20자 %d이하여야 합니다.", MAX_DISPLAY_NAME_LENGTH));
         }
     }
 

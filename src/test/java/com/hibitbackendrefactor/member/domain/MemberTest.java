@@ -29,4 +29,14 @@ class MemberTest {
         assertThatThrownBy(() -> new Member(email, 팬시_닉네임, SocialType.GOOGLE))
             .isInstanceOf(InvalidMemberException.class);
     }
+
+    @DisplayName("회원의 닉네임 형식이 맞지 않으면 예외가 발생한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "일이삼사오육칠팔구십" + "일이삼사오육칠팔구십" + "일"})
+    void 회원의_닉네임_형식이_맞지_않으면_예외가_발생한다(final String displayName) {
+
+        // given & when & then
+        assertThatThrownBy(() -> new Member(팬시_이메일, displayName, SocialType.GOOGLE))
+                .isInstanceOf(InvalidMemberException.class);
+    }
 }
