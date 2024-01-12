@@ -1,5 +1,7 @@
 package com.hibitbackendrefactor.auth.domain;
 
+import com.hibitbackendrefactor.auth.exception.NotFoundTokenException;
+
 public class AuthToken {
 
     private Long id;
@@ -22,5 +24,11 @@ public class AuthToken {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public void validateHasSameRefreshToken(final String otherRefreshToken) {
+        if (!refreshToken.equals(otherRefreshToken)) {
+            throw new NotFoundTokenException("회원의 리프레시 토큰이 아닙니다.");
+        }
     }
 }
