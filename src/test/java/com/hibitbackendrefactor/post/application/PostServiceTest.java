@@ -55,7 +55,7 @@ class PostServiceTest {
                 .content(게시글내용1)
                 .exhibition(전시회제목1)
                 .exhibitionAttendance(전시관람인원1)
-                .possibleTimes(전시관람희망날짜1)
+                .possibleTime(전시관람희망날짜1)
                 .openChatUrl(오픈채팅방Url1)
                 .togetherActivity(함께하고싶은활동1)
                 .imageName(게시글이미지1)

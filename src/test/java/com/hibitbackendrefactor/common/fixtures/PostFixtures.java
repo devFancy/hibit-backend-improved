@@ -1,10 +1,10 @@
 package com.hibitbackendrefactor.common.fixtures;
 
-import com.hibitbackendrefactor.post.domain.*;
+import com.hibitbackendrefactor.post.domain.Post;
+import com.hibitbackendrefactor.post.domain.PostStatus;
+import com.hibitbackendrefactor.post.domain.TogetherActivity;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 
@@ -17,11 +17,7 @@ public class PostFixtures {
     public static final String 전시회제목1 = "PROJECT HASHTAG 2023 SELECTED ARTISTS";
 
     public static final int 전시관람인원1 = 3;
-    public static final List<PostPossibleTime> 전시관람희망날짜1 = Arrays.asList(
-            new PostPossibleTime(LocalDate.now(), DayHalf.AM),
-            new PostPossibleTime(LocalDate.now(), DayHalf.PM)
-    );
-
+    public static final LocalDateTime 전시관람희망날짜1 = LocalDateTime.now();
     public static final String 오픈채팅방Url1 = "http://projecthashtag.net/";
     public static final TogetherActivity 함께하고싶은활동1 = TogetherActivity.EAT;
 
@@ -36,10 +32,7 @@ public class PostFixtures {
     public static final String 전시회제목2 = "오스틴리 전시회";
 
     public static final int 전시관람인원2 = 3;
-    public static final List<PostPossibleTime> 전시관람희망날짜2 = Arrays.asList(
-            new PostPossibleTime(LocalDate.now(), DayHalf.AM),
-            new PostPossibleTime(LocalDate.now(), DayHalf.PM)
-    );
+    public static final LocalDateTime 전시관람희망날짜2 = LocalDateTime.now();
 
     public static final String 오픈채팅방Url2 = "http://ostin.net/";
     public static final TogetherActivity 함께하고싶은활동2 = TogetherActivity.EAT;
@@ -56,7 +49,7 @@ public class PostFixtures {
                 .content(게시글내용1)
                 .exhibition(전시회제목1)
                 .exhibitionAttendance(전시관람인원1)
-                .possibleTimes(전시관람희망날짜1)
+                .possibleTime(전시관람희망날짜1)
                 .openChatUrl(오픈채팅방Url1)
                 .togetherActivity(함께하고싶은활동1)
                 .imageName(게시글이미지1)
@@ -71,7 +64,7 @@ public class PostFixtures {
                 .content(게시글내용2)
                 .exhibition(전시회제목2)
                 .exhibitionAttendance(전시관람인원2)
-                .possibleTimes(전시관람희망날짜2)
+                .possibleTime(전시관람희망날짜2)
                 .openChatUrl(오픈채팅방Url2)
                 .togetherActivity(함께하고싶은활동2)
                 .imageName(게시글이미지2)
