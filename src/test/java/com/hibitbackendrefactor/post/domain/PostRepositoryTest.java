@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.브루스;
@@ -46,7 +47,7 @@ class PostRepositoryTest {
 
 
      private Post createPost(Member member, String title, String content,
-                             String exhibition, int exhibitionAttendance, List<PostPossibleTime> postPossibleTimes,
+                             String exhibition, int exhibitionAttendance, LocalDateTime postPossibleTime,
                              String openChatUrl, TogetherActivity togetherActivity, String imageName, PostStatus postStatus) {
 
         Post post1 = Post.builder()
@@ -55,7 +56,7 @@ class PostRepositoryTest {
                 .content(content)
                 .exhibition(exhibition)
                 .exhibitionAttendance(exhibitionAttendance)
-                .possibleTimes(postPossibleTimes)
+                .possibleTime(postPossibleTime)
                 .openChatUrl(openChatUrl)
                 .togetherActivity(togetherActivity)
                 .imageName(imageName)

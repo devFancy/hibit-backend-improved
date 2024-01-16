@@ -5,8 +5,7 @@ import com.hibitbackendrefactor.member.domain.Member;
 import lombok.Builder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 public class Post extends BaseEntity {
@@ -33,11 +32,8 @@ public class Post extends BaseEntity {
 
     @Column(name = "exhibition_attendance", nullable = false)
     private int exhibitionAttendance;
-
-    @ElementCollection
-    @CollectionTable(name = "post_possible_times", joinColumns = @JoinColumn(name = "post_id"))
     @Column(nullable = false)
-    private List<PostPossibleTime> possibleTimes = new ArrayList<>();
+    private LocalDateTime possibleTime;
 
     @Column(name = "open_chat_url", nullable = false)
     private String openChatUrl;
@@ -57,14 +53,14 @@ public class Post extends BaseEntity {
 
     @Builder
     public Post(final Member member, String title, final String content, final String exhibition, final int exhibitionAttendance
-            , final List<PostPossibleTime> possibleTimes, final String openChatUrl, final TogetherActivity togetherActivity
+            , final LocalDateTime possibleTime, final String openChatUrl, final TogetherActivity togetherActivity
             , final String imageName, final PostStatus postStatus) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
         this.exhibition = new Exhibition(exhibition);
         this.exhibitionAttendance = exhibitionAttendance;
-        this.possibleTimes = possibleTimes;
+        this.possibleTime = possibleTime;
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
         this.imageName = imageName;
@@ -95,8 +91,8 @@ public class Post extends BaseEntity {
         return exhibitionAttendance;
     }
 
-    public List<PostPossibleTime> getPossibleTimes() {
-        return possibleTimes;
+    public LocalDateTime getPossibleTime() {
+        return possibleTime;
     }
 
     public String getOpenChatUrl() {

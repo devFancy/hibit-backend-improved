@@ -1,6 +1,6 @@
 package com.hibitbackendrefactor.post.dto.request;
 
-import com.hibitbackendrefactor.post.domain.PostPossibleTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.domain.TogetherActivity;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,7 +25,8 @@ public class PostCreateRequest {
     private String exhibition;
 
     private int exhibitionAttendance;
-    private List<PostPossibleTime> possibleTimes;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime possibleTime;
     private String openChatUrl;
     private TogetherActivity togetherActivity;
     private String imageName;
@@ -34,7 +35,7 @@ public class PostCreateRequest {
     @Builder
     public PostCreateRequest(final String title, final String content,
                              final String exhibition, final int exhibitionAttendance, final String openChatUrl,
-                             final TogetherActivity togetherActivity, final List<PostPossibleTime> possibleTimes,
+                             final TogetherActivity togetherActivity, final LocalDateTime possibleTime,
                              final String imageName, final PostStatus postStatus) {
         this.title = title;
         this.content = content;
@@ -42,7 +43,7 @@ public class PostCreateRequest {
         this.exhibitionAttendance = exhibitionAttendance;
         this.openChatUrl = openChatUrl;
         this.togetherActivity = togetherActivity;
-        this.possibleTimes = possibleTimes;
+        this.possibleTime = possibleTime;
         this.imageName = imageName;
         this.postStatus = postStatus;
     }

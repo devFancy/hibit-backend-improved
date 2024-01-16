@@ -47,7 +47,7 @@ public class PostService {
                 .content(request.getContent())
                 .exhibition(request.getExhibition())
                 .exhibitionAttendance(request.getExhibitionAttendance())
-                .possibleTimes(request.getPossibleTimes())
+                .possibleTime(request.getPossibleTime())
                 .openChatUrl(request.getOpenChatUrl())
                 .togetherActivity(request.getTogetherActivity())
                 .imageName(request.getImageName())
