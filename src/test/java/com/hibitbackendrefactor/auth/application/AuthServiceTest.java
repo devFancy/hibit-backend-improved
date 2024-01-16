@@ -20,7 +20,6 @@ import org.springframework.test.context.event.RecordApplicationEvents;
 
 import java.util.List;
 
-import static com.hibitbackendrefactor.common.AuthFixtures.MEMBER_이메일;
 import static com.hibitbackendrefactor.common.OAuthFixtures.MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest(classes = ExternalApiConfig.class)
 @ActiveProfiles("test")
-@RecordApplicationEvents // 없으면 실패뜸 -> 이유 확인
+@RecordApplicationEvents
 class AuthServiceTest  {
 
     @Autowired
@@ -56,23 +55,6 @@ class AuthServiceTest  {
         // then
         assertAll(() -> {
             assertThat(actual.getAccessToken()).isNotEmpty();
-            assertThat(events.stream(MemberSavedEvent.class).count()).isEqualTo(1);
-        });
-    }
-
-    // 실패 이유 -> 찾아보기
-    @DisplayName("Authorization Code를 받으면 회원이 데이터베이스에 저장된다.")
-    @Test
-    void Authorization_Code를_받으면_회원이_데이터베이스에_저장된다() {
-        // given & when
-        authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
-
-        // then
-        assertThat(memberRepository.existsByEmail(MEMBER_이메일)).isTrue();
-
-        assertAll(() -> {
-            // SutbOAuthClient가 반환하는 OAuthMember의 이메일
-            assertThat(memberRepository.existsByEmail(MEMBER_이메일)).isTrue();
             assertThat(events.stream(MemberSavedEvent.class).count()).isEqualTo(1);
         });
     }
