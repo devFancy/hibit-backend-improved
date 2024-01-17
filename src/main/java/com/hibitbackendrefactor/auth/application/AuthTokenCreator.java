@@ -59,8 +59,8 @@ public class AuthTokenCreator implements TokenCreator {
         // 클라이언트로 리프레시 토큰 값을 전달하는 부분
         authTokenResponseHandler.setRefreshTokenCookie(refreshTokenForRenew);
 
-        AuthAccessToken renewalAuthAccessToken = new AuthAccessToken(memberId, accessTokenForRenew, isProfileRegistered);
-        renewalAuthAccessToken.validateHasSameRefreshToken(refreshTokenForRenew, refreshToken);
+        AuthToken renewalAuthAccessToken = new AuthToken(accessTokenForRenew, refreshTokenForRenew, isProfileRegistered);
+        renewalAuthAccessToken.validateHasSameRefreshToken(refreshToken);
         return renewalAuthAccessToken;
     }
 

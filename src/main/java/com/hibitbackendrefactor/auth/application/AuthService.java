@@ -40,6 +40,7 @@ public class AuthService {
         OAuthToken oAuthToken = getOAuthToken(oAuthMember, foundMember);
         oAuthToken.change(oAuthMember.getRefreshToken());
 
+        AuthToken authToken = tokenCreator.createAuthToken(foundMember.getId());
 
         return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getIsProfileRegistered());
     }
@@ -68,8 +69,8 @@ public class AuthService {
 
     public AccessTokenResponse generateAccessToken(final TokenRenewalRequest tokenRenewalRequest) {
         String refreshToken = tokenRenewalRequest.getRefreshToken();
-        AuthAccessToken authToken = tokenCreator.renewAuthToken(refreshToken);
-        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getIsProfileRegistered());
+        AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
+        return new AccessTokenResponse(authToken.getAccessToken());
     }
 
     public Long extractMemberId(final String accessToken) {

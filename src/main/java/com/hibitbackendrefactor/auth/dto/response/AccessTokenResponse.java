@@ -2,29 +2,16 @@ package com.hibitbackendrefactor.auth.dto.response;
 
 public class AccessTokenResponse {
 
-    private Long id;
     private String accessToken;
-
-    private int isProfileRegistered;
 
     private AccessTokenResponse() {
     }
 
-    public AccessTokenResponse(Long id, String accessToken, int isProfileRegistered) {
-        this.id = id;
+    public AccessTokenResponse(final String accessToken) {
         this.accessToken = accessToken;
-        this.isProfileRegistered = isProfileRegistered;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getAccessToken() {
         return accessToken;
-    }
-
-    public int getIsProfileRegistered() {
-        return isProfileRegistered;
     }
 }
