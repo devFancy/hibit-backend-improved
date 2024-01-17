@@ -57,4 +57,21 @@ class MemberServiceTest {
         Assertions.assertThat(memberService.findById(member.getId()).getId())
                 .isEqualTo(member.getId());
      }
+
+    @DisplayName("서비스에 가입한 회원을 조회한다. (수정 후)")
+    @Test
+    void 서비스에_가입된_회원을_조회한다() {
+        // given
+        GivenBuilder 팬시 = 팬시();
+
+        // when & then
+        assertThat(memberService.findById(팬시.회원().getId()).getId())
+                .isEqualTo(팬시.회원().getId());
+    }
+
+    protected GivenBuilder 팬시() {
+        GivenBuilder 팬시 = new GivenBuilder(builderSupporter);
+        팬시.회원_가입을_한다(팬시_이메일, 팬시_닉네임);
+        return 팬시;
+    }
 }
