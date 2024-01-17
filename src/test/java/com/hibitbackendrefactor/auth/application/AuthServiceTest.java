@@ -3,6 +3,7 @@ package com.hibitbackendrefactor.auth.application;
 
 import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.auth.dto.request.TokenRenewalRequest;
+import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.event.MemberSavedEvent;
 import com.hibitbackendrefactor.auth.exception.InvalidTokenException;
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @SpringBootTest(classes = ExternalApiConfig.class)
 @ActiveProfiles("test")
 @RecordApplicationEvents
-class AuthServiceTest  {
+class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
@@ -41,6 +42,7 @@ class AuthServiceTest  {
 
     @Autowired
     private ApplicationEvents events;
+
     @AfterEach
     void tearDown() {
         tokenRepository.deleteAll();
@@ -50,15 +52,15 @@ class AuthServiceTest  {
     @Test
     void 토큰_생성을_하면_OAuth_서버에서_인증_후_토큰들을_반환한다() {
         // given & when
-        AccessTokenResponse actual = authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
+        AccessAndRefreshTokenResponse actual = authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
 
         // then
         assertAll(() -> {
             assertThat(actual.getAccessToken()).isNotEmpty();
+            assertThat(actual.getRefreshToken()).isNotEmpty();
             assertThat(events.stream(MemberSavedEvent.class).count()).isEqualTo(1);
         });
     }
-
     @DisplayName("이미 가입된 회원에 대한 Authorization Code를 전달받으면 추가로 회원이 생성되지 않는다")
     @Test
     void 이미_가입된_회원에_대한_Authorization_Code를_전달받으면_추가로_회원이_생성되지_않는다() {
@@ -73,6 +75,21 @@ class AuthServiceTest  {
 
         // then
         assertThat(actual).hasSize(1);
+    }
+
+    @DisplayName("이미 가입된 회원이고 저장된 RefreshToken이 있으면, 저장된 RefreshToken을 반환한다.")
+    @Test
+    void 이미_가입된_회원이고_저장된_RefreshToken이_있으면_저장된_RefreshToken을_반환한다() {
+        // 이미 가입된 회원이 소셜 로그인 버튼을 클릭했을 경우엔 회원가입 과정이 생략되고, 곧바로 access token과 refreshtoken이 발급되어야 한다.
+
+        // given
+        AccessAndRefreshTokenResponse response = authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
+
+        // when
+        AccessAndRefreshTokenResponse actual = authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
+
+        // then
+        assertThat(actual.getRefreshToken()).isEqualTo(response.getRefreshToken());
     }
 
     @DisplayName("리프레시 토큰으로 새로운 엑세스 토큰을 발급 할 때, 리프레시 토큰이 존재하지 않으면 예외를 던진다.")

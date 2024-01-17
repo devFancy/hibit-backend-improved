@@ -1,8 +1,6 @@
 package com.hibitbackendrefactor.auth.application;
 
-import com.hibitbackendrefactor.auth.domain.AuthAccessToken;
 import com.hibitbackendrefactor.auth.domain.AuthToken;
-import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.config.ExternalApiConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = ExternalApiConfig.class)
 @ActiveProfiles("test")
 class AuthTokenCreatorTest {
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private TokenRepository tokenRepository;
 
     @Autowired
     private TokenCreator tokenCreator;
@@ -47,7 +40,7 @@ class AuthTokenCreatorTest {
         AuthToken authToken = tokenCreator.createAuthToken(memberId);
 
         // when
-        AuthAccessToken actual = tokenCreator.renewAuthToken(authToken.getRefreshToken());
+        AuthToken actual = tokenCreator.renewAuthToken(authToken.getRefreshToken());
 
         // then
         assertThat(actual.getAccessToken()).isNotEmpty();
