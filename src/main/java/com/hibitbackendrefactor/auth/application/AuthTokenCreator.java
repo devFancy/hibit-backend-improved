@@ -1,6 +1,5 @@
 package com.hibitbackendrefactor.auth.application;
 
-import com.hibitbackendrefactor.auth.domain.AuthAccessToken;
 import com.hibitbackendrefactor.auth.domain.AuthToken;
 import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.profile.domain.Profile;
@@ -25,31 +24,13 @@ public class AuthTokenCreator implements TokenCreator {
     }
 
     public AuthToken createAuthToken(final Long memberId) {
-        Long id =  memberId;
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(memberId));
-        String refreshToken = createRefreshToken(memberId);
-
-        return new AuthToken(id, accessToken, refreshToken);
-    }
-
-    @Override
-    public AuthAccessToken createAuthAccessToken(Long memberId) {
-        Long id =  memberId;
         String accessToken = tokenProvider.createAccessToken(String.valueOf(memberId));
         String refreshToken = createRefreshToken(memberId);
         int isProfileRegistered = isProfileRegistered(memberId);
 
         // 클라이언트로 리프레시 토큰 값을 전달하는 부분
         authTokenResponseHandler.setRefreshTokenCookie(refreshToken);
-
-        return new AuthAccessToken(id, accessToken, isProfileRegistered);
-    }
-
-    private int isProfileRegistered(Long memberId) {
-        // 데이터베이스에서 memberId를 이용하여 회원의 프로필 정보를 조회
-        // 조회한 프로필 정보가 존재하면 true를 반환, 없으면 false를 반환
-        Optional<Profile> profile = profileRepository.findByMemberId(memberId);
-        return profile.isPresent() ? 1 : 0;
+        return new AuthToken(accessToken, refreshToken, isProfileRegistered);
     }
 
     private String createRefreshToken(final Long memberId) {
@@ -59,7 +40,15 @@ public class AuthTokenCreator implements TokenCreator {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(memberId));
         return tokenRepository.save(memberId, refreshToken);
     }
-    public AuthAccessToken renewAuthToken(final String refreshToken) {
+
+    private int isProfileRegistered(final Long memberId) {
+        // 데이터베이스에서 memberId를 이용하여 회원의 프로필 정보를 조회
+        // 조회한 프로필 정보가 존재하면 true를 반환, 없으면 false를 반환
+        Optional<Profile> profile = profileRepository.findByMemberId(memberId);
+        return profile.isPresent() ? 1 : 0;
+    }
+
+    public AuthToken renewAuthToken(final String refreshToken) {
         tokenProvider.validateToken(refreshToken);
         Long memberId = Long.valueOf(tokenProvider.getPayload(refreshToken));
 
@@ -70,8 +59,8 @@ public class AuthTokenCreator implements TokenCreator {
         // 클라이언트로 리프레시 토큰 값을 전달하는 부분
         authTokenResponseHandler.setRefreshTokenCookie(refreshTokenForRenew);
 
-        AuthAccessToken renewalAuthAccessToken = new AuthAccessToken(memberId, accessTokenForRenew, isProfileRegistered);
-        renewalAuthAccessToken.validateHasSameRefreshToken(refreshTokenForRenew, refreshToken);
+        AuthToken renewalAuthAccessToken = new AuthToken(accessTokenForRenew, refreshTokenForRenew, isProfileRegistered);
+        renewalAuthAccessToken.validateHasSameRefreshToken(refreshToken);
         return renewalAuthAccessToken;
     }
 

@@ -67,7 +67,7 @@ public class JwtTokenProvider implements TokenProvider {
                 throw new InvalidTokenException("토큰이 만료되었습니다.");
             }
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException("권한이 없습니다.");
         }
     }
 }

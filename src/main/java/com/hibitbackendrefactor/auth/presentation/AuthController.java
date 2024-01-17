@@ -7,6 +7,7 @@ import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.dto.OAuthMember;
 import com.hibitbackendrefactor.auth.dto.request.TokenRenewalRequest;
 import com.hibitbackendrefactor.auth.dto.request.TokenRequest;
+import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.OAuthUriResponse;
 import com.hibitbackendrefactor.global.token.Login;
@@ -41,10 +42,10 @@ public class AuthController {
     }
     @PostMapping("/{oauthProvider}/token")
     @Operation(summary = "/{oauthProvider}/token", description = "액세스 토큰은 Body로 발급, 리프레시 토큰은 Set-Cookie로 발급 받기")
-    public ResponseEntity<AccessTokenResponse> generateAccessAndRefreshToken(
+    public ResponseEntity<AccessAndRefreshTokenResponse> generateAccessAndRefreshToken(
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthMember oAuthMember = oAuthClient.getOAuthMember(tokenRequest.getCode(), tokenRequest.getRedirectUri());
-        AccessTokenResponse authResponse = authService.generateAccessAndRefreshToken(oAuthMember);
+        AccessAndRefreshTokenResponse authResponse = authService.generateAccessAndRefreshToken(oAuthMember);
         return ResponseEntity.ok(authResponse);
     }
 
