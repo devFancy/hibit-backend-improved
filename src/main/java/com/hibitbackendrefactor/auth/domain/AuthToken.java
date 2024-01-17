@@ -4,19 +4,17 @@ import com.hibitbackendrefactor.auth.exception.NotFoundTokenException;
 
 public class AuthToken {
 
-    private Long id;
     private String accessToken;
     private String refreshToken;
 
-    public AuthToken(final Long id, final String accessToken, final String refreshToken) {
-        this.id = id;
+    private int isProfileRegistered;
+
+    public AuthToken(final String accessToken, final String refreshToken, final int isProfileRegistered) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.isProfileRegistered = isProfileRegistered;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getAccessToken() {
         return accessToken;
@@ -24,6 +22,10 @@ public class AuthToken {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public int getIsProfileRegistered() {
+        return isProfileRegistered;
     }
 
     public void validateHasSameRefreshToken(final String otherRefreshToken) {

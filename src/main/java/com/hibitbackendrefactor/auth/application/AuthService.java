@@ -1,10 +1,11 @@
 package com.hibitbackendrefactor.auth.application;
 
-import com.hibitbackendrefactor.auth.domain.AuthAccessToken;
+import com.hibitbackendrefactor.auth.domain.AuthToken;
 import com.hibitbackendrefactor.auth.domain.OAuthToken;
 import com.hibitbackendrefactor.auth.domain.OAuthTokenRepository;
 import com.hibitbackendrefactor.auth.dto.OAuthMember;
 import com.hibitbackendrefactor.auth.dto.request.TokenRenewalRequest;
+import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.event.MemberSavedEvent;
 import com.hibitbackendrefactor.member.domain.Member;
@@ -20,7 +21,6 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
     private final OAuthTokenRepository oAuthTokenRepository;
-
     private final TokenCreator tokenCreator;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -32,16 +32,16 @@ public class AuthService {
         this.tokenCreator = tokenCreator;
         this.eventPublisher = eventPublisher;
     }
+
     @Transactional
-    public AccessTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
+    public AccessAndRefreshTokenResponse generateAccessAndRefreshToken(final OAuthMember oAuthMember) {
         Member foundMember = findMember(oAuthMember);
 
         OAuthToken oAuthToken = getOAuthToken(oAuthMember, foundMember);
         oAuthToken.change(oAuthMember.getRefreshToken());
 
-        AuthAccessToken authToken = tokenCreator.createAuthAccessToken(foundMember.getId());
 
-        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken(), authToken.getIsProfileRegistered());
+        return new AccessAndRefreshTokenResponse(authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getIsProfileRegistered());
     }
 
     private OAuthToken getOAuthToken(final OAuthMember oAuthMember, final Member member) {
