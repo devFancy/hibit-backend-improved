@@ -1,5 +1,9 @@
 package com.hibitbackendrefactor.infrastructure.oauth.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class OAuthException extends RuntimeException{
     public OAuthException() {
         super("Oauth 서버와의 통신 과정에서 문제가 발생했습니다.");
