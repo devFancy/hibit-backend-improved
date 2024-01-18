@@ -1,23 +1,19 @@
 package com.hibitbackendrefactor.profile.domain;
 
-import com.hibitbackendrefactor.global.config.JpaAuditingConfig;
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_프로필;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@Import(JpaAuditingConfig.class)
-@ActiveProfiles("test")
-class ProfileRepositoryTest {
+@Transactional
+class ProfileRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private ProfileRepository profileRepository;
