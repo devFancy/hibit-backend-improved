@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.member.application;
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.auth.domain.OAuthToken;
 import com.hibitbackendrefactor.auth.domain.OAuthTokenRepository;
 import com.hibitbackendrefactor.common.builder.BuilderSupporter;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = ExternalApiConfig.class)
 @ActiveProfiles("test")
-class MemberServiceTest {
+class MemberServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberService memberService;

@@ -1,8 +1,6 @@
 package com.hibitbackendrefactor.profile.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hibitbackendrefactor.auth.application.AuthService;
-import com.hibitbackendrefactor.profile.application.ProfileService;
+import com.hibitbackendrefactor.ControllerTestSupport;
 import com.hibitbackendrefactor.profile.domain.AddressCity;
 import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
@@ -10,34 +8,17 @@ import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
 import com.hibitbackendrefactor.profile.dto.request.ProfileUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = ProfileController.class)
-class ProfileControllerTest {
+class ProfileControllerTest extends ControllerTestSupport {
 
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaaaaaa.bbbbbbbb.cccccccc";
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private ProfileService profileService;
-
-    @MockBean
-    private AuthService authService;
 
     @DisplayName("본인 프로필을 등록한다.")
     @Test

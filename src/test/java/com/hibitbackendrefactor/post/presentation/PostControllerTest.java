@@ -1,20 +1,14 @@
 package com.hibitbackendrefactor.post.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hibitbackendrefactor.auth.application.AuthService;
+import com.hibitbackendrefactor.ControllerTestSupport;
 import com.hibitbackendrefactor.member.domain.Member;
-import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -31,22 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(controllers = PostController.class)
-class PostControllerTest {
+class PostControllerTest extends ControllerTestSupport {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaaaaaa.bbbbbbbb.cccccccc";
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private PostService postService;
-
-    @MockBean
-    private AuthService authService;
 
     @DisplayName("게시글을 등록한다.")
     @Test

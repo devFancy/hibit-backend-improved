@@ -1,21 +1,19 @@
 package com.hibitbackendrefactor.auth.application;
 
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.auth.dto.request.TokenRenewalRequest;
 import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.event.MemberSavedEvent;
 import com.hibitbackendrefactor.auth.exception.InvalidTokenException;
-import com.hibitbackendrefactor.config.ExternalApiConfig;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 
@@ -26,10 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest(classes = ExternalApiConfig.class)
-@ActiveProfiles("test")
 @RecordApplicationEvents
-class AuthServiceTest {
+class AuthServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private AuthService authService;

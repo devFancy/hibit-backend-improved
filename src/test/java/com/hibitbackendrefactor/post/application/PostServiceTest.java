@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.post.application;
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.Post;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
@@ -20,9 +19,8 @@ import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_�
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class PostServiceTest {
+class PostServiceTest extends IntegrationTestSupport {
+
     @Autowired
     private PostRepository postRepository;
 

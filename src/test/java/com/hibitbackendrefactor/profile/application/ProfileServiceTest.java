@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.profile.application;
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.profile.domain.*;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_프로필;
@@ -19,9 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class ProfileServiceTest {
+class ProfileServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private ProfileService profileService;

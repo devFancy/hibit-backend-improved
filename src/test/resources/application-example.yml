@@ -7,34 +7,43 @@ spring:
     session:
       cookie:
         http-only: true
-
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:db?serverTimezone=Asia/Seoul;MODE=MYSQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
     open-in-view: true
     hibernate:
       ddl-auto: create
-    show_sql: true
     properties:
-      dialect: org.hibernate.dialect.MySQL8Dialect
       hibernate:
         format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+    show-sql: true
 
   sql:
     init:
       mode: never
+
 logging:
   level:
-    com:
-      amazonaws:
-        util:
-          EC2MetadataUtils: error
-    org.hibernate.SQL: ERROR
+    org:
+      hibernate:
+        type: trace
 
 server:
   compression:
     enabled: true
     mime-types: text/html,text/plain,text/css,application/javascript,application/json
     min-response-size: 500
-
+  session:
+    cookie:
+      http-only: false
 
 # Google OAuth
 cors:

@@ -1,18 +1,14 @@
 package com.hibitbackendrefactor.auth.application;
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.auth.domain.AuthToken;
-import com.hibitbackendrefactor.config.ExternalApiConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = ExternalApiConfig.class)
-@ActiveProfiles("test")
-class AuthTokenCreatorTest {
+class AuthTokenCreatorTest extends IntegrationTestSupport {
 
     @Autowired
     private TokenCreator tokenCreator;

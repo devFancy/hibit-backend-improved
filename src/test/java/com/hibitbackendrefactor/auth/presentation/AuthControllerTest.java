@@ -1,21 +1,11 @@
 package com.hibitbackendrefactor.auth.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hibitbackendrefactor.auth.application.AuthService;
-import com.hibitbackendrefactor.auth.application.OAuthUri;
+import com.hibitbackendrefactor.ControllerTestSupport;
 import com.hibitbackendrefactor.auth.exception.InvalidTokenException;
-import com.hibitbackendrefactor.config.ExternalApiConfig;
 import com.hibitbackendrefactor.infrastructure.oauth.exception.OAuthException;
-import com.hibitbackendrefactor.member.application.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.Cookie;
 
@@ -27,25 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = AuthController.class)
-@Import(ExternalApiConfig.class)
-@ActiveProfiles("test")
-class AuthControllerTest {
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    protected ObjectMapper objectMapper;
-
-    @MockBean
-    protected AuthService authService;
-
-    @MockBean
-    protected OAuthUri oAuthUri;
-
-    @MockBean
-    protected MemberService memberService;
+class AuthControllerTest extends ControllerTestSupport {
 
     @DisplayName("OAuth 소셜 로그인을 위한 링크와 상태코드 200을 반환한다.")
     @Test

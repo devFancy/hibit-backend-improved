@@ -1,19 +1,20 @@
 package com.hibitbackendrefactor.member.domain;
 
+import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.member.exception.NotFoundMemberException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시_이메일;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest
-class MemberRepositoryTest {
+@Transactional
+class MemberRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberRepository memberRepository;
