@@ -28,6 +28,21 @@ class ProfileTest {
                 , 직업_공개여부, 주소_공개여부, 이미지_공개여부));
     }
 
+    @DisplayName("닉네임이 1자 이상 20자 이하이면 성공한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"팬시", "fancy", "devfancy"})
+    void 닉네임이_1자이상_20자_이하이면_성공한다(String nickname) {
+        // given
+        Member 팬시 = 팬시();
+
+        // when & then
+        assertDoesNotThrow(() -> new Profile(팬시, nickname, 팬시_나이
+                , 팬시_성별, 팬시_성격, 팬시_자기소개, 팬시_이미지
+                , 팬시_직업, 팬시_사는도시, 팬시_사는지역
+                , 직업_공개여부, 주소_공개여부, 이미지_공개여부));
+
+     }
+
     @DisplayName("닉네임이 공백이거나 20자 이상 초과하면 예외를 던진다.")
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "일이삼사오육칠팔구십"
@@ -45,6 +60,21 @@ class ProfileTest {
                         , 직업_공개여부, 주소_공개여부, 이미지_공개여부)
         ).isInstanceOf(InvalidNicknameException.class);
     }
+
+    @DisplayName("자기소개의 길이가 1자 이상 200자 이하인 경우 성공한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"일", "안녕하세요", "안녕하세요. 저는 개발자 팬시입니다. 취미는 운동, 독서입니다. 잘부탁드립니다."})
+    void 자기소개의_길이가_1자_이상_200자_이하인_경우_성공한다(String introduce) {
+        // given
+        Member 팬시 = 팬시();
+
+        // when & then
+        assertDoesNotThrow(() -> new Profile(팬시, 팬시_닉네임, 팬시_나이
+                , 팬시_성별, 팬시_성격, introduce, 팬시_이미지
+                , 팬시_직업, 팬시_사는도시, 팬시_사는지역
+                , 직업_공개여부, 주소_공개여부, 이미지_공개여부));
+
+     }
 
     @DisplayName("자기소개의 길이가 0인 경우 예외를 던진다.")
     @ParameterizedTest
