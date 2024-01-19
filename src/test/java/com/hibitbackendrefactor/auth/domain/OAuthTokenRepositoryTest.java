@@ -41,7 +41,7 @@ class OAuthTokenRepositoryTest extends IntegrationTestSupport {
     @Test
     void member_id의_OAuthToken이_존재하지_않을_경우_false를_반환한다() {
         // given & when
-        boolean actual = oAuthTokenRepository.existsByMemberId(1L);
+        boolean actual = oAuthTokenRepository.existsByMemberId(0L);
 
         // then
         assertThat(actual).isFalse();
@@ -65,7 +65,7 @@ class OAuthTokenRepositoryTest extends IntegrationTestSupport {
     @Test
     void member_id의_OAuthToken이_존재하지_않을_경우_비어있다() {
         // given & when
-        Optional<OAuthToken> actual = oAuthTokenRepository.findByMemberId(1L);
+        Optional<OAuthToken> actual = oAuthTokenRepository.findByMemberId(0L);
 
         // then
         assertThat(actual).isEmpty();
