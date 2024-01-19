@@ -9,17 +9,18 @@ public class MemberResponse {
     private String email;
     private String displayName;
     private SocialType socialType;
+    private boolean isProfile;
 
-    public MemberResponse(Long id, String email, String displayName, SocialType socialType) {
+    public MemberResponse(Long id, String email, String displayName, SocialType socialType, boolean isProfile) {
         this.id = id;
         this.email = email;
         this.displayName = displayName;
         this.socialType = socialType;
+        this.isProfile = isProfile;
     }
 
     public MemberResponse(final Member member) {
-        this(member.getId(), member.getEmail(), member.getDisplayName(),
-                member.getSocialType());
+        this(member.getId(), member.getEmail(), member.getDisplayName(), member.getSocialType(), member.getIsprofile());
     }
 
     public Long getId() {
@@ -36,5 +37,9 @@ public class MemberResponse {
 
     public SocialType getSocialType() {
         return socialType;
+    }
+
+    public boolean isProfile() {
+        return isProfile;
     }
 }

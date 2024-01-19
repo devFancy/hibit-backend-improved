@@ -11,8 +11,9 @@ public class MemberFixtures {
     public static final String 팬시_닉네임 = "팬시";
     public static final SocialType 소셜로그인유형 = SocialType.GOOGLE;
 
-    public static final MemberResponse 팬시_응답 = new MemberResponse(1L, 팬시_이메일, 팬시_닉네임, 소셜로그인유형);
+    public static final boolean 팬시_프로필여부 = true;
 
+    public static final MemberResponse 팬시_응답 = new MemberResponse(1L, 팬시_이메일, 팬시_닉네임, 소셜로그인유형 , 팬시_프로필여부);
 
     /* 브루스 */
     public static final String 브루스_이메일 = "fancy@gmail.com";
