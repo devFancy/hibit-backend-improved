@@ -1,8 +1,7 @@
 package com.hibitbackendrefactor.profile.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.hibitbackendrefactor.profile.exception.NotFoundAddressDistrictException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -92,11 +91,11 @@ public enum AddressDistrict {
     ULSAN_ULJU("울산광역시", "710", "울주군"),
     SEJONG("세종시", "110", "세종시"),
 
-    GYEONGGI_Suwon("경기도", "110", "수원시"),
-    GYEONGGI_Suwon_JANGAN("경기도", "111", "수원시 장안구"),
-    GYEONGGI_Suwon_GWONSEON("경기도", "113", "수원시 권선구"),
-    GYEONGGI_Suwon_PALDAL("경기도", "115", "수원시 팔달구"),
-    GYEONGGI_Suwon_YEONGTONG("경기도", "117", "수원시 영통구"),
+    GYEONGGI_SUWON("경기도", "110", "수원시"),
+    GYEONGGI_SUWON_JANGAN("경기도", "111", "수원시 장안구"),
+    GYEONGGI_SUWON_GWONSEON("경기도", "113", "수원시 권선구"),
+    GYEONGGI_SUWON_PALDAL("경기도", "115", "수원시 팔달구"),
+    GYEONGGI_SUWON_YEONGTONG("경기도", "117", "수원시 영통구"),
     GYEONGGI_SEONGNAM("경기도", "130", "성남시"),
     GYEONGGI_SEONGNAM_SUJUNG("경기도", "131", "성남시 수정구"),
     GYEONGGI_SEONGNAM_JUNGWON("경기도", "133", "성남시 중원구"),
@@ -301,18 +300,11 @@ public enum AddressDistrict {
     private final String distinctCode;
     private final String districtName;
 
-    @JsonValue
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    @JsonCreator
-    public static AddressDistrict from(final String value) {
-        for (AddressDistrict status : AddressDistrict.values()) {
-            if (status.getDistrictName().equals(value)) {
-                return status;
-            }
+    public static String from(final String value) {
+        try {
+            return AddressDistrict.valueOf(value.toUpperCase()).getCityName();
+        } catch (final IllegalArgumentException e) {
+            throw new NotFoundAddressDistrictException("(" + value + ")는 존재하지 않는 구입니다.");
         }
-        return null;
     }
 }

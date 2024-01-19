@@ -1,7 +1,6 @@
 package com.hibitbackendrefactor.profile.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.hibitbackendrefactor.profile.exception.NotFoundPersonalityException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,18 +35,11 @@ public enum PersonalityType {
 
     private final String text;
 
-    @JsonCreator
-    public static PersonalityType from(final String text) {
-        for (PersonalityType status : PersonalityType.values()) {
-            if (status.getText().equals(text)) {
-                return status;
-            }
+    public static PersonalityType from(final String value) {
+        try {
+            return PersonalityType.valueOf(value.toUpperCase());
+        } catch (final IllegalArgumentException e) {
+            throw new NotFoundPersonalityException("(" + value + ")는 존재하지 않는 성격 유형입니다.");
         }
-        return null;
-    }
-
-    @JsonValue
-    public String getText() {
-        return text;
     }
 }
