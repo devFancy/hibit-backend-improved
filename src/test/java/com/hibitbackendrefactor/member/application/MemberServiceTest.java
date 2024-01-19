@@ -38,7 +38,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     private OAuthTokenRepository oAuthTokenRepository;
 
     @AfterEach
-    void setUp() {
+    void tearDown() {
         oAuthTokenRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
