@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.post.domain;
 
+import com.hibitbackendrefactor.post.exception.NotFoundPostStatusException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,4 +12,12 @@ public enum PostStatus {
     COMPLETED("모집 완료");
 
     private final String text;
+
+    public static PostStatus from(final String value) {
+        try {
+            return PostStatus.valueOf(value.toUpperCase());
+        } catch (final IllegalArgumentException e) {
+            throw new NotFoundPostStatusException("(" + value + ")는 존재하지 않는 모집 상태입니다.");
+        }
+    }
 }
