@@ -33,6 +33,8 @@ class PostServiceTest extends IntegrationTestSupport {
     @Autowired
     private PostService postService;
 
+    private Post post;
+
     @AfterEach
     void tearDown() {
         postRepository.deleteAll();
@@ -40,11 +42,12 @@ class PostServiceTest extends IntegrationTestSupport {
         memberRepository.deleteAll(); // deleteAllInBatch()인 경우 오류는 나중에 해결할 예정(23.01.10)
     }
 
-    @DisplayName("게시글을 등록한다.")
+    @DisplayName("게시글을 등록한 페이지를 반환한다.")
     @Test
-    void 게시글을_등록한다() {
+    void 게시글을_등록한_페이지를_반환한다() {
         // given
         Member 팬시 = 팬시();
+        memberRepository.save(팬시);
         Profile 팬시_프로필 = 팬시_프로필(팬시);
         profileRepository.save(팬시_프로필);
 
