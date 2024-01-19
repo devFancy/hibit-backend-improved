@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
 }
 
 group = 'com'
@@ -59,6 +60,77 @@ tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+    // JaCoCo 버전
+    toolVersion = '0.8.7'
+}
+
+jacocoTestReport {
+    reports {
+        // 원하는 리포트를 켜고 끌 수 있습니다.
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+
+        //  각 리포트 타입마다 리포트 저장 경로를 설정할 수 있습니다.
+        html.destination file("${buildDir}/jacoco/index.html")
+        xml.destination file("${buildDir}/jacoco/index.xml")
+        csv.destination file("${buildDir}/jacoco/index.csv")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Application*',
+                            '**/*Exception*',
+                            '**/auth/event/**',
+                            '**/dto/**',
+                            '**/common/**',
+                            '**/global/**',
+                            '**/infrastructure/**',
+                            '**/BaseEntity**',
+                            '**/AuthorizationExtractor*',
+                            '**/AuthenticationPrincipal*'
+                    ])
+                })
+        )
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    // 이 커버리지 기준은 이 글의 맨 아래에서 다시 설명하겠습니다.
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            excludes = [
+                    '*.*Application',
+                    '*.*Exception',
+                    '**.auth.event.*',
+                    '*.dto.*',
+                    '*.common.*',
+                    '*.global.*',
+                    '*.infrastructure.*',
+                    '*.global.config.*',
+                    '*.BaseEntity',
+                    '*.ControllerAdvice',
+                    '*.AuthorizationExtractor',
+                    '*.AuthenticationPrincipal.*'
+            ]
+        }
+    }
 }
