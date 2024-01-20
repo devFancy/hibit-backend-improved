@@ -2,11 +2,6 @@ spring:
   config:
     activate:
       on-profile: test
-
-  servlet:
-    session:
-      cookie:
-        http-only: true
   h2:
     console:
       enabled: true
