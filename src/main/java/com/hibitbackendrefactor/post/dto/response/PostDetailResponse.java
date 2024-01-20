@@ -41,7 +41,7 @@ public class PostDetailResponse {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
-        this.writerImage = writerImage;
+//        this.writerImage = writerImage;
         this.title = title;
         this.content = content;
         this.exhibition = exhibition;
@@ -57,7 +57,7 @@ public class PostDetailResponse {
                 .id(post.getId())
                 .writerId(post.getMember().getId())
                 .writerName(post.getMember().getDisplayName())
-                .writerImage(findWriterImage(post.getMember()))
+//                .writerImage(findWriterImage(post.getMember()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .exhibition(post.getExhibition())
