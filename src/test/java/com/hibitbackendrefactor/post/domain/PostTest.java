@@ -1,6 +1,10 @@
 package com.hibitbackendrefactor.post.domain;
 
-import com.hibitbackendrefactor.post.exception.*;
+import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.post.exception.InvalidContentException;
+import com.hibitbackendrefactor.post.exception.InvalidExhibitionException;
+import com.hibitbackendrefactor.post.exception.InvalidTitleException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,11 +17,26 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class PostTest {
 
-    @DisplayName("게시글을 등록한다.")
+    @DisplayName("게시글을 등록한다. - Cass1 ")
     @Test
-    void 게시글을_등록한다() {
-        // given & when & then
-        assertDoesNotThrow(() -> 프로젝트_해시테크());
+    void 게시글을_등록한다_Case1() {
+        // when & then
+        Member 팬시 = 팬시();
+
+        // when & then
+        assertDoesNotThrow(() -> 프로젝트_해시테크(팬시));
+    }
+
+    @DisplayName("게시글을 등록한다. - Case 2")
+    @Test
+    void 게시글을_등록한다_Case2() {
+        // when & then
+        Member 팬시 = 팬시();
+
+        // when & then
+        assertDoesNotThrow(() -> new Post(팬시, 게시글제목1, 게시글내용1
+                , 전시회제목1, 전시관람인원1, 전시관람희망날짜1, 오픈채팅방Url1
+                , 함께하고싶은활동1, 게시글이미지1, 모집상태1));
     }
 
     @DisplayName("게시글 제목이 null 이거나 공백인 경우 예외를 던진다.")
@@ -79,4 +98,40 @@ class PostTest {
                 .isInstanceOf(InvalidExhibitionException.class);
 
     }
+
+    @DisplayName("게시글을 작성한 회원 정보를 가져온다.")
+    @Test
+    void 게시글을_작성한_회원_정보를_가져온다() {
+        // given
+        Member 팬시 = 팬시();
+        Post post = 오스틴리_전시회(팬시);
+
+        // when
+        Member foundMember = post.getMember();
+
+        // then
+        Assertions.assertThat(foundMember).isEqualTo(팬시);
+     }
+
+     @DisplayName("게시글의 일부 정보를 가져온다.")
+     @Test
+     void 게시글의_일부_정보를_가져온다() {
+         // given
+         Member 팬시 = 팬시();
+         Post post = 오스틴리_전시회(팬시);
+
+         // when
+         String title = post.getTitle();
+         String content = post.getContent();
+         String exhibition = post.getExhibition();
+         int exhibitionAttendance =  post.getExhibitionAttendance();
+         TogetherActivity togetherActivity = post.getTogetherActivity();
+
+         // then
+         Assertions.assertThat(title).isEqualTo(post.getTitle());
+         Assertions.assertThat(content).isEqualTo(post.getContent());
+         Assertions.assertThat(exhibition).isEqualTo(post.getExhibition());
+         Assertions.assertThat(exhibitionAttendance).isEqualTo(post.getExhibitionAttendance());
+         Assertions.assertThat(togetherActivity).isEqualTo(post.getTogetherActivity());
+      }
 }

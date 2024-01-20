@@ -3,6 +3,7 @@ package com.hibitbackendrefactor.profile.domain;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.profile.exception.InvalidIntroduceException;
 import com.hibitbackendrefactor.profile.exception.InvalidNicknameException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -108,5 +109,101 @@ class ProfileTest {
         ).isInstanceOf(InvalidIntroduceException.class);
     }
 
+    @DisplayName("본인의 프로필에서 나이를 변경한다.")
+    @Test
+    void 본인의_프로필에서_나이를_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        int age = 29;
 
+        // when
+        profile.updateAge(age);
+
+        // then
+        Assertions.assertThat(profile.getAge()).isEqualTo(age);
+     }
+
+    @DisplayName("본인의 프로필에서 자기소개를 변경한다.")
+    @Test
+    void 본인의_프로필에서_자기소개를_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        String introduce = "안녕하세요 서버 개발자로 살아가는 팬시입니다.";
+
+        // when
+        profile.updateIntroduce(introduce);
+
+        // then
+        Assertions.assertThat(profile.getIntroduce()).isEqualTo(introduce);
+    }
+
+    @DisplayName("본인의 프로필에서 성격을 변경한다.")
+    @Test
+    void 본인의_프로필에서_성격을_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        PersonalityType personalityType = PersonalityType.TYPE_2;
+
+        // when
+        profile.updatePersonality(personalityType);
+
+        // then
+        Assertions.assertThat(profile.getPersonality()).isEqualTo(personalityType);
+    }
+
+    @DisplayName("본인의 프로필에서 이미지를 변경한다.")
+    @Test
+    void 본인의_프로필에서_이미지를_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        String imageName = "devfancy.png";
+
+        // when
+        profile.updateImageName(imageName);
+
+        // then
+        Assertions.assertThat(profile.getImageName()).isEqualTo(imageName);
+    }
+
+    @DisplayName("본인의 프로필에서 직업을 변경한다.")
+    @Test
+    void 본인의_프로필에서_직업을_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        String job = "서버 개발자";
+
+        // when
+        profile.updateJob(job);
+
+        // then
+        Assertions.assertThat(profile.getJob()).isEqualTo(job);
+    }
+
+    @DisplayName("본인의 프로필에서 주소인 도시를 변경한다.")
+    @Test
+    void 본인의_프로필에서_주소인_도시를_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        AddressCity addressCity = AddressCity.BUSAN;
+
+        // when
+        profile.updateAddressCity(addressCity);
+
+        // then
+        Assertions.assertThat(profile.getAddressCity()).isEqualTo(addressCity);
+    }
+
+    @DisplayName("본인의 프로필에서 주소인 구를 변경한다.")
+    @Test
+    void 본인의_프로필에서_주소인_구를_변경한다() {
+        // given
+        Profile profile = 팬시_프로필();
+        AddressDistrict addressDistrict = AddressDistrict.BUSAN_HAEUNDAE;
+
+        // when
+        profile.updateAddressDistinct(addressDistrict);
+
+        // then
+        Assertions.assertThat(profile.getAddressDistrict()).isEqualTo(addressDistrict);
+    }
 }

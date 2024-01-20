@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.common.fixtures;
 
+import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.domain.TogetherActivity;
@@ -42,6 +43,21 @@ public class PostFixtures {
     public static final PostStatus 모집상태2 = PostStatus.HOLDING;
 
 
+    public static Post 프로젝트_해시테크(Member member) {
+        return Post.builder()
+                .member(member)
+                .title(게시글제목1)
+                .content(게시글내용1)
+                .exhibition(전시회제목1)
+                .exhibitionAttendance(전시관람인원1)
+                .possibleTime(전시관람희망날짜1)
+                .openChatUrl(오픈채팅방Url1)
+                .togetherActivity(함께하고싶은활동1)
+                .imageName(게시글이미지1)
+                .postStatus(모집상태1)
+                .build();
+    }
+
     public static Post 프로젝트_해시테크() {
         return Post.builder()
                 .member(팬시())
@@ -57,9 +73,9 @@ public class PostFixtures {
                 .build();
     }
 
-    public static Post 오스틴리_전시회() {
+    public static Post 오스틴리_전시회(Member member) {
         return Post.builder()
-                .member(팬시())
+                .member(member)
                 .title(게시글제목2)
                 .content(게시글내용2)
                 .exhibition(전시회제목2)

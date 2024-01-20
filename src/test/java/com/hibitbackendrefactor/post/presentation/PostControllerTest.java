@@ -29,9 +29,9 @@ class PostControllerTest extends ControllerTestSupport {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaaaaaa.bbbbbbbb.cccccccc";
 
-    @DisplayName("게시글을 등록한다.")
+    @DisplayName("신규 게시글을 등록한다.")
     @Test
-    void 게시글을_등록한다() throws Exception {
+    void 신규_게시글을_등록한다() throws Exception {
         // given
         PostCreateRequest request = PostCreateRequest.builder()
                 .title(게시글제목1)

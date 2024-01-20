@@ -1,6 +1,8 @@
 package com.hibitbackendrefactor.profile.domain;
 
 import com.hibitbackendrefactor.IntegrationTestSupport;
+import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.member.domain.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.팬시_프로필;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,11 +21,18 @@ class ProfileRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     private Profile profile1;
+
+    private Member member1;
 
     @BeforeEach
     void setUp() {
-        profile1 = 팬시_프로필();
+        member1 = 팬시();
+        memberRepository.save(member1);
+        profile1 = 팬시_프로필(member1);
         profileRepository.save(profile1);
     }
 

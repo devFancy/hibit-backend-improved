@@ -5,6 +5,8 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.profile.domain.*;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
+import com.hibitbackendrefactor.profile.dto.request.ProfileUpdateRequest;
+import com.hibitbackendrefactor.profile.dto.response.ProfileOtherResponse;
 import com.hibitbackendrefactor.profile.dto.response.ProfileResponse;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
 import org.junit.jupiter.api.AfterEach;
@@ -41,6 +43,7 @@ class ProfileServiceTest extends IntegrationTestSupport {
         // given
         Member 팬시 = 팬시();
         memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
 
         ProfileCreateRequest request = ProfileCreateRequest.builder()
                 .nickname("devFancy")
@@ -58,7 +61,7 @@ class ProfileServiceTest extends IntegrationTestSupport {
                 .build();
 
         // when
-        Long newProfileId = profileService.save(팬시.getId(), request);
+        Long newProfileId = profileService.save(member.getId(), request);
         Profile savedProfile = profileRepository.findByMemberId(팬시.getId()).orElse(null);
 
         // then
@@ -73,7 +76,9 @@ class ProfileServiceTest extends IntegrationTestSupport {
         // given
         Member 팬시 = 팬시();
         memberRepository.save(팬시);
-        Profile profile = 팬시_프로필();
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile profile = 팬시_프로필(member);
         Long memberId = profileRepository.save(profile).getMember().getId();
 
         // when
@@ -101,4 +106,66 @@ class ProfileServiceTest extends IntegrationTestSupport {
         assertThatThrownBy(() -> profileService.findMyProfile(잘못된_아이디))
                 .isInstanceOf(NotFoundProfileException.class);
     }
+
+    @DisplayName("본인의 프로필을 수정한다.")
+    @Test
+    void 본인의_프로필을_수정한다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile profile = 팬시_프로필(member);
+        Long memberId = profileRepository.save(profile).getMember().getId();
+
+        // when
+        ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                .nickname("devFancy2")
+                .age(29)
+                .gender(1)
+                .personality(PersonalityType.TYPE_1)
+                .introduce("안녕하세요 서버 개발자로 살아가는 팬시입니다.")
+                .imageName("image2.png")
+                .job("서버 개발자")
+                .addressCity(AddressCity.SEOUL)
+                .addressDistrict(AddressDistrict.SEOUL_GANGNAM)
+                .jobVisibility(true)
+                .addressVisibility(false)
+                .myImageVisibility(false)
+                .build();
+
+        profileService.update(memberId, request);
+        Profile updatedProfile = profileRepository.findByMemberId(팬시.getId()).orElse(null);
+
+        // then
+        assertAll(
+                () -> assertThat(updatedProfile.getNickname()).isEqualTo(request.getNickname()),
+                () -> assertThat(updatedProfile.getAge()).isEqualTo(request.getAge()),
+                () -> assertThat(updatedProfile.getGender()).isEqualTo(request.getGender()),
+                () -> assertThat(updatedProfile.getPersonality()).isEqualTo(request.getPersonality()),
+                () -> assertThat(updatedProfile.getIntroduce()).isEqualTo(request.getIntroduce()),
+                () -> assertThat(updatedProfile.getImageName()).isEqualTo(request.getImageName()),
+                () -> assertThat(updatedProfile.getJob()).isEqualTo(request.getJob()),
+                () -> assertThat(updatedProfile.getAddressCity()).isEqualTo(request.getAddressCity()),
+                () -> assertThat(updatedProfile.getAddressDistrict()).isEqualTo(request.getAddressDistrict())
+        );
+    }
+
+    @DisplayName("타인의 프로필 정보를 조회한다.")
+    @Test
+    void 타인의_프로필_정보를_조회한다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile profile = 팬시_프로필(member);
+        Long memberId = profileRepository.save(profile).getMember().getId();
+
+        // when
+        ProfileOtherResponse response = profileService.findOtherProfile(memberId);
+
+        // then
+        assertNotNull(response);
+     }
 }
