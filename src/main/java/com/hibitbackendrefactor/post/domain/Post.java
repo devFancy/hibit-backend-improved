@@ -48,6 +48,7 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
+    private int viewCount = 0;
     protected Post() {
     }
 
@@ -109,5 +110,9 @@ public class Post extends BaseEntity {
 
     public PostStatus getPostStatus() {
         return postStatus;
+    }
+
+    public int getViewCount() {
+        return viewCount;
     }
 }
