@@ -1,19 +1,18 @@
 package com.hibitbackendrefactor.post.domain;
 
-import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    default Post getById(final Long id) {
-        return findById(id)
-                .orElseThrow(NotFoundPostException::new);
-    }
+    @Query("SELECT p FROM Post p WHERE p.id = :id")
+    Optional<Post> findByIdForUpdate(@Param("id") final Long id);
 
     @Query(value = "SELECT * " +
             "FROM post p " +
@@ -25,4 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             + "WHERE p.member.id = :memberId")
     Optional<Post> findByMemberId(@Param("memberId") final Long memberId);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Post p SET p.viewCount = p.viewCount + 1 WHERE p.id = :postId")
+    void updateViewCount(@Param("postId") Long postId);
 }

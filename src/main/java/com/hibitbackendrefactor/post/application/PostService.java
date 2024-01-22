@@ -8,6 +8,7 @@ import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
+import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
@@ -71,8 +72,11 @@ public class PostService {
         return PostsResponse.of(posts);
     }
 
+    @Transactional
     public PostDetailResponse findPost(final Long postId) {
-        Post post = postRepository.getById(postId);
+        Post post = postRepository.findByIdForUpdate(postId)
+                        .orElseThrow(NotFoundPostException::new);
+        postRepository.updateViewCount(post.getId());
         return PostDetailResponse.of(post);
     }
 }

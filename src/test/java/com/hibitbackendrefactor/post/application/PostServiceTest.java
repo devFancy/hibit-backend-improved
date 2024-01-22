@@ -98,6 +98,30 @@ class PostServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @DisplayName("특정 게시글을 조회하면 조회수를 1 증가시킨다.")
+    @Test
+    void 특정_게시글을_조회하면_조회수를_1_증가시킨다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile 팬시_프로필 = 팬시_프로필(member);
+        Profile profile =  profileRepository.save(팬시_프로필);
+        memberRepository.save(팬시);
+
+        Post post = 프로젝트_해시테크(profile.getMember());
+        postRepository.save(post);
+
+        // when
+        int viewCount = post.getViewCount();
+        postService.findPost(post.getId());
+        int updatedViewCount = postRepository.findById(post.getId()).get().getViewCount();
+
+        // then
+        Assertions.assertThat(viewCount + 1).isEqualTo(updatedViewCount);
+     }
+
     private static PostCreateRequest getPostCreateRequest() {
         PostCreateRequest request = PostCreateRequest.builder()
                 .title(게시글제목1)
