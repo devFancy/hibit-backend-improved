@@ -22,14 +22,14 @@ public class PostController {
 
     private final PostService postService;
 
-    public PostController(PostService postService) {
+    public PostController(final PostService postService) {
         this.postService = postService;
     }
 
     @PostMapping("/api/posts/new")
     @Operation(summary = "/api/posts/new", description = "게시글을 등록한다.")
     public ResponseEntity<Post> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember
-            , @Valid @RequestBody PostCreateRequest request) {
+            , @Valid @RequestBody final PostCreateRequest request) {
         Long postId = postService.save(loginMember.getId(), request);
         return ResponseEntity.created(URI.create("/posts/" + postId)).build();
     }
@@ -43,7 +43,7 @@ public class PostController {
 
     @GetMapping("api/posts/{id}")
     @Operation(summary = "/api/posts/{id}", description = "게시글에 대한 상세 페이지를 조회한다.")
-    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") Long postId) {
+    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") final Long postId) {
         PostDetailResponse response = postService.findPost(postId);
         return ResponseEntity.ok(response);
     }
