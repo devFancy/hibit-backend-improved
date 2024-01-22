@@ -22,7 +22,6 @@ public class PostDetailResponse {
     private Long id;
     private Long writerId;
     private String writerName;
-    private String writerImage;
     private String title;
     private String content;
     private String exhibition;
@@ -32,16 +31,16 @@ public class PostDetailResponse {
     private String openChatUrl;
     private PostStatus postStatus;
     private String imageName;
+    private int viewCount;
 
     @Builder
-    public PostDetailResponse(final Long id, final Long writerId, final String writerName, String writerImage
+    public PostDetailResponse(final Long id, final Long writerId, final String writerName
             , final String title, final String content, final String exhibition
             , final List<String> exhibitionAttendanceAndTogetherActivity, final LocalDateTime possibleTime
-            , final String openChatUrl, final PostStatus postStatus, final String imageName) {
+            , final String openChatUrl, final PostStatus postStatus, final String imageName, int viewCount) {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
-//        this.writerImage = writerImage;
         this.title = title;
         this.content = content;
         this.exhibition = exhibition;
@@ -50,6 +49,7 @@ public class PostDetailResponse {
         this.openChatUrl = openChatUrl;
         this.postStatus = postStatus;
         this.imageName = imageName;
+        this.viewCount = viewCount;
     }
 
     public static PostDetailResponse of(final Post post) {
@@ -57,7 +57,6 @@ public class PostDetailResponse {
                 .id(post.getId())
                 .writerId(post.getMember().getId())
                 .writerName(post.getMember().getDisplayName())
-//                .writerImage(findWriterImage(post.getMember()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .exhibition(post.getExhibition())
@@ -66,6 +65,7 @@ public class PostDetailResponse {
                 .openChatUrl(post.getOpenChatUrl())
                 .postStatus(post.getPostStatus())
                 .imageName(post.getImageName())
+                .viewCount(post.getViewCount())
                 .build();
     }
 
