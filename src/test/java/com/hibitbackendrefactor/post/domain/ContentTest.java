@@ -38,23 +38,22 @@ class ContentTest {
     }
 
     @DisplayName("내용이 200자 이상 초과하면 예외를 던진다")
-    @ParameterizedTest
-    @ValueSource(strings = {"오스틴 리 전시회 보러가실 분"
-            + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분"
-            + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분"
-            + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분"
-            + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분"
-            + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분" + "오스틴 리 전시회 보러가실 분"})
-    void 내용이_200자_이상_초과하면_예외를_던진다(String value) {
-        // given & when & then
-        assertThatThrownBy(() -> new Content(value))
+    @Test
+    void 내용이_200자_이상_초과하면_예외를_던진다() {
+        // given
+        String longerThanTwoHundred = "a".repeat(201);
+
+        // when & then
+        assertThatThrownBy(() -> new Content(longerThanTwoHundred))
                 .isInstanceOf(InvalidContentException.class)
                 .hasMessageContaining("본문은 1자 이상 200자 이하여야 합니다.");
     }
 
+
+
     @DisplayName("내용이 공백이거나 null 이면 예외를 던진다")
     @ParameterizedTest
-    @ValueSource(strings = {"", " "})
+    @ValueSource(strings = {"", " ", "   "})
     void 내용이_공백이거나_null_이면_예외를_던진다(String value) {
 
         // given & when & then

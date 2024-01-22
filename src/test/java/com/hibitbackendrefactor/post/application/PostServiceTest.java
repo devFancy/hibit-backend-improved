@@ -9,6 +9,7 @@ import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,11 +61,15 @@ class PostServiceTest extends IntegrationTestSupport {
         // then
         assertThat(newPostId).isNotNull();
         assertAll(
-                () -> assertEquals("프로젝트_해시테크", savedPost.getTitle()),
-                () -> assertEquals("프로젝트 해시 태크(http://projecthashtag.net/) 보러가실 분 있으면 아래 댓글 남겨주세요~", savedPost.getContent()),
-                () -> assertEquals("PROJECT HASHTAG 2023 SELECTED ARTISTS", savedPost.getExhibition()),
-                () -> assertEquals(3, savedPost.getExhibitionAttendance()),
-                () -> assertEquals("postImage1.png", savedPost.getImageName())
+                () -> assertEquals(게시글제목1, savedPost.getTitle()),
+                () -> assertEquals(게시글내용1, savedPost.getContent()),
+                () -> assertEquals(전시회제목1, savedPost.getExhibition()),
+                () -> assertEquals(전시관람인원1, savedPost.getExhibitionAttendance()),
+                () -> assertEquals(전시관람희망날짜1, savedPost.getPossibleTime()),
+                () -> assertEquals(오픈채팅방Url1, savedPost.getOpenChatUrl()),
+                () -> assertEquals(함께하고싶은활동1, savedPost.getTogetherActivity()),
+                () -> assertEquals(전시관람인원1, savedPost.getExhibitionAttendance()),
+                () -> assertEquals(게시글이미지1, savedPost.getImageName())
         );
     }
 
@@ -91,7 +96,6 @@ class PostServiceTest extends IntegrationTestSupport {
                 () -> assertThat(response.getId()).isEqualTo(post.getId()),
                 () -> assertThat(response.getWriterId()).isEqualTo(post.getMember().getId()),
                 () -> assertThat(response.getWriterName()).isEqualTo(post.getMember().getDisplayName()),
-//                () -> assertThat(response.getWriterImage()).isEqualTo(post.getMember().getMainImage()),
                 () -> assertThat(response.getTitle()).isEqualTo(post.getTitle()),
                 () -> assertThat(response.getContent()).isEqualTo(post.getContent()),
                 () -> assertThat(response.getExhibition()).isEqualTo(post.getExhibition())

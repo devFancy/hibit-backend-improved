@@ -37,30 +37,21 @@ class ExhibitionTest {
     }
 
     @DisplayName("전시회 제목이 50자 이상 초과하면 예외를 던진다")
-    @ParameterizedTest
-    @ValueSource(strings = {"오스틴 리 전시회" + "오스틴 리 전시회" + "오스틴 리 전시회" + "오스틴 리 전시회" + "오스틴 리 전시회" + "오스틴 리 전시회" + "오스틴 리 전시회"
-    + "오스틴 리 전시회\" + \"오스틴 리 전시회\" + \"오스틴 리 전시회\" + \"오스틴 리 전시회\" + \"오스틴 리 전시회\" + \"오스틴 리 전시회\" + \"오스틴 리 전시회"})
-    void 전시회_제목이_50자_이상_초과하면_예외를_던진다(String value) {
-        // given & when & then
-        assertThatThrownBy(() -> new Exhibition(value))
+    @Test
+    void 전시회_제목이_50자_이상_초과하면_예외를_던진다() {
+        // given
+        String longerThanFifty = "a".repeat(51);
+
+        // when & then
+        assertThatThrownBy(() -> new Exhibition(longerThanFifty))
                 .isInstanceOf(InvalidExhibitionException.class)
                 .hasMessageContaining("전시회 제목은 1자 이상 50자 이하여야 합니다");
     }
 
     @DisplayName("전시회 제목이 공백이거나 null 이면 예외를 던진다")
     @ParameterizedTest
-    @ValueSource(strings = {"", " "})
+    @ValueSource(strings = {"", " ", "   "})
     void 전시회_제목이_공백이거나_null_이면_예외를_던진다(String value) {
-
-        // given & when & then
-        assertThatThrownBy(() -> new Exhibition(value))
-                .isInstanceOf(InvalidExhibitionException.class)
-                .hasMessageContaining("전시회 제목은 1자 이상 50자 이하여야 합니다");
-    }
-    @DisplayName("전시회 제목이 여러 공백으로 이루어진 경우 예외를 던진다")
-    @ParameterizedTest
-    @ValueSource(strings = {"         "})
-    void 전시회_제목이_여러_공백으로_이루어진_경우_예외를_던진다(String value) {
 
         // given & when & then
         assertThatThrownBy(() -> new Exhibition(value))

@@ -36,32 +36,21 @@ class TitleTest {
      }
 
     @DisplayName("게시글_제목이 30자 이상 초과하면 예외를 던진다")
-    @ParameterizedTest
-    @ValueSource(strings = {"오스틴리 전시회 놀러오실 분~" + "오스틴리 전시회 놀러오실 분" + "오스틴리 전시회 놀러오실 분"
-            , "데이비드 호크니 같이 보러 가실분 있나요?" + "데이비드 호크니 같이 보러 가실분 있나요?" + "데이비드 호크니 같이 보러 가실분 있나요?"})
-    void 게시글_제목이_30자_이상_초과하면_예외를_던진다(String value) {
+    @Test
+    void 게시글_제목이_30자_이상_초과하면_예외를_던진다() {
+        // given
+        String LongerThanThirty = "a".repeat(31);
 
-        // given & when & then
-        assertThatThrownBy(() -> new Title(value))
+        // when & then
+        assertThatThrownBy(() -> new Title(LongerThanThirty))
                 .isInstanceOf(InvalidTitleException.class)
                 .hasMessageContaining("제목은 1자 이상 30자 이하여야 합니다.");
     }
 
     @DisplayName("게시글 제목이 공백이거나 null 이면 예외를 던진다")
     @ParameterizedTest
-    @ValueSource(strings = {"", " "})
+    @ValueSource(strings = {"", " ", "      "})
     void 게시글_제목이_공백이거나_null_이면_예외를_던진다(String value) {
-
-        // given & when & then
-        assertThatThrownBy(() -> new Title(value))
-                .isInstanceOf(InvalidTitleException.class)
-                .hasMessageContaining("제목은 1자 이상 30자 이하여야 합니다.");
-    }
-
-    @DisplayName("게시글 제목이 여러 공백으로 이루어지면 예외를 던진다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"          ", "                     "})
-    void 게시글_제목이_여러_공백으로_이루어지면_예외를_던진다(String value) {
 
         // given & when & then
         assertThatThrownBy(() -> new Title(value))
