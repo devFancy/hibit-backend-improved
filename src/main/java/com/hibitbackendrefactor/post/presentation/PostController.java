@@ -10,6 +10,8 @@ import com.hibitbackendrefactor.post.dto.response.PostsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +45,13 @@ public class PostController {
 
     @GetMapping("api/posts/{id}")
     @Operation(summary = "/api/posts/{id}", description = "게시글에 대한 상세 페이지를 조회한다.")
-    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") final Long postId) {
-        PostDetailResponse response = postService.findPost(postId);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") final Long postId,
+                                                       @AuthenticationPrincipal final LoginMember loginMember,
+                                                       @CookieValue(value = "viewedPost", required = false, defaultValue = "") final String postLog) {
+        PostDetailResponse response = postService.findPost(postId, loginMember, postLog);
+        String updatedLog = postService.updatePostLog(postId, postLog);
+        ResponseCookie responseCookie = ResponseCookie.from("viewedPost", updatedLog).maxAge(86400L).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie.toString()).body(response);
     }
 
 }

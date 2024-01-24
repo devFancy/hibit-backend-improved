@@ -1,10 +1,12 @@
 package com.hibitbackendrefactor.post.application;
 
+import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostRepository;
 import com.hibitbackendrefactor.post.domain.PostStatus;
+import com.hibitbackendrefactor.post.domain.ViewCountManager;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
@@ -23,11 +25,14 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
+    private final ViewCountManager viewCountManager;
 
-    public PostService(final PostRepository postRepository, final MemberRepository memberRepository, final ProfileRepository profileRepository) {
+    public PostService(final PostRepository postRepository, final MemberRepository memberRepository,
+                       final ProfileRepository profileRepository, final ViewCountManager viewCountManager) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
         this.profileRepository = profileRepository;
+        this.viewCountManager = viewCountManager;
     }
 
     @Transactional
@@ -73,10 +78,20 @@ public class PostService {
     }
 
     @Transactional
-    public PostDetailResponse findPost(final Long postId) {
-        Post post = postRepository.findByIdForUpdate(postId)
-                        .orElseThrow(NotFoundPostException::new);
-        postRepository.updateViewCount(post.getId());
-        return PostDetailResponse.of(post);
+    public PostDetailResponse findPost(final Long postId, final LoginMember loginMember, final String cookieValue) {
+        if (viewCountManager.isFirstAccess(cookieValue, postId)) {
+            postRepository.updateViewCount(postId);
+        }
+        Post foundPost = findPostObject(postId);
+        return PostDetailResponse.of(foundPost, loginMember);
+    }
+
+    public String updatePostLog(final Long postId, final String cookieValue) {
+        return viewCountManager.getUpdatedLog(cookieValue, postId);
+    }
+
+    private Post findPostObject(final Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(NotFoundPostException::new);
     }
 }
