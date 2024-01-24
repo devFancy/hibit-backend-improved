@@ -7,6 +7,7 @@ import com.hibitbackendrefactor.member.dto.MemberResponse;
 public class MemberFixtures {
 
     /* 팬시 */
+    public static final Long FANCY_ID = 1L;
     public static final String 팬시_이메일 = "fancy@gmail.com";
     public static final String 팬시_닉네임 = "팬시";
     public static final SocialType 소셜로그인유형 = SocialType.GOOGLE;

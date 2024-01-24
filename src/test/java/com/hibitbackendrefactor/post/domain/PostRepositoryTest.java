@@ -3,6 +3,7 @@ package com.hibitbackendrefactor.post.domain;
 import com.hibitbackendrefactor.IntegrationTestSupport;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
+import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import org.assertj.core.api.Assertions;
@@ -53,7 +54,8 @@ class PostRepositoryTest extends IntegrationTestSupport {
     @Test
     void 게시글과_회원_테이블이_정상적으로_매핑이_된다() {
         // given
-        Post foundPost = postRepository.getById(post.getId());
+        Post foundPost = postRepository.findById(post.getId())
+                .orElseThrow(NotFoundPostException::new);
 
         // when & then
         Assertions.assertThat(foundPost.getMember().getId()).isNotNull();

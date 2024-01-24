@@ -9,11 +9,17 @@ import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
-import org.assertj.core.api.Assertions;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
@@ -22,7 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 class PostServiceTest extends IntegrationTestSupport {
+
+    private static final String EMPTY_COOKIE_VALUE = "";
 
     @Autowired
     private PostRepository postRepository;
@@ -35,6 +44,7 @@ class PostServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private PostService postService;
+
     @AfterEach
     void tearDown() {
         postRepository.deleteAll();
@@ -82,14 +92,14 @@ class PostServiceTest extends IntegrationTestSupport {
         Member member = memberRepository.getById(팬시.getId());
 
         Profile 팬시_프로필 = 팬시_프로필(member);
-        Profile profile =  profileRepository.save(팬시_프로필);
+        Profile profile = profileRepository.save(팬시_프로필);
         memberRepository.save(팬시);
 
         Post post = 프로젝트_해시테크(profile.getMember());
         Long savedPostId = postRepository.save(post).getId();
 
         // when
-        PostDetailResponse response = postService.findPost(savedPostId);
+        PostDetailResponse response = postService.findPost(savedPostId, LOGIN_MEMBER,EMPTY_COOKIE_VALUE);
 
         // then
         assertAll(
@@ -111,7 +121,7 @@ class PostServiceTest extends IntegrationTestSupport {
         Member member = memberRepository.getById(팬시.getId());
 
         Profile 팬시_프로필 = 팬시_프로필(member);
-        Profile profile =  profileRepository.save(팬시_프로필);
+        Profile profile = profileRepository.save(팬시_프로필);
         memberRepository.save(팬시);
 
         Post post = 프로젝트_해시테크(profile.getMember());
@@ -119,12 +129,54 @@ class PostServiceTest extends IntegrationTestSupport {
 
         // when
         int viewCount = post.getViewCount();
-        postService.findPost(post.getId());
+        postService.findPost(post.getId(), LOGIN_MEMBER,EMPTY_COOKIE_VALUE);
+
         int updatedViewCount = postRepository.findById(post.getId()).get().getViewCount();
 
         // then
-        Assertions.assertThat(viewCount + 1).isEqualTo(updatedViewCount);
-     }
+        assertThat(viewCount + 1).isEqualTo(updatedViewCount);
+    }
+
+    @DisplayName("오늘 처음 방문한 게시글을 조회하면 조회수가 1 증가되고, 이미 방문한 게시글을 조회하면 조회수가 증가하지 않는다.")
+    @ParameterizedTest
+    @MethodSource("argsOfFindPostViewCount")
+    void 오늘_처음_방문한_게시글을_조회하면_조회수가_1_증가되고_이미_방문한_게시글을_조회하면_조회수가_증가하지_않는다(String logs, int expectedIncreasedViewCount) {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile 팬시_프로필 = 팬시_프로필(member);
+        Profile profile = profileRepository.save(팬시_프로필);
+        memberRepository.save(팬시);
+
+        Post 게시글 = 프로젝트_해시테크(profile.getMember());
+        postRepository.save(게시글);
+
+        int viewCount = 게시글.getViewCount();
+        postService.findPost(게시글.getId(), LOGIN_MEMBER, logs);
+        log.info("viewCount={}", viewCount);
+
+        // when
+        int updatedViewCount = postRepository.findById(게시글.getId())
+                .get()
+                .getViewCount();
+
+        log.info("expectedIncreasedViewCount={}", expectedIncreasedViewCount);
+        log.info("updatedViewCount={}", updatedViewCount);
+
+        // then
+        assertThat(viewCount + expectedIncreasedViewCount).isEqualTo(updatedViewCount);
+    }
+
+    private static Stream<Arguments> argsOfFindPostViewCount() {
+        int today = LocalDateTime.now().getDayOfMonth();
+        return Stream.of(
+                Arguments.of(EMPTY_COOKIE_VALUE, 1),
+                Arguments.of(today + ":2/3", 1)
+        );
+    }
+
 
     private static PostCreateRequest getPostCreateRequest() {
         PostCreateRequest request = PostCreateRequest.builder()

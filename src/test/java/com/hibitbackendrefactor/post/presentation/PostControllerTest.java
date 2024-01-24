@@ -17,7 +17,7 @@ import java.util.List;
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
 import static com.hibitbackendrefactor.post.dto.response.PostResponse.AttendanceAndTogetherActivity;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -106,7 +106,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .postStatus(모집상태1)
                 .imageName(게시글이미지1)
                 .build();
-        when(postService.findPost(anyLong())).thenReturn(response);
+        when(postService.findPost(any(), any(), any())).thenReturn(response);
 
         // when & then
         mockMvc.perform(get("/api/posts/{id}", postId)
