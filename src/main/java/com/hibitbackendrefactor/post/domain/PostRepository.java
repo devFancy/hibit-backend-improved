@@ -28,5 +28,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     void updateViewCount(@Param("postId") Long postId);
 
     @EntityGraph(attributePaths = "member")
+    @Query("SELECT p FROM Post p")
     Optional<Post> findPostById(Long id);
 }
