@@ -1,5 +1,6 @@
 package com.hibitbackendrefactor.post.domain;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying
     @Query("UPDATE Post p SET p.viewCount = p.viewCount + 1 WHERE p.id = :postId")
     void updateViewCount(@Param("postId") Long postId);
+
+    @EntityGraph(attributePaths = "member")
+    Optional<Post> findPostById(Long id);
 }
