@@ -30,7 +30,8 @@ public class PostController {
 
     @PostMapping("/api/posts/new")
     @Operation(summary = "/api/posts/new", description = "게시글을 등록한다.")
-    public ResponseEntity<Post> save(@Parameter(hidden = true) @AuthenticationPrincipal final LoginMember loginMember
+    public ResponseEntity<Post> save(@Parameter(hidden = true)
+                                     @AuthenticationPrincipal final LoginMember loginMember
             , @Valid @RequestBody final PostCreateRequest request) {
         Long postId = postService.save(loginMember.getId(), request);
         return ResponseEntity.created(URI.create("/posts/" + postId)).build();
