@@ -10,11 +10,11 @@ import java.util.Objects;
 public class OAuthToken extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "oauth_token_id")
+    @Column(name = "id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "members_id", nullable = false)
     private Member member;
     @Column(name = "refresh_token")
     private String refreshToken;

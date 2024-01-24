@@ -7,15 +7,16 @@ import lombok.Builder;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Table(name = "posts")
 @Entity
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "members_id")
     private Member member;
 
     @Column(name = "title", nullable = false)
