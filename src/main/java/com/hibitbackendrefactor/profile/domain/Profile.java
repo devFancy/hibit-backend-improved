@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 @Getter
+@Table(name = "profiles")
 @Entity
 public class Profile extends BaseEntity {
 
@@ -19,40 +20,40 @@ public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id", unique = true)
+    @Column(name = "id", unique = true)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "members_id")
     private Member member;
 
     @Column(name = "nickname", length = 20, unique = true)
     private String nickname;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private int gender;
 
-    @Column(name = "personality")
+    @Column(name = "personality", nullable = false)
     @Enumerated(EnumType.STRING)
     private PersonalityType personality;
 
-    @Column(name = "introduce", length = 200)
+    @Column(name = "introduce", length = 200, nullable = false)
     private String introduce;
 
-    @Column(name = "image_name")
+    @Column(name = "image_name", nullable = false)
     private String imageName;
 
-    @Column(name = "job", length = 50)
+    @Column(name = "job", length = 50, nullable = false)
     private String job;
 
-    @Column(name = "address_city")
+    @Column(name = "address_city", nullable = false)
     @Enumerated(EnumType.STRING)
     private AddressCity addressCity;
 
-    @Column(name = "address_distinct")
+    @Column(name = "address_distinct", nullable = false)
     @Enumerated(EnumType.STRING)
     private AddressDistrict addressDistrict;
 
