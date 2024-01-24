@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = "SELECT * " +
-            "FROM post p " +
+            "FROM posts p " +
             "ORDER BY p.created_date_time DESC", nativeQuery = true)
     List<Post> findAllByOrderByCreatedDateTimeDesc();
 
