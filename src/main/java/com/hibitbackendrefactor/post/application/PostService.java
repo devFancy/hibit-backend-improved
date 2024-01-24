@@ -91,7 +91,7 @@ public class PostService {
     }
 
     private Post findPostObject(final Long postId) {
-        return postRepository.findById(postId)
+        return postRepository.findPostById(postId)
                 .orElseThrow(NotFoundPostException::new);
     }
 }
