@@ -1,6 +1,7 @@
 package com.hibitbackendrefactor.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostStatus;
@@ -52,10 +53,10 @@ public class PostDetailResponse {
         this.viewCount = viewCount;
     }
 
-    public static PostDetailResponse of(final Post post) {
+    public static PostDetailResponse of(final Post post, final LoginMember loginMember) {
         return PostDetailResponse.builder()
                 .id(post.getId())
-                .writerId(post.getMember().getId())
+                .writerId(loginMember.getId())
                 .writerName(post.getMember().getDisplayName())
                 .title(post.getTitle())
                 .content(post.getContent())

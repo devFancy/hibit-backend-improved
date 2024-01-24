@@ -11,9 +11,6 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Post p WHERE p.id = :id")
-    Optional<Post> findByIdForUpdate(@Param("id") final Long id);
-
     @Query(value = "SELECT * " +
             "FROM post p " +
             "ORDER BY p.created_date_time DESC", nativeQuery = true)
