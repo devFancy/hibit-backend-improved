@@ -91,7 +91,10 @@ public class PostService {
     }
 
     private Post findPostObject(final Long postId) {
-        return postRepository.findPostById(postId)
-                .orElseThrow(NotFoundPostException::new);
+        List<Post> posts = postRepository.findPostById(postId);
+        if (posts.isEmpty()) {
+            throw new NotFoundPostException();
+        }
+        return posts.get(0);
     }
 }
