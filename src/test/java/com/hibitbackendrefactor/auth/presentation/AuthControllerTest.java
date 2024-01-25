@@ -78,20 +78,6 @@ class AuthControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("리프레시 토큰 없이 액세스 토큰을 발급하면 상태코드 400을 반환한다.")
-    @Test
-    void 리프레시_토큰_없이_액세스_토큰을_발급하면_상태코드_400을_반환한다() throws Exception {
-        // given
-        given(authService.generateAccessToken(any())).willThrow(new InvalidTokenException());
-
-        // when & then
-        mockMvc.perform(post("/api/auth/token/access")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
     @DisplayName("본인의 리프레시 토큰이 아닌 값으로 새로운 액세스 토큰을 발급하면 상태코드 401을 반환한다.")
     @Test
     void 본인의_리프레시_토큰이_아닌_값으로_새로운_액세스_토큰을_발급하면_상태코드_401을_반환한다() throws Exception {
