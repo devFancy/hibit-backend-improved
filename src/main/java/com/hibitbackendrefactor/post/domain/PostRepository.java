@@ -25,9 +25,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE Post p SET p.viewCount = p.viewCount + 1 WHERE p.id = :postId")
-    void updateViewCount(@Param("postId") Long postId);
+    void updateViewCount(@Param("postId") final Long postId);
 
     @EntityGraph(attributePaths = "member")
-    @Query("SELECT p FROM Post p")
-    Optional<Post> findPostById(Long id);
+    @Query("SELECT p FROM Post p WHERE p.id = :postId")
+    List<Post> findPostById(@Param("postId") final Long postId);
 }
