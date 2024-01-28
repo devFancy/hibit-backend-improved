@@ -50,12 +50,14 @@ public class Post extends BaseEntity {
     private PostStatus postStatus;
 
     private int viewCount = 0;
+
     protected Post() {
     }
 
     @Builder
-    public Post(final Member member, String title, final String content, final String exhibition, final int exhibitionAttendance
-            , final LocalDateTime possibleTime, final String openChatUrl, final TogetherActivity togetherActivity
+    public Post(final Member member, final String title, final String content
+            , final String exhibition, final int exhibitionAttendance, final LocalDateTime possibleTime
+            , final String openChatUrl, final TogetherActivity togetherActivity
             , final String imageName, final PostStatus postStatus) {
         this.member = member;
         this.title = new Title(title);

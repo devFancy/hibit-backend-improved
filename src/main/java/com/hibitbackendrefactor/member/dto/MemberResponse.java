@@ -11,7 +11,7 @@ public class MemberResponse {
     private SocialType socialType;
     private boolean isProfile;
 
-    public MemberResponse(Long id, String email, String displayName, SocialType socialType, boolean isProfile) {
+    public MemberResponse(final Long id, final String email, final String displayName, final SocialType socialType, final boolean isProfile) {
         this.id = id;
         this.email = email;
         this.displayName = displayName;

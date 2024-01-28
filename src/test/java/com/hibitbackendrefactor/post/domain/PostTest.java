@@ -15,7 +15,7 @@ class PostTest {
     @DisplayName("게시글을 등록한다. - Case 1 ")
     @Test
     void 게시글을_등록한다_Case1() {
-        // when & then
+        // given
         Member 팬시 = 팬시();
 
         // when & then
@@ -25,7 +25,7 @@ class PostTest {
     @DisplayName("게시글을 등록한다. - Case 2")
     @Test
     void 게시글을_등록한다_Case2() {
-        // when & then
+        // given
         Member 팬시 = 팬시();
 
         // when & then

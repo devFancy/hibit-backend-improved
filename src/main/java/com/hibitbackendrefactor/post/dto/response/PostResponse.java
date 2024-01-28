@@ -48,7 +48,7 @@ public class PostResponse {
                 .createDateTime(post.getCreateDateTime().toLocalDate())
                 .build();
     }
-    public static List<String> AttendanceAndTogetherActivity(int exhibitionAttendance, TogetherActivity togetherActivity) {
+    public static List<String> AttendanceAndTogetherActivity(final int exhibitionAttendance, final TogetherActivity togetherActivity) {
         List<String> attendanceAndTogetherActivity = new ArrayList<>();
         attendanceAndTogetherActivity.add(exhibitionAttendance + "인 관람");
         attendanceAndTogetherActivity.add(togetherActivity.getText());

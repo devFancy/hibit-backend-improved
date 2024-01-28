@@ -14,7 +14,7 @@ public class PostsResponse {
         this.posts = posts;
     }
 
-    public static PostsResponse of(List<Post> posts) {
+    public static PostsResponse of(final List<Post> posts) {
         List<PostResponse> postResponses = posts.stream()
                 .map(post ->  PostResponse.of(post))
                 .collect(Collectors.toList());
