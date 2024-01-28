@@ -47,9 +47,9 @@ class PostServiceTest extends IntegrationTestSupport {
 
     @AfterEach
     void tearDown() {
-        postRepository.deleteAll();
-        profileRepository.deleteAll();
-        memberRepository.deleteAll(); // deleteAllInBatch()인 경우 오류는 나중에 해결할 예정(23.01.10)
+        postRepository.deleteAllInBatch();
+        profileRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
     }
 
     @DisplayName("게시글을 등록한 페이지를 반환한다.")
