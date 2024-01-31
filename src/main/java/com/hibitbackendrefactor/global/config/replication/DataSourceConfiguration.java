@@ -10,18 +10,18 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.Map;
+
+import static com.hibitbackendrefactor.global.config.replication.DataSourceKey.KeyName.*;
+import static com.hibitbackendrefactor.global.config.replication.DataSourceKey.*;
 
 @Configuration
 @Profile("prod")
 public class DataSourceConfiguration {
-    private static final String SOURCE_NAME = "SOURCE";
-    private static final String REPLICA_NAME = "REPLICA";
-
     @Bean
     @Primary
     public DataSource dataSource() {
-        DataSource determinedDataSource = routingDataSource(sourceDataSource(), replicaDataSource());
+        DataSource determinedDataSource = routingDataSource(sourceDataSource(), replica1DataSource(), replica2DataSource());
         return new LazyConnectionDataSourceProxy(determinedDataSource);
     }
 
@@ -34,9 +34,17 @@ public class DataSourceConfiguration {
     }
 
     @Bean
-    @Qualifier(REPLICA_NAME)
-    @ConfigurationProperties(prefix = "spring.datasource.replica")
-    public DataSource replicaDataSource() {
+    @Qualifier(REPLICA_1_NAME)
+    @ConfigurationProperties(prefix = "spring.datasource.replica1")
+    public DataSource replica1DataSource() {
+        return DataSourceBuilder.create()
+                .build();
+    }
+
+    @Bean
+    @Qualifier(REPLICA_2_NAME)
+    @ConfigurationProperties(prefix = "spring.datasource.replica2")
+    public DataSource replica2DataSource() {
         return DataSourceBuilder.create()
                 .build();
     }
@@ -44,15 +52,15 @@ public class DataSourceConfiguration {
     @Bean
     public DataSource routingDataSource(
             @Qualifier(SOURCE_NAME) DataSource sourceDataSource,
-            @Qualifier(REPLICA_NAME) DataSource replicaDataSource
+            @Qualifier(REPLICA_1_NAME) DataSource replica1DataSource,
+            @Qualifier(REPLICA_2_NAME) DataSource replica2DataSource
     ) {
+        Map<Object, Object> dataSources = Map.of(SOURCE, sourceDataSource,
+                REPLICA_1, replica1DataSource,
+                REPLICA_2, replica2DataSource);
+
         RoutingDataSource routingDataSource = new RoutingDataSource();
-
-        HashMap<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("source", sourceDataSource);
-        dataSourceMap.put("replica", replicaDataSource);
-
-        routingDataSource.setTargetDataSources(dataSourceMap);
+        routingDataSource.setTargetDataSources(dataSources);
         routingDataSource.setDefaultTargetDataSource(sourceDataSource);
 
         return routingDataSource;
