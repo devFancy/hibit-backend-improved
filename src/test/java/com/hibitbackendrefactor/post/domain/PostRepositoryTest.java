@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
 import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
@@ -76,22 +75,7 @@ class PostRepositoryTest extends IntegrationTestSupport {
         Assertions.assertThat(foundPost.getMember().getId()).isNotNull();
     }
 
-    @DisplayName("특정 회원 ID에 해당하는 게시글을 찾는다.")
-    @Test
-    void 특정_회원_ID에_해당하는_게시글을_찾는다() {
-        // given
-        Long memberId = post1.getMember().getId();
-
-        // when
-        Optional<Post> actual = postRepository.findByMemberId(memberId);
-
-        // then
-        assertThat(actual).isPresent();
-        Post foundPost = actual.get();
-        assertThat(foundPost.getMember().getId()).isEqualTo(memberId);
-    }
-
-    @DisplayName("신규로 등록된 게시글을 최신순으로 모두 조회한다.")
+    @DisplayName("신규로 등록된 게시글을 최신순으로 모두 가져온다.")
     @Test
     void findAllByOrderByCreatedDateTimeDesc() {
         // given
@@ -106,7 +90,7 @@ class PostRepositoryTest extends IntegrationTestSupport {
                         tuple(posts.get(2).getTitle(), posts.get(2).getContent())
                 );
     }
-    
+
     @DisplayName("특정 게시글의 viewCount 를 1 증가시킨다.")
     @Test
     void updateViewCount() {

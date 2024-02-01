@@ -73,20 +73,20 @@ class PostServiceTest extends IntegrationTestSupport {
         // when
         PostCreateRequest request = getPostCreateRequest();
         Long newPostId = postService.save(팬시_프로필.getMember().getId(), request);
-        Post savedPost = postRepository.findByMemberId(팬시.getId()).orElse(null);
+        Post actual = postRepository.findById(newPostId).orElseThrow();
 
         // then
         assertThat(newPostId).isNotNull();
         assertAll(
-                () -> assertEquals(게시글제목1, savedPost.getTitle()),
-                () -> assertEquals(게시글내용1, savedPost.getContent()),
-                () -> assertEquals(전시회제목1, savedPost.getExhibition()),
-                () -> assertEquals(전시관람인원1, savedPost.getExhibitionAttendance()),
-                () -> assertEquals(전시관람희망날짜1, savedPost.getPossibleTime()),
-                () -> assertEquals(오픈채팅방Url1, savedPost.getOpenChatUrl()),
-                () -> assertEquals(함께하고싶은활동1, savedPost.getTogetherActivity()),
-                () -> assertEquals(전시관람인원1, savedPost.getExhibitionAttendance()),
-                () -> assertEquals(게시글이미지1, savedPost.getImageName())
+                () -> assertEquals(게시글제목1, actual.getTitle()),
+                () -> assertEquals(게시글내용1, actual.getContent()),
+                () -> assertEquals(전시회제목1, actual.getExhibition()),
+                () -> assertEquals(전시관람인원1, actual.getExhibitionAttendance()),
+                () -> assertEquals(전시관람희망날짜1, actual.getPossibleTime()),
+                () -> assertEquals(오픈채팅방Url1, actual.getOpenChatUrl()),
+                () -> assertEquals(함께하고싶은활동1, actual.getTogetherActivity()),
+                () -> assertEquals(전시관람인원1, actual.getExhibitionAttendance()),
+                () -> assertEquals(게시글이미지1, actual.getImageName())
         );
     }
 
