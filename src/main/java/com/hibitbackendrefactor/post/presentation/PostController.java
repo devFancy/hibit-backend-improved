@@ -55,4 +55,10 @@ public class PostController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie.toString()).body(response);
     }
 
+    @GetMapping(path = "/api/posts/count")
+    @Operation(summary = "/api/posts/count", description = "특정 제목 또는 내용에 해당하는 값을 입력하면 해당 값이 포함된 게시글의 총 개수를 반환한다.")
+    public ResponseEntity<PostsCountResponse> searchPostCount(@RequestParam @Nullable String query) {
+        PostsCountResponse postsCountResponse = postService.countPostWithQuery(query);
+        return ResponseEntity.ok(postsCountResponse);
+    }
 }
