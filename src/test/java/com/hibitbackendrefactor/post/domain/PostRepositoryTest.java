@@ -90,6 +90,36 @@ class PostRepositoryTest extends IntegrationTestSupport {
         Post foundPost = actual.get();
         assertThat(foundPost.getMember().getId()).isEqualTo(memberId);
     }
+
+    @DisplayName("신규로 등록된 게시글을 최신순으로 모두 조회한다.")
+    @Test
+    void findAllByOrderByCreatedDateTimeDesc() {
+        // given
+        List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc();
+
+        // when & then
+        assertThat(posts)
+                .extracting(Post::getTitle, Post::getContent)
+                .containsExactly(
+                        tuple(posts.get(0).getTitle(), posts.get(0).getContent()),
+                        tuple(posts.get(1).getTitle(), posts.get(1).getContent()),
+                        tuple(posts.get(2).getTitle(), posts.get(2).getContent())
+                );
+    }
+    
+    @DisplayName("특정 게시글의 viewCount 를 1 증가시킨다.")
+    @Test
+    void updateViewCount() {
+        // given
+        int initViewCount = postRepository.findById(post1.getId()).get().getViewCount();
+        postRepository.updateViewCount(post1.getId());
+        em.clear();
+        int viewCount = postRepository.findById(post1.getId()).get().getViewCount();
+
+        // when & then
+        assertThat(initViewCount + 1).isEqualTo(viewCount);
+    }
+
     @DisplayName("특정 쿼리에 부합하는 글의 개수를 가져온다.")
     @Test
     void findPostPagesByQuery() {
