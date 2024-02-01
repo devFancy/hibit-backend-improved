@@ -42,4 +42,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = SEARCH_SQL, nativeQuery = true)
     Page<Post> findPostPagesByQuery(Pageable pageable, @Param("query") String query);
+
+    @Query(value = SEARCH_SQL, nativeQuery = true)
+    Page<Post> findPostSlicePageByQuery(Pageable pageable, @Param("query") String query);
 }

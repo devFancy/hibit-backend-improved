@@ -109,4 +109,12 @@ public class PostService {
         Page<Post> posts = postRepository.findPostPagesByQuery(pageable, searchQuery.getValue());
         return PostsCountResponse.of((int) posts.getTotalElements());
     }
+
+    public PostsSliceResponse searchSlickWithQuery(final String query, Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), DESC, "created_date_time");
+        SearchQuery searchQuery = new SearchQuery(query);
+
+        Page<Post> posts = postRepository.findPostSlicePageByQuery(pageable, searchQuery.getValue());
+        return PostsSliceResponse.ofPostSlice(posts);
+    }
 }
