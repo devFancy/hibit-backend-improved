@@ -3,21 +3,26 @@ package com.hibitbackendrefactor.post.application;
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
-import com.hibitbackendrefactor.post.domain.Post;
-import com.hibitbackendrefactor.post.domain.PostRepository;
-import com.hibitbackendrefactor.post.domain.PostStatus;
-import com.hibitbackendrefactor.post.domain.ViewCountManager;
+import com.hibitbackendrefactor.post.domain.*;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
 import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Service
 @Transactional(readOnly = true)
@@ -96,5 +101,21 @@ public class PostService {
             throw new NotFoundPostException();
         }
         return posts.get(0);
+    }
+
+    public PostsCountResponse countPostWithQuery(final String query) {
+        Pageable pageable = PageRequest.of(0, 3, DESC, "created_date_time");
+        SearchQuery searchQuery = new SearchQuery(query);
+
+        Page<Post> posts = postRepository.findPostPagesByQuery(pageable, searchQuery.getValue());
+        return PostsCountResponse.of((int) posts.getTotalElements());
+    }
+
+    public PostsSliceResponse searchSlickWithQuery(final String query, Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), DESC, "created_date_time");
+        SearchQuery searchQuery = new SearchQuery(query);
+
+        Slice<Post> posts = postRepository.findPostSlicePageByQuery(pageable, searchQuery.getValue());
+        return PostsSliceResponse.ofPostSlice(posts);
     }
 }

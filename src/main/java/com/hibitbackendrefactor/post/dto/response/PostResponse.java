@@ -37,7 +37,7 @@ public class PostResponse {
         this.createDateTime = createDateTime;
     }
 
-    public static PostResponse of(final Post post) {
+    public static PostResponse from(final Post post) {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())

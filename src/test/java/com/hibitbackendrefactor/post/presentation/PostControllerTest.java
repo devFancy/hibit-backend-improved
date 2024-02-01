@@ -2,15 +2,15 @@ package com.hibitbackendrefactor.post.presentation;
 
 import com.hibitbackendrefactor.ControllerTestSupport;
 import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
-import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
-import com.hibitbackendrefactor.post.dto.response.PostResponse;
-import com.hibitbackendrefactor.post.dto.response.PostsResponse;
+import com.hibitbackendrefactor.post.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +28,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostControllerTest extends ControllerTestSupport {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaaaaaa.bbbbbbbb.cccccccc";
+
+
+    private static final PostResponse POST_RESPONSE_1 = PostResponse.builder()
+            .id(1L)
+            .title("게시글 제목1")
+            .exhibition("전시회 제목1")
+            .exhibitionAttendanceAndTogetherActivity(Arrays.asList("4인 관람", "맛집가기"))
+            .postStatus(PostStatus.HOLDING)
+            .imageName("게시글 이미지1")
+            .createDateTime(LocalDate.of(2024, 2, 1))
+            .build();
+
+    private static final PostResponse POST_RESPONSE_2 = PostResponse.builder()
+            .id(2L)
+            .title("게시글 제목2")
+            .exhibition("전시회 제목2")
+            .exhibitionAttendanceAndTogetherActivity(Arrays.asList("3인 관람", "만나서 정해요!"))
+            .postStatus(PostStatus.HOLDING)
+            .imageName("게시글 이미지2")
+            .createDateTime(LocalDate.of(2024, 2, 1))
+            .build();
 
     @DisplayName("신규 게시글을 등록한다.")
     @Test
@@ -71,9 +92,10 @@ class PostControllerTest extends ControllerTestSupport {
                 .createDateTime(LocalDate.now())
                 .build());
 
+        // when
         when(postService.findPosts()).thenReturn(new PostsResponse(responses));
 
-        // when & then
+        // then
         mockMvc.perform(get("/api/posts")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .content(objectMapper.writeValueAsString(responses))
@@ -106,9 +128,11 @@ class PostControllerTest extends ControllerTestSupport {
                 .postStatus(모집상태1)
                 .imageName(게시글이미지1)
                 .build();
+
+        // when
         when(postService.findPost(any(), any(), any())).thenReturn(response);
 
-        // when & then
+        // then
         mockMvc.perform(get("/api/posts/{id}", postId)
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .content(objectMapper.writeValueAsString(response))
@@ -117,6 +141,95 @@ class PostControllerTest extends ControllerTestSupport {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(postId))
                 .andExpect(jsonPath("$.writerName").value("팬시"))
+                .andReturn();
+    }
+
+    @DisplayName("검색할 때 특정 제목 또는 내용에 해당하는 값을 입력하면 해당 값이 포함된 개수가 반환된다.")
+    @Test
+    void searchPostCount() throws Exception {
+        // given
+        PostsCountResponse countResponse = new PostsCountResponse(5);
+
+        // when
+        when(postService.countPostWithQuery(any())).thenReturn(countResponse);
+
+        // then
+        mockMvc.perform(get("/api/posts/count?query=제목|내용")
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .content(objectMapper.writeValueAsString(countResponse))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+     }
+
+    @DisplayName("특정 게시글 검색시 200을 반환한다.")
+    @Test
+    void searchSlicePosts() throws Exception {
+        // given
+        PostsSliceResponse pagePostsResponse = new PostsSliceResponse(
+                List.of(POST_RESPONSE_2, POST_RESPONSE_1), true);
+
+        // when
+        when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
+
+        // then
+        mockMvc.perform(get("/api/posts/search?query=제목&size=2&page=0")
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .content(objectMapper.writeValueAsString(pagePostsResponse))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.posts[0].id").value(2L))
+                .andExpect(jsonPath("$.posts[0].title").value("게시글 제목2"))
+                .andExpect(jsonPath("$.posts[0].exhibition").value("전시회 제목2"))
+                .andReturn();
+
+    }
+
+    @DisplayName("or 게시글 검색 시 200을 반환한다.")
+    @Test
+    void searchSlicePosts_or() throws Exception {
+        // given
+        PostsSliceResponse pagePostsResponse = new PostsSliceResponse(
+                List.of(POST_RESPONSE_2, POST_RESPONSE_1), true);
+
+        // when
+        when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
+
+        // then
+        mockMvc.perform(get("/api/posts/search?query=제목2|제목1&size=2&page=0")
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .content(objectMapper.writeValueAsString(pagePostsResponse))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.posts[0].id").value(2L))
+                .andExpect(jsonPath("$.posts[0].title").value("게시글 제목2"))
+                .andExpect(jsonPath("$.posts[0].exhibition").value("전시회 제목2"))
+                .andReturn();
+
+    }
+
+    @DisplayName("and 게시글 검색 시 200을 반환한다.")
+    @Test
+    void searchSlicePosts_and() throws Exception {
+        // given
+        PostsSliceResponse pagePostsResponse = new PostsSliceResponse(
+                List.of(POST_RESPONSE_2, POST_RESPONSE_1), true);
+
+        // when
+        when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
+
+        // then
+        mockMvc.perform(get("/api/posts/search?query=제목2&제목1&size=2&page=0")
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .content(objectMapper.writeValueAsString(pagePostsResponse))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.posts[0].id").value(2L))
+                .andExpect(jsonPath("$.posts[0].title").value("게시글 제목2"))
+                .andExpect(jsonPath("$.posts[0].exhibition").value("전시회 제목2"))
                 .andReturn();
     }
 }

@@ -25,6 +25,20 @@ public class PostFixtures {
     public static final String 게시글이미지1 = "postImage1.png";
     public static final PostStatus 모집상태1 = PostStatus.HOLDING;
 
+    /* 게시글1-2 : 해시태크-2 */
+    public static final String 게시글제목1_2 = "프로젝트_해시테크";
+    public static final String 게시글내용1_2 = "프로젝트 해시 태크(http://projecthashtag.net/) 보러가실 분 있으면 아래 댓글 남겨주세요~";
+
+    public static final String 전시회제목1_2 = "PROJECT HASHTAG 2023 SELECTED ARTISTS";
+
+    public static final int 전시관람인원1_2 = 3;
+    public static final LocalDateTime 전시관람희망날짜1_2 = LocalDateTime.now();
+    public static final String 오픈채팅방Url1_2 = "http://projecthashtag.net/";
+    public static final TogetherActivity 함께하고싶은활동1_2 = TogetherActivity.EAT;
+
+    public static final String 게시글이미지1_2 = "postImage1.png";
+    public static final PostStatus 모집상태1_2 = PostStatus.HOLDING;
+
 
     /* 게시글2: 오스틴리 전시회 */
     public static final String 게시글제목2 = "오스틴리 전시회";
@@ -42,6 +56,20 @@ public class PostFixtures {
 
     public static final PostStatus 모집상태2 = PostStatus.HOLDING;
 
+    public static Post 프로젝트_해시테크_2(Member member) {
+        return Post.builder()
+                .member(member)
+                .title(게시글제목1_2)
+                .content(게시글내용1_2)
+                .exhibition(전시회제목1_2)
+                .exhibitionAttendance(전시관람인원1_2)
+                .possibleTime(전시관람희망날짜1_2)
+                .openChatUrl(오픈채팅방Url1_2)
+                .togetherActivity(함께하고싶은활동1_2)
+                .imageName(게시글이미지1_2)
+                .postStatus(모집상태1_2)
+                .build();
+    }
 
     public static Post 프로젝트_해시테크(Member member) {
         return Post.builder()

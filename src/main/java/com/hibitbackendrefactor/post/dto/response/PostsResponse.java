@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 public class PostsResponse {
     private final List<PostResponse> posts;
 
-    public PostsResponse(List<PostResponse> posts) {
+    public PostsResponse(final List<PostResponse> posts) {
         this.posts = posts;
     }
 
     public static PostsResponse of(final List<Post> posts) {
         List<PostResponse> postResponses = posts.stream()
-                .map(post ->  PostResponse.of(post))
+                .map(post ->  PostResponse.from(post))
                 .collect(Collectors.toList());
         return new PostsResponse(postResponses);
     }
