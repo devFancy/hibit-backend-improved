@@ -2,7 +2,7 @@ package com.hibitbackendrefactor.post.dto.response;
 
 import com.hibitbackendrefactor.post.domain.Post;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class PostsSliceResponse {
         this.lastPage = lastPage;
     }
 
-    public static PostsSliceResponse ofPostSlice(final Page<Post> postSlice) {
+    public static PostsSliceResponse ofPostSlice(final Slice<Post> postSlice) {
         List<PostResponse> postResponses = postSlice.getContent()
                 .stream()
                 .map(post ->  PostResponse.from(post))

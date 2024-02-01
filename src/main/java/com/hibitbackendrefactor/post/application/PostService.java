@@ -16,6 +16,7 @@ import com.hibitbackendrefactor.profile.exception.NotFoundProfileException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,7 +115,7 @@ public class PostService {
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), DESC, "created_date_time");
         SearchQuery searchQuery = new SearchQuery(query);
 
-        Page<Post> posts = postRepository.findPostSlicePageByQuery(pageable, searchQuery.getValue());
+        Slice<Post> posts = postRepository.findPostSlicePageByQuery(pageable, searchQuery.getValue());
         return PostsSliceResponse.ofPostSlice(posts);
     }
 }

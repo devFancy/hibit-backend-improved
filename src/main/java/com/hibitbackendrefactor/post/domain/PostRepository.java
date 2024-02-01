@@ -1,8 +1,8 @@
 package com.hibitbackendrefactor.post.domain;
 
-import com.hibitbackendrefactor.member.domain.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -39,5 +39,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findPostPagesByQuery(Pageable pageable, @Param("query") String query);
 
     @Query(value = SEARCH_SQL, nativeQuery = true)
-    Page<Post> findPostSlicePageByQuery(Pageable pageable, @Param("query") String query);
+    Slice<Post> findPostSlicePageByQuery(Pageable pageable, @Param("query") String query);
 }
