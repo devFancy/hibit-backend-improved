@@ -4,15 +4,17 @@ on:
   push:
     branches:
       - main
-    paths: 'hibit-backend-refactor/**'
+      - feature/*
+    paths: 'src/**'
   pull_request:
     branches: 
       - main
-    paths: 'hibit-backend-refactor/**'
+      - feature/*
+    paths: 'src/**'
 
 defaults:
   run:
-    working-directory: hibit-backend-refactor
+    working-directory: src
 
 # Report 결과 쓰기 위해 필요
 permissions:
@@ -24,35 +26,35 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: 🎋 bring repository # 레포지토리를 가져온다.
+    - name: 레포지토리를 가져옵니다
       uses: actions/checkout@v3
 
-    - name: 🎋 Set up JDK 11 # JDK 11을 설치한다.
+    - name: JDK 11을 설치합니다.
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: 🎋 Setup timezone
+    - name: 타입존을 설정합니다
       uses: zcong1993/setup-timezone@master
       with:
         timezone: Asia/Seoul
 
-    - name: 🎋 Grant execute permission to gradlew # Gradle 명령 실행을 위한 권한을 부여한다.
+    - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew
 
-    - name: 🎋 Run Gradle # Gradle build를 수핸한다.
+    - name: Gradle build를 수행합니다
       run: ./gradlew build
 
-    - name: 🎋 Publish test results # 테스트 결과를 PR에 코멘트로 등록한다.
+    - name: 테스트 결과를 PR에 코멘트로 등록합니다.
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
       with:
         files: '**/build/test-results/test/TEST-*.xml'
 
-    - name: 🎋 Comment on test failures # 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록한다.
+    - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다.
       uses: mikepenz/action-junit-report@v3
       if: always()
       with:
         report_paths: '**/build/test-results/test/TEST-*.xml'
-        # token: ${{ github.token }}
+        token: ${{ github.token }}
