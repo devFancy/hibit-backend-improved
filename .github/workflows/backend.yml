@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - feature/*
-    paths: 'hibit-backend-improved/**'
+    paths: './**'
   pull_request:
     branches: 
       - main
       - feature/*
-    paths: 'hibit-backend-improved/**'
+    paths: './**'
 
 defaults:
   run:
