@@ -1,20 +1,20 @@
-name: Java CI with Gradle(Backend)
+name: 히빗 백엔드 CI 테스트 자동화
 
 on:
   push:
     branches:
       - main
       - feature/*
-    paths: 'src/**'
+    paths: './**'
   pull_request:
     branches: 
       - main
       - feature/*
-    paths: 'src/**'
+    paths: './**'
 
 defaults:
   run:
-    working-directory: src
+    working-directory: hibit-backend-improved
 
 # Report 결과 쓰기 위해 필요
 permissions:
