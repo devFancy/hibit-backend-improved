@@ -5,16 +5,16 @@ on:
     branches:
       - main
       - feature/*
-    paths: 'src/**'
+    paths: 'hibit-backend-improved/**'
   pull_request:
     branches: 
       - main
       - feature/*
-    paths: 'src/**'
+    paths: 'hibit-backend-improved/**'
 
 defaults:
   run:
-    working-directory: src
+    working-directory: hibit-backend-improved
 
 # Report 결과 쓰기 위해 필요
 permissions:
