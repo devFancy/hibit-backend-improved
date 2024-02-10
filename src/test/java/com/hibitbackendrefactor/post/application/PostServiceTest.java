@@ -12,7 +12,6 @@ import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -35,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-@Slf4j
 class PostServiceTest extends IntegrationTestSupport {
 
     private static final String EMPTY_COOKIE_VALUE = "";
@@ -51,6 +51,9 @@ class PostServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private PostService postService;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @AfterEach
     void tearDown() {
@@ -137,6 +140,7 @@ class PostServiceTest extends IntegrationTestSupport {
         // when
         int viewCount = post.getViewCount();
         postService.findPost(post.getId(), LOGIN_MEMBER,EMPTY_COOKIE_VALUE);
+        em.clear();
 
         int updatedViewCount = postRepository.findById(post.getId()).get().getViewCount();
 
@@ -162,18 +166,22 @@ class PostServiceTest extends IntegrationTestSupport {
 
         int viewCount = 게시글.getViewCount();
         postService.findPost(게시글.getId(), LOGIN_MEMBER, logs);
-        log.info("viewCount={}", viewCount);
-
+        em.clear();
         // when
         int updatedViewCount = postRepository.findById(게시글.getId())
                 .get()
                 .getViewCount();
 
-        log.info("expectedIncreasedViewCount={}", expectedIncreasedViewCount);
-        log.info("updatedViewCount={}", updatedViewCount);
-
         // then
         assertThat(viewCount + expectedIncreasedViewCount).isEqualTo(updatedViewCount);
+    }
+
+    private static Stream<Arguments> argsOfFindPostViewCount() {
+        int today = LocalDateTime.now().getDayOfMonth();
+        return Stream.of(
+                Arguments.of(EMPTY_COOKIE_VALUE, 1),
+                Arguments.of(today + ":2/3", 1)
+        );
     }
 
     @DisplayName("주어진 쿼리로 정확히 한 개의 게시글을 검색할 수 있다.")
@@ -297,14 +305,6 @@ class PostServiceTest extends IntegrationTestSupport {
                  () -> assertThat(response.getTotalPostCount()).isEqualTo(3)
          );
       }
-
-    private static Stream<Arguments> argsOfFindPostViewCount() {
-        int today = LocalDateTime.now().getDayOfMonth();
-        return Stream.of(
-                Arguments.of(EMPTY_COOKIE_VALUE, 1),
-                Arguments.of(today + ":2/3", 1)
-        );
-    }
 
 
     private static PostCreateRequest getPostCreateRequest() {

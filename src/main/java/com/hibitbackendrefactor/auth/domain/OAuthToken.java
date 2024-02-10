@@ -6,6 +6,7 @@ import com.hibitbackendrefactor.member.domain.Member;
 import javax.persistence.*;
 import java.util.Objects;
 
+@Table(name = "oauth_tokens")
 @Entity
 public class OAuthToken extends BaseEntity {
     @Id
