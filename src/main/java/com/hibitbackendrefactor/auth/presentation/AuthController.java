@@ -11,14 +11,11 @@ import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.OAuthUriResponse;
 import com.hibitbackendrefactor.global.token.Login;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "auth", description = "인증/인가")
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
@@ -34,14 +31,12 @@ public class AuthController {
     }
 
     @GetMapping("/{oauthProvider}/oauth-uri")
-    @Operation(summary = "/{oauthProvider}/oauth-uri", description = "로그인 요청")
     public ResponseEntity<OAuthUriResponse> generateLink(@PathVariable final String oauthProvider,
                                                          @RequestParam final String redirectUri) {
         OAuthUriResponse oAuthUriResponse = new OAuthUriResponse(oAuthUri.generate(redirectUri));
         return ResponseEntity.ok(oAuthUriResponse);
     }
     @PostMapping("/{oauthProvider}/token")
-    @Operation(summary = "/{oauthProvider}/token", description = "액세스 토큰은 Body로 발급, 리프레시 토큰은 Set-Cookie로 발급 받기")
     public ResponseEntity<AccessAndRefreshTokenResponse> generateAccessAndRefreshToken(
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthMember oAuthMember = oAuthClient.getOAuthMember(tokenRequest.getCode(), tokenRequest.getRedirectUri());
@@ -50,7 +45,6 @@ public class AuthController {
     }
 
     @PostMapping("/token/access")
-    @Operation(summary = "/token/access", description = "리프레시 토큰으로 새로운 액세스 토큰 발급 받기")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
            @CookieValue("refreshToken") String refreshToken) {
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
@@ -59,12 +53,10 @@ public class AuthController {
     }
 
     @GetMapping("/validate/token")
-    @Operation(summary = "/validate/token", description = "웹 페이지 로딩시 유효한 토큰인지 확인")
     public ResponseEntity<Void> validateToken(@AuthenticationPrincipal final LoginMember loginMember) {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/logout")
-    @Operation(summary = "/logout", description = "로그아웃 시, 서버에서 accessToken과 refreshToken값을 만료시킨다.")
     public ResponseEntity<Void> logout(@Login LoginMember loginMember) {
         authService.deleteToken(loginMember.getId());
         return ResponseEntity.noContent().build();
