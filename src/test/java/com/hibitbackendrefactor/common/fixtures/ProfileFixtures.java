@@ -16,9 +16,9 @@ public class ProfileFixtures {
     public static final int 팬시_나이 = 28;
     public static final int 팬시_성별 = 0;
     public static final PersonalityType 팬시_성격 = PersonalityType.TYPE_1;
-    public static final String 팬시_자기소개 = "안녕하세요. 저는 소프트웨어 개발자 팬시입니다.";
+    public static final String 팬시_자기소개 = "안녕하세요. 저는 백엔드 개발자 팬시입니다.";
     public static final String 팬시_이미지 = "fancy.png";
-    public static final String 팬시_직업 = "소프트웨어 개발자";
+    public static final String 팬시_직업 = "백엔드 개발자";
     public static final AddressCity 팬시_사는도시 = AddressCity.SEOUL;
     public static final AddressDistrict 팬시_사는지역 = AddressDistrict.SEOUL_GANGNAM;
 
@@ -27,15 +27,15 @@ public class ProfileFixtures {
     public static final boolean 이미지_공개여부 = false;
 
     /* 브루스 프로필 생성 */
-    public static final String 브루스_닉네임 = "팬시";
-    public static final int 브루스_나이 = 28;
-    public static final int 브루스_성별 = 0;
-    public static final PersonalityType 브루스_성격 = PersonalityType.TYPE_1;
-    public static final String 브루스_자기소개 = "안녕하세요. 저는 소프트웨어 개발자 팬시입니다.";
-    public static final String 브루스_이미지 = "fancy.png";
-    public static final String 브루스_직업 = "소프트웨어 개발자";
-    public static final AddressCity 브루스_사는도시 = AddressCity.SEOUL;
-    public static final AddressDistrict 브루스_사는지역 = AddressDistrict.SEOUL_GANGNAM;
+    public static final String 브루스_닉네임 = "브루스";
+    public static final int 브루스_나이 = 30;
+    public static final int 브루스_성별 = 1;
+    public static final PersonalityType 브루스_성격 = PersonalityType.TYPE_2;
+    public static final String 브루스_자기소개 = "안녕하세요. 저는 프론트엔드 개발자 브루스입니다.";
+    public static final String 브루스_이미지 = "bruce.png";
+    public static final String 브루스_직업 = "프론트엔드 개발자";
+    public static final AddressCity 브루스_사는도시 = AddressCity.BUSAN;
+    public static final AddressDistrict 브루스_사는지역 = AddressDistrict.BUSAN_HAEUNDAE;
 
     public static Profile 팬시_프로필() {
         return Profile.builder()

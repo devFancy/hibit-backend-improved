@@ -19,8 +19,12 @@ import java.util.List;
 import static com.hibitbackendrefactor.common.fixtures.ProfileFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,17 +41,18 @@ class ProfileControllerTest extends ControllerTestSupport {
     void 본인_프로필을_등록한다() throws Exception {
         // given
         ProfileCreateRequest request = ProfileCreateRequest.builder()
-                .nickname("팬시")
-                .age(28)
-                .gender(1)
-                .personality(PersonalityType.TYPE_1)
-                .introduce("안녕하세요 저는 소프트웨어 개발자, 팬시입니다.")
-                .imageName("fancy.png")
-                .addressCity(AddressCity.SEOUL)
-                .addressDistrict(AddressDistrict.SEOUL_DOBONG)
-                .jobVisibility(true)
-                .addressVisibility(false)
-                .myImageVisibility(false)
+                .nickname(팬시_닉네임)
+                .age(팬시_나이)
+                .gender(팬시_나이)
+                .personality(팬시_성격)
+                .introduce(팬시_자기소개)
+                .imageName(팬시_이미지)
+                .job(팬시_직업)
+                .addressCity(팬시_사는도시)
+                .addressDistrict(팬시_사는지역)
+                .jobVisibility(직업_공개여부)
+                .addressVisibility(주소_공개여부)
+                .myImageVisibility(이미지_공개여부)
                 .build();
         // when & then
         mockMvc.perform(post("/api/profiles/new")
@@ -59,7 +64,23 @@ class ProfileControllerTest extends ControllerTestSupport {
                 .andDo(print())
                 .andDo(document("profiles/save/success",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰")),
+                        requestFields(
+                                fieldWithPath("nickname").description("닉네임"),
+                                fieldWithPath("age").description("나이"),
+                                fieldWithPath("gender").description("성별"),
+                                fieldWithPath("personality").description("성격"),
+                                fieldWithPath("introduce").description("자기소개"),
+                                fieldWithPath("imageName").description("프로필 대표 이미지"),
+                                fieldWithPath("job").description("직업"),
+                                fieldWithPath("addressCity").description("시"),
+                                fieldWithPath("addressDistrict").description("구"),
+                                fieldWithPath("jobVisibility").description("직업 공개 여부"),
+                                fieldWithPath("addressVisibility").description("주소 공개 여부"),
+                                fieldWithPath("myImageVisibility").description("서브 이미지 공개 여부")
+                        )
                 ))
                 .andExpect(status().isCreated());
     }
