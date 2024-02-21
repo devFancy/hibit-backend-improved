@@ -8,6 +8,10 @@ import org.springframework.http.MediaType;
 import static com.hibitbackendrefactor.common.AuthFixtures.더미_엑세스_토큰;
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시_응답;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,6 +35,13 @@ class MemberControllerTest extends ControllerTestSupport {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
+                .andDo(document("members/find/me/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 엑세스 토큰")
+                        ))
+                )
                 .andExpect(status().isOk());
     }
 }
