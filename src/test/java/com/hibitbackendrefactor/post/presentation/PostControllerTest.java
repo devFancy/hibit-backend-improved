@@ -121,7 +121,6 @@ class PostControllerTest extends ControllerTestSupport {
         mockMvc.perform(get("/api/posts")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(response))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andDo(document("posts/find/all/success",
