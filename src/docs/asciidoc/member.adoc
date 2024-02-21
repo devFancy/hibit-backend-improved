@@ -1,0 +1,11 @@
+== Member(회원)
+
+=== 본인의 프로필 여부 조회
+==== HTTP Request
+include::{snippets}/members/find/me/success/http-request.adoc[]
+
+==== HTTP Request Header
+include::{snippets}/members/find/me/success/request-headers.adoc[]
+
+==== HTTP Response
+include::{snippets}/members/find/me/success/http-response.adoc[]

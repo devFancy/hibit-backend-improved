@@ -6,14 +6,19 @@ import com.hibitbackendrefactor.infrastructure.oauth.exception.OAuthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 import javax.servlet.http.Cookie;
 
 import static com.hibitbackendrefactor.common.AuthFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,6 +34,19 @@ class AuthControllerTest extends ControllerTestSupport {
         mockMvc.perform(get("/api/auth/{oauthProvider}/oauth-uri?redirectUri={redirectUri}", GOOGLE_PROVIDER,
                         "https://hibit.com/oauth"))
                 .andDo(print())
+                .andDo(document("auth/generate/redirectUri/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("oauthProvider").description("OAuth 로그인 제공자 (GOOGLE)")
+                        ),
+                        requestParameters(
+                                parameterWithName("redirectUri").description("OAuth Redirect URI")
+                        ),
+                        responseFields(
+                                fieldWithPath("oAuthUri").type(JsonFieldType.STRING).description("OAuth 소셜 로그인 링크")
+                        )
+                ))
                 .andExpect(status().isOk());
     }
 
@@ -39,11 +57,28 @@ class AuthControllerTest extends ControllerTestSupport {
         given(authService.generateAccessAndRefreshToken(any())).willReturn(MEMBER_인증_코드_토큰_응답());
 
         // when & then
-        mockMvc.perform(post("/api/auth/{oauthProvider}/token", OAUTH_PROVIDER)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/auth/{oauthProvider}/token", OAUTH_PROVIDER)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(MEMBER_인증_코드_토큰_요청())))
                 .andDo(print())
+                .andDo(document("auth/generate/accessTokenAndRefreshToken/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("oauthProvider").description("OAuth 로그인 제공자(GOOGLE)")
+                        ),
+                        requestFields(
+                                fieldWithPath("code").type(JsonFieldType.STRING).description("OAuth 로그인 인증 코드"),
+                                fieldWithPath("redirectUri").type(JsonFieldType.STRING)
+                                        .description("OAuth Redirect URI")
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("히빗 Access Token"),
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("히빗 Refresh Token"),
+                                fieldWithPath("isProfileRegistered").type(JsonFieldType.NUMBER).description("프로필 등록 여부")
+                        )
+                ))
                 .andExpect(status().isOk());
     }
 
@@ -54,13 +89,24 @@ class AuthControllerTest extends ControllerTestSupport {
         given(authService.generateAccessAndRefreshToken(any())).willThrow(new OAuthException());
 
         // when & then
-        mockMvc.perform(post("/api/auth/{oauthProvider}/token", OAUTH_PROVIDER)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/auth/{oauthProvider}/token", OAUTH_PROVIDER)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(MEMBER_인증_코드_토큰_요청())))
                 .andDo(print())
+                .andDo(document("auth/generate/accessTokenAndRefreshToken/fail/ResourceServiceError",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("oauthProvider").description("OAuth 로그인 제공자(GOOGLE)")
+                        ),
+                        requestFields(
+                                fieldWithPath("code").type(JsonFieldType.STRING).description("OAuth 로그인 인증 코드"),
+                                fieldWithPath("redirectUri").type(JsonFieldType.STRING)
+                                        .description("OAuth Redirect URI")
+                        )
+                ))
                 .andExpect(status().isInternalServerError());
-
     }
 
     @DisplayName("리프레시 토큰을 통해 새로운 엑세스 토큰을 발급하면 상태코드 200을 반환한다.")
@@ -70,11 +116,15 @@ class AuthControllerTest extends ControllerTestSupport {
         given(authService.generateAccessToken(any())).willReturn(MEMBER_리뉴얼_토큰_응답());
 
         // when & then
-        mockMvc.perform(post("/api/auth/token/access")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/auth/token/access")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new Cookie("refreshToken", "ccccc.bbbbb.aaaaa")))
                 .andDo(print())
+                .andDo(document("auth/generate/renewalAccessToken/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .andExpect(status().isOk());
     }
 
@@ -85,11 +135,15 @@ class AuthControllerTest extends ControllerTestSupport {
         given(authService.generateAccessToken(any())).willThrow(new InvalidTokenException());
 
         // when & then
-        mockMvc.perform(post("/api/auth/token/access")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/auth/token/access")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(new Cookie("refreshToken", "ccccc.bbbbb.aaaaa")))
                 .andDo(print())
+                .andDo(document("auth/generate/renewalAccessToken/fail/isUnauthorized",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .andExpect(status().isUnauthorized());
     }
 }

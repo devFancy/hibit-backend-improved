@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
+    id "org.asciidoctor.jvm.convert" version "3.3.2" // (1)
 }
 
 group = 'com'
@@ -16,6 +17,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions // (2)
 }
 
 repositories {
@@ -32,6 +34,8 @@ dependencies {
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+
     //테스트에서 lombok 사용
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -49,11 +53,13 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+    // spring restdocs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
 
-    // aws s3
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+ext { // (5)
+    snippetsDir = file('build/generated-snippets')
 }
 
 tasks.named('bootBuildImage') {
@@ -61,8 +67,15 @@ tasks.named('bootBuildImage') {
 }
 
 test {
+    outputs.dir snippetsDir // (6)
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
+}
+
+asciidoctor { // (7)
+    inputs.dir snippetsDir // (8)
+    configurations 'asciidoctorExt' // (9)
+    dependsOn test // (10)
 }
 
 jacoco {

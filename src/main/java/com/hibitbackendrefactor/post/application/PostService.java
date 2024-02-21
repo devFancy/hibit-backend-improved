@@ -5,10 +5,7 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.*;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
-import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
-import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
-import com.hibitbackendrefactor.post.dto.response.PostsResponse;
-import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
+import com.hibitbackendrefactor.post.dto.response.*;
 import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
@@ -77,7 +74,7 @@ public class PostService {
         return profile != null;
     }
 
-    public PostsResponse findPosts() {
+    public PostsResponse findAll() {
         List<Post> posts = postRepository.findAllByOrderByCreatedDateTimeDesc();
         return PostsResponse.of(posts);
     }

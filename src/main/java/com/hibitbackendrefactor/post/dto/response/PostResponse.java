@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +21,12 @@ public class PostResponse {
     private List<String> exhibitionAttendanceAndTogetherActivity;
     private PostStatus postStatus;
     private String imageName;
-    private LocalDate createDateTime;
-
+    private LocalDateTime createDateTime;
 
     @Builder
     public PostResponse(Long id, String title, String exhibition
             , List<String> exhibitionAttendanceAndTogetherActivity, PostStatus postStatus
-            , String imageName, LocalDate createDateTime) {
+            , String imageName, LocalDateTime createDateTime) {
         this.id = id;
         this.title = title;
         this.exhibition = exhibition;
@@ -45,9 +44,10 @@ public class PostResponse {
                 .exhibitionAttendanceAndTogetherActivity(AttendanceAndTogetherActivity(post.getExhibitionAttendance(), post.getTogetherActivity()))
                 .postStatus(post.getPostStatus())
                 .imageName(post.getImageName())
-                .createDateTime(post.getCreateDateTime().toLocalDate())
+                .createDateTime(post.getCreateDateTime())
                 .build();
     }
+
     public static List<String> AttendanceAndTogetherActivity(final int exhibitionAttendance, final TogetherActivity togetherActivity) {
         List<String> attendanceAndTogetherActivity = new ArrayList<>();
         attendanceAndTogetherActivity.add(exhibitionAttendance + "인 관람");

@@ -1,0 +1,51 @@
+== Post(게시글)
+
+=== 게시글 등록
+==== HTTP Request
+include::{snippets}/posts/save/success/http-request.adoc[]
+
+==== Request Fields
+include::{snippets}/posts/save/success/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/save/success/http-response.adoc[]
+
+
+=== 게시글 상세 조회
+==== HTTP Request
+include::{snippets}/posts/find/one/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/find/one/success/http-response.adoc[]
+
+
+=== 게시글 개수 조회
+==== HTTP Request
+include::{snippets}/posts/count/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}//posts/count/success/http-response.adoc[]
+
+
+=== 특정 키워드로 검색
+==== HTTP Request
+include::{snippets}/posts/search/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/search/success/http-response.adoc[]
+
+
+=== or 검색
+==== HTTP Request
+include::{snippets}/posts/search/success/or/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/search/success/or/http-response.adoc[]
+
+
+=== and 검색
+==== HTTP Request
+include::{snippets}/posts/search/success/and/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/search/success/and/http-response.adoc[]

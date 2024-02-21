@@ -1,0 +1,53 @@
+== Auth(인증)
+
+=== OAuth 로그인 링크 생성
+==== HTTP Request
+include::{snippets}/auth/generate/redirectUri/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/auth/generate/redirectUri/success/path-parameters.adoc[]
+
+==== Request Fields
+include::{snippets}/auth/generate/redirectUri/success/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/auth/generate/redirectUri/success/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/auth/generate/redirectUri/success/response-fields.adoc[]
+
+
+=== OAuth 로그인
+==== HTTP Request
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/success/path-parameters.adoc[]
+
+==== Request Fields
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/success/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/success/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/success/response-fields.adoc[]
+
+
+=== OAuth 로그인(Resource Server 에러)
+==== HTTP Response
+include::{snippets}/auth/generate/accessTokenAndRefreshToken/fail/ResourceServiceError/http-response.adoc[]
+
+
+=== 리프레시 토큰을 통한 자동 로그인
+==== HTTP Request
+include::{snippets}/auth/generate/renewalAccessToken/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/auth/generate/renewalAccessToken/success/http-response.adoc[]
+
+
+=== 리프레시 토큰을 통한 자동 로그인 (Invalid Token 에러)
+
+==== HTTP Response
+include::{snippets}/auth/generate/renewalAccessToken/fail/isUnauthorized/http-response.adoc[]

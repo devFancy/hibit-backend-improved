@@ -11,6 +11,9 @@ public class MemberResponse {
     private SocialType socialType;
     private boolean isProfile;
 
+    private MemberResponse() {
+    }
+
     public MemberResponse(final Long id, final String email, final String displayName, final SocialType socialType, final boolean isProfile) {
         this.id = id;
         this.email = email;
