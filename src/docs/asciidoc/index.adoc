@@ -7,6 +7,17 @@
 :sectlinks:
 :sectnums:
 
+== 메인페이지
+==== HTTP Request
+include::{snippets}/posts/find/all/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/find/all/success/http-response.adoc[]
+
+include::auth.adoc[]
+
+include::member.adoc[]
+
 include::profile.adoc[]
 
 include::post.adoc[]

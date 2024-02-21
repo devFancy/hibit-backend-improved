@@ -10,12 +10,14 @@ include::{snippets}/profiles/save/success/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/profiles/save/success/http-response.adoc[]
 
+
 === 성격 목록 조회
 ==== HTTP Request
 include::{snippets}/profiles/find/personalities/success/http-request.adoc[]
 
 ==== HTTP Response
 include::{snippets}/profiles/find/personalities/success/http-response.adoc[]
+
 
 === 본인의 프로필 조회
 ==== HTTP Request
@@ -24,12 +26,14 @@ include::{snippets}/profiles/find/me/success/http-request.adoc[]
 ==== HTTP Response
 include::{snippets}/profiles/find/me/success/http-response.adoc[]
 
+
 === 타인의 프로필 조회
 ==== HTTP Request
 include::{snippets}/profiles/find/other/one/success/http-request.adoc[]
 
 ==== HTTP Response
 include::{snippets}/profiles/find/other/one/success/http-response.adoc[]
+
 
 === 본인의 프로필 수정
 ==== HTTP Request
