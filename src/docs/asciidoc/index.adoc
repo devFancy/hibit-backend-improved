@@ -1,8 +1,10 @@
-= 히빗 API 문서 (version 2)
+= 히빗 API 명세 (version 2)
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
 :toclevels: 3
+:sectlinks:
+:sectnums:
 
 include::post.adoc[]
