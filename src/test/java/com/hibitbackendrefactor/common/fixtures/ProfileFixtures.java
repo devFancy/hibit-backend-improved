@@ -22,6 +22,17 @@ public class ProfileFixtures {
     public static final AddressCity 팬시_사는도시 = AddressCity.SEOUL;
     public static final AddressDistrict 팬시_사는지역 = AddressDistrict.SEOUL_GANGNAM;
 
+    /* 팬시 프로필 수정 */
+    public static final String 팬시_닉네임2 = "팬시2";
+    public static final int 팬시_나이2 = 28;
+    public static final int 팬시_성별2 = 0;
+    public static final PersonalityType 팬시_성격2 = PersonalityType.TYPE_2;
+    public static final String 팬시_자기소개2 = "안녕하세요. 저는 백엔드 개발자 팬시2입니다.";
+    public static final String 팬시_이미지2 = "fancy2.png";
+    public static final String 팬시_직업2 = "백엔드 개발자2";
+    public static final AddressCity 팬시_사는도시2 = AddressCity.SEOUL;
+    public static final AddressDistrict 팬시_사는지역2 = AddressDistrict.SEOUL_GANGNAM;
+
     public static final boolean 직업_공개여부 = true;
     public static final boolean 주소_공개여부 = false;
     public static final boolean 이미지_공개여부 = false;

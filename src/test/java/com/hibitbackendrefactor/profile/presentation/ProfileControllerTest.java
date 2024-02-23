@@ -1,8 +1,6 @@
 package com.hibitbackendrefactor.profile.presentation;
 
 import com.hibitbackendrefactor.ControllerTestSupport;
-import com.hibitbackendrefactor.profile.domain.AddressCity;
-import com.hibitbackendrefactor.profile.domain.AddressDistrict;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
 import com.hibitbackendrefactor.profile.dto.request.ProfileUpdateRequest;
@@ -190,17 +188,18 @@ class ProfileControllerTest extends ControllerTestSupport {
     void 본인_프로필을_수정한다() throws Exception {
         // given
         ProfileUpdateRequest request = ProfileUpdateRequest.builder()
-                .nickname("팬시2")
-                .age(28)
-                .gender(0)
-                .personality(PersonalityType.TYPE_1)
-                .introduce("안녕하세요 저는 소프트웨어 개발자, 팬시2입니다.")
-                .imageName("fancy2.png")
-                .addressCity(AddressCity.SEOUL)
-                .addressDistrict(AddressDistrict.SEOUL_DOBONG)
-                .jobVisibility(false)
-                .addressVisibility(true)
-                .myImageVisibility(true)
+                .nickname(팬시_닉네임2)
+                .age(팬시_나이2)
+                .gender(팬시_성별2)
+                .personality(팬시_성격2)
+                .introduce(팬시_자기소개2)
+                .imageName(팬시_이미지2)
+                .job(팬시_직업2)
+                .addressCity(팬시_사는도시2)
+                .addressDistrict(팬시_사는지역2)
+                .jobVisibility(직업_공개여부)
+                .addressVisibility(주소_공개여부)
+                .myImageVisibility(이미지_공개여부)
                 .build();
 
         // when & then
