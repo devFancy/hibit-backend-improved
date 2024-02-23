@@ -24,9 +24,9 @@ public class PostResponse {
     private LocalDateTime createDateTime;
 
     @Builder
-    public PostResponse(Long id, String title, String exhibition
-            , List<String> exhibitionAttendanceAndTogetherActivity, PostStatus postStatus
-            , String imageName, LocalDateTime createDateTime) {
+    public PostResponse(final Long id, final String title, final String exhibition
+            , final List<String> exhibitionAttendanceAndTogetherActivity, final PostStatus postStatus
+            , final String imageName, final LocalDateTime createDateTime) {
         this.id = id;
         this.title = title;
         this.exhibition = exhibition;
