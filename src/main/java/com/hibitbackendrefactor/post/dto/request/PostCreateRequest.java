@@ -1,6 +1,8 @@
 package com.hibitbackendrefactor.post.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hibitbackendrefactor.member.domain.Member;
+import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.domain.TogetherActivity;
 import lombok.AccessLevel;
@@ -46,6 +48,21 @@ public class PostCreateRequest {
         this.possibleTime = possibleTime;
         this.imageName = imageName;
         this.postStatus = postStatus;
+    }
+
+    public Post toEntity(final Member foundMember, final PostCreateRequest request) {
+        return Post.builder()
+                .member(foundMember)
+                .title(request.getTitle())
+                .content(request.getContent())
+                .exhibition(request.getExhibition())
+                .exhibitionAttendance(request.getExhibitionAttendance())
+                .possibleTime(request.getPossibleTime())
+                .openChatUrl(request.getOpenChatUrl())
+                .togetherActivity(request.getTogetherActivity())
+                .imageName(request.getImageName())
+                .postStatus(PostStatus.HOLDING)
+                .build();
     }
 }
 

@@ -42,25 +42,10 @@ public class PostService {
         validateMember(memberId);
         Member foundMember = memberRepository.getById(memberId);
 
-        Post post = createPost(request, foundMember);
-        Post savedPost = postRepository.save(post);
+        Post savedPost = request.toEntity(foundMember, request);
+        postRepository.save(savedPost);
 
         return savedPost.getId();
-    }
-
-    private Post createPost(final PostCreateRequest request, final Member foundMember) {
-        return Post.builder()
-                .member(foundMember)
-                .title(request.getTitle())
-                .content(request.getContent())
-                .exhibition(request.getExhibition())
-                .exhibitionAttendance(request.getExhibitionAttendance())
-                .possibleTime(request.getPossibleTime())
-                .openChatUrl(request.getOpenChatUrl())
-                .togetherActivity(request.getTogetherActivity())
-                .imageName(request.getImageName())
-                .postStatus(PostStatus.HOLDING)
-                .build();
     }
 
     private void validateMember(final Long memberId) {
