@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
-    id "org.asciidoctor.jvm.convert" version "3.3.2" // (1)
+    id "org.asciidoctor.jvm.convert" version "3.3.2" // (1) plugin 추가
 }
 
 group = 'com'
@@ -17,7 +17,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    asciidoctorExtensions // (2)
+    asciidoctorExt // (2) asciidoctor의 Extention에 대한 configuration 추가
 }
 
 repositories {
@@ -53,12 +53,13 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // spring restdocs
-    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    // spring restdocs (3), (4)
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-ext { // (5)
+ext { // (5) 문서 조각들에 대한 경로를 지정
+    // 전역 변수
     snippetsDir = file('build/generated-snippets')
 }
 
@@ -67,15 +68,20 @@ tasks.named('bootBuildImage') {
 }
 
 test {
-    outputs.dir snippetsDir // (6)
+    outputs.dir snippetsDir // (6) 테스트에서 테스트가 끝난 결과물을 snippetsDir 에 넣음
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
 }
 
-asciidoctor { // (7)
-    inputs.dir snippetsDir // (8)
-    configurations 'asciidoctorExt' // (9)
-    dependsOn test // (10)
+// (7) asciidoctor 태스크에 대한 설정
+asciidoctor {
+    inputs.dir snippetsDir // 불러올 스니펫 위치를 snippetsDir로 설정
+    configurations 'asciidoctorExt' // Asciidoctor 확장에 대한 설정
+    sources { // 특정 파일만 html로 만듬
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춤
+    dependsOn test // test 태스크 이후에 asciidoctor를 실행하도록 설정
 }
 
 jacoco {
