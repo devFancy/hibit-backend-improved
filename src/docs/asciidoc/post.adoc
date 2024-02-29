@@ -49,3 +49,11 @@ include::{snippets}/posts/search/success/and/http-request.adoc[]
 
 ==== HTTP Response
 include::{snippets}/posts/search/success/and/http-response.adoc[]
+
+
+=== 게시글 수정
+==== HTTP Request
+include::{snippets}/posts/update/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/update/success/http-response.adoc[]
