@@ -71,6 +71,29 @@ public class Post extends BaseEntity {
         this.postStatus = postStatus;
     }
 
+    public void change(final Member member, final String title, final String content
+            , final String exhibition, final int exhibitionAttendance, final LocalDateTime possibleTime
+            , final String openChatUrl, final TogetherActivity togetherActivity
+            , final String imageName, final PostStatus postStatus) {
+        this.member = member;
+        this.title = new Title(title);
+        this.content = new Content(content);
+        this.exhibition = new Exhibition(exhibition);
+        this.exhibitionAttendance = exhibitionAttendance;
+        this.possibleTime = possibleTime;
+        this.openChatUrl = openChatUrl;
+        this.togetherActivity = togetherActivity;
+        this.imageName = imageName;
+        this.postStatus = postStatus;
+    }
+
+    public boolean isMember(final Long accessMemberId) {
+        if (accessMemberId == null) {
+            return false;
+        }
+        return member.getId().equals(accessMemberId);
+    }
+
     public Long getId() {
         return id;
     }

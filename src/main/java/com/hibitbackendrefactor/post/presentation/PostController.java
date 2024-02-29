@@ -4,10 +4,15 @@ import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
 import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
-import com.hibitbackendrefactor.post.dto.response.*;
+import com.hibitbackendrefactor.post.dto.request.PostUpdateRequest;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -63,4 +68,11 @@ public class PostController {
         return ResponseEntity.ok(postsSliceResponse);
     }
 
+    @PatchMapping(path = "/api/posts/{id}")
+    public ResponseEntity<PostDetailResponse> update(@AuthenticationPrincipal final LoginMember loginMember,
+                                                     @PathVariable(name = "id") final Long postId,
+                                                     @Valid @RequestBody final PostUpdateRequest request) {
+        postService.update(loginMember, postId, request.toServiceRequest());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
