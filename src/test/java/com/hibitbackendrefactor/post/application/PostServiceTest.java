@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
@@ -336,6 +337,29 @@ class PostServiceTest extends IntegrationTestSupport {
                 () -> assertThat(updatedPost.getPostStatus()).isEqualTo(request.getPostStatus())
         );
     }
+
+    @DisplayName("본인이 등록한 게시글을 삭제할 수 있다.")
+    @Test
+    void 본인이_등록한_게시글을_삭제할_수_있다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile 팬시_프로필 = 팬시_프로필(member);
+        Profile profile = profileRepository.save(팬시_프로필);
+        memberRepository.save(팬시);
+
+        Post post = 프로젝트_해시테크(profile.getMember());
+        Long savedPostId = postRepository.save(post).getId();
+
+        // when
+        postService.delete(팬시.getId(), savedPostId);
+
+        // then
+        Optional<Post> foundPost = postRepository.findById(savedPostId);
+        assertThat(foundPost).isEmpty();
+     }
 
     private static PostCreateRequest getPostCreateRequest() {
         PostCreateRequest request = PostCreateRequest.builder()

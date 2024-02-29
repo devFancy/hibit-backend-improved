@@ -297,4 +297,27 @@ class PostControllerTest extends ControllerTestSupport {
                 ))
                 .andExpect(status().isNoContent());
     }
+
+    @DisplayName("본인이 등록한 게시글을 삭제하면 204를 반환한다.")
+    @Test
+    void 본인이_등록한_게시글을_삭제하면_204를_반환한다() throws Exception {
+        // given
+        Long postId = 1L;
+        willDoNothing()
+                .given(postService)
+                .update(any(), any(), any());
+
+        // when
+        mockMvc.perform(delete("/api/posts/{postId}", postId)
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andDo(document("posts/delete/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
+                .andExpect(status().isNoContent());
+    }
 }
