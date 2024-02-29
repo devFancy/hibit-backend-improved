@@ -57,3 +57,11 @@ include::{snippets}/posts/update/success/http-request.adoc[]
 
 ==== HTTP Response
 include::{snippets}/posts/update/success/http-response.adoc[]
+
+
+=== 게시글 삭제
+==== HTTP Request
+include::{snippets}/posts/delete/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/posts/delete/success/http-response.adoc[]
