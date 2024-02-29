@@ -119,8 +119,16 @@ public class PostService {
                 request.getTogetherActivity(), request.getImageName(), request.getPostStatus());
     }
 
+    @Transactional
+    public void delete(final Long memberId, final Long postId) {
+        Post post = findPostObject(postId);
+        validateProductMembership(memberId, post);
+
+        postRepository.delete(post);
+    }
+
     private void validateProductMembership(final Long memberId, final Post post) {
-        if(!post.isMember(memberId)) {
+        if (!post.isMember(memberId)) {
             throw new AuthorizationException();
         }
     }

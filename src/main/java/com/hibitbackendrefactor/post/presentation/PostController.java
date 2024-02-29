@@ -75,4 +75,11 @@ public class PostController {
         postService.update(loginMember.getId(), postId, request.toServiceRequest());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping(path = "/api/posts/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal final LoginMember loginMember,
+                                       @PathVariable(name = "id") final Long postId) {
+        postService.delete(loginMember.getId(), postId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
