@@ -1,11 +1,19 @@
 package com.hibitbackendrefactor.post.application;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
+import com.hibitbackendrefactor.auth.exception.AuthorizationException;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
-import com.hibitbackendrefactor.post.domain.*;
+import com.hibitbackendrefactor.post.domain.Post;
+import com.hibitbackendrefactor.post.domain.PostRepository;
+import com.hibitbackendrefactor.post.domain.SearchQuery;
+import com.hibitbackendrefactor.post.domain.ViewCountManager;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
-import com.hibitbackendrefactor.post.dto.response.*;
+import com.hibitbackendrefactor.post.dto.request.PostUpdateServiceRequest;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsResponse;
+import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
 import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
@@ -99,5 +107,29 @@ public class PostService {
 
         Slice<Post> posts = postRepository.findPostSlicePageByQuery(pageable, searchQuery.getValue());
         return PostsSliceResponse.ofPostSlice(posts);
+    }
+
+    @Transactional
+    public void update(final Long memberId, final Long postId, final PostUpdateServiceRequest request) {
+        Member member = memberRepository.getById(memberId);
+        Post post = findPostObject(postId);
+        validateProductMembership(memberId, post);
+
+        post.change(member, request.getTitle(), request.getContent(), request.getExhibition(), request.getExhibitionAttendance(), request.getPossibleTime(), request.getOpenChatUrl(),
+                request.getTogetherActivity(), request.getImageName(), request.getPostStatus());
+    }
+
+    @Transactional
+    public void delete(final Long memberId, final Long postId) {
+        Post post = findPostObject(postId);
+        validateProductMembership(memberId, post);
+
+        postRepository.delete(post);
+    }
+
+    private void validateProductMembership(final Long memberId, final Post post) {
+        if (!post.isMember(memberId)) {
+            throw new AuthorizationException();
+        }
     }
 }

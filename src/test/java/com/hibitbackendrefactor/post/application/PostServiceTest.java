@@ -6,10 +6,12 @@ import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostRepository;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.request.PostUpdateServiceRequest;
 import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 import com.hibitbackendrefactor.post.dto.response.PostResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsCountResponse;
 import com.hibitbackendrefactor.post.dto.response.PostsSliceResponse;
+import com.hibitbackendrefactor.post.exception.NotFoundPostException;
 import com.hibitbackendrefactor.profile.domain.Profile;
 import com.hibitbackendrefactor.profile.domain.ProfileRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
@@ -109,7 +112,7 @@ class PostServiceTest extends IntegrationTestSupport {
         Long savedPostId = postRepository.save(post).getId();
 
         // when
-        PostDetailResponse response = postService.findPost(savedPostId, LOGIN_MEMBER,EMPTY_COOKIE_VALUE);
+        PostDetailResponse response = postService.findPost(savedPostId, LOGIN_MEMBER, EMPTY_COOKIE_VALUE);
 
         // then
         assertAll(
@@ -139,7 +142,7 @@ class PostServiceTest extends IntegrationTestSupport {
 
         // when
         int viewCount = post.getViewCount();
-        postService.findPost(post.getId(), LOGIN_MEMBER,EMPTY_COOKIE_VALUE);
+        postService.findPost(post.getId(), LOGIN_MEMBER, EMPTY_COOKIE_VALUE);
         em.clear();
 
         int updatedViewCount = postRepository.findById(post.getId()).get().getViewCount();
@@ -214,7 +217,7 @@ class PostServiceTest extends IntegrationTestSupport {
                         .isEqualTo(List.of(PostResponse.from(게시글_2))),
                 () -> assertThat(response.getTotalPostCount()).isEqualTo(1)
         );
-     }
+    }
 
     @DisplayName("주어진 쿼리로 여러 개의 게시글을 검색할 수 있다. ")
     @Test
@@ -274,38 +277,89 @@ class PostServiceTest extends IntegrationTestSupport {
                         .isEqualTo(List.of(PostResponse.from(post1), PostResponse.from(post2))),
                 () -> assertThat(response.getTotalPostCount()).isEqualTo(2)
         );
+    }
+
+    @DisplayName("인젝션 위험 쿼리는 빈 쿼리로 대체한다. (lastPage는 true로 반환된다)")
+    @ParameterizedTest
+    @CsvSource(value = {"select", "insert", "update", "delete", "()"})
+    void 인젝션_위험_쿼리는_빈_쿼리로_대체한다(String query) {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile 팬시_프로필 = 팬시_프로필(member);
+        Profile profile = profileRepository.save(팬시_프로필);
+        memberRepository.save(팬시);
+
+        Post post1 = 프로젝트_해시테크(profile.getMember());
+        Post post2 = 프로젝트_해시테크_2(profile.getMember());
+        Post post3 = 오스틴리_전시회(profile.getMember());
+        postRepository.saveAll(List.of(post1, post2, post3));
+
+        // when
+        PostsSliceResponse myPosts = postService.searchSlickWithQuery(query,
+                PageRequest.of(0, 3, DESC, "created_date_time"));
+        PostsCountResponse response = postService.countPostWithQuery(query);
+
+        // then
+        assertAll(
+                () -> assertThat(myPosts.isLastPage()).isEqualTo(true),
+                () -> assertThat(response.getTotalPostCount()).isEqualTo(3)
+        );
+    }
+
+    @DisplayName("본인이 등록한 게시글 정보에서 일부 혹은 전체 속성을 수정할 수 있다.")
+    @Test
+    void 본인이_등록한_게시글_정보에서_일부_혹은_전체_속성을_수정할_수_있다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+
+        Post post = 프로젝트_해시테크(팬시);
+        Long savedPostId = postRepository.save(post).getId();
+        PostUpdateServiceRequest request = getPostUpdateServiceRequest();
+
+        // when
+        postService.update(팬시.getId(), savedPostId, request);
+        
+        // then
+        Post updatedPost = postRepository.findById(savedPostId).orElseThrow(() -> new NotFoundPostException());
+        assertAll( // 모집중은 동일하고, 나머지는 다름
+                () -> assertThat(updatedPost.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(updatedPost.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(updatedPost.getExhibition()).isEqualTo(request.getExhibition()),
+                () -> assertThat(updatedPost.getExhibitionAttendance()).isEqualTo(request.getExhibitionAttendance()),
+                () -> assertThat(updatedPost.getPossibleTime()).isEqualTo(request.getPossibleTime()),
+                () -> assertThat(updatedPost.getOpenChatUrl()).isEqualTo(request.getOpenChatUrl()),
+                () -> assertThat(updatedPost.getTogetherActivity()).isEqualTo(request.getTogetherActivity()),
+                () -> assertThat(updatedPost.getImageName()).isEqualTo(request.getImageName()),
+                () -> assertThat(updatedPost.getPostStatus()).isEqualTo(request.getPostStatus())
+        );
+    }
+
+    @DisplayName("본인이 등록한 게시글을 삭제할 수 있다.")
+    @Test
+    void 본인이_등록한_게시글을_삭제할_수_있다() {
+        // given
+        Member 팬시 = 팬시();
+        memberRepository.save(팬시);
+        Member member = memberRepository.getById(팬시.getId());
+
+        Profile 팬시_프로필 = 팬시_프로필(member);
+        Profile profile = profileRepository.save(팬시_프로필);
+        memberRepository.save(팬시);
+
+        Post post = 프로젝트_해시테크(profile.getMember());
+        Long savedPostId = postRepository.save(post).getId();
+
+        // when
+        postService.delete(팬시.getId(), savedPostId);
+
+        // then
+        Optional<Post> foundPost = postRepository.findById(savedPostId);
+        assertThat(foundPost).isEmpty();
      }
-
-     @DisplayName("인젝션 위험 쿼리는 빈 쿼리로 대체한다. (lastPage는 true로 반환된다)")
-     @ParameterizedTest
-     @CsvSource(value = {"select", "insert", "update", "delete", "()"})
-     void 인젝션_위험_쿼리는_빈_쿼리로_대체한다(String query) {
-         // given
-         Member 팬시 = 팬시();
-         memberRepository.save(팬시);
-         Member member = memberRepository.getById(팬시.getId());
-
-         Profile 팬시_프로필 = 팬시_프로필(member);
-         Profile profile = profileRepository.save(팬시_프로필);
-         memberRepository.save(팬시);
-
-         Post post1 = 프로젝트_해시테크(profile.getMember());
-         Post post2 = 프로젝트_해시테크_2(profile.getMember());
-         Post post3 = 오스틴리_전시회(profile.getMember());
-         postRepository.saveAll(List.of(post1, post2, post3));
-
-         // when
-         PostsSliceResponse myPosts = postService.searchSlickWithQuery(query,
-                 PageRequest.of(0, 3, DESC, "created_date_time"));
-         PostsCountResponse response = postService.countPostWithQuery(query);
-
-         // then
-         assertAll(
-                 () -> assertThat(myPosts.isLastPage()).isEqualTo(true),
-                 () -> assertThat(response.getTotalPostCount()).isEqualTo(3)
-         );
-      }
-
 
     private static PostCreateRequest getPostCreateRequest() {
         PostCreateRequest request = PostCreateRequest.builder()
@@ -318,6 +372,21 @@ class PostServiceTest extends IntegrationTestSupport {
                 .togetherActivity(함께하고싶은활동1)
                 .imageName(게시글이미지1)
                 .postStatus(모집상태1)
+                .build();
+        return request;
+    }
+
+    private static PostUpdateServiceRequest getPostUpdateServiceRequest() {
+        PostUpdateServiceRequest request = PostUpdateServiceRequest.builder()
+                .title(게시글제목2)
+                .content(게시글내용2)
+                .exhibition(전시회제목2)
+                .exhibitionAttendance(전시관람인원2)
+                .possibleTime(전시관람희망날짜2)
+                .openChatUrl(오픈채팅방Url2)
+                .togetherActivity(함께하고싶은활동2)
+                .imageName(게시글이미지2)
+                .postStatus(모집상태2)
                 .build();
         return request;
     }

@@ -42,15 +42,15 @@ public class PostFixtures {
 
     /* 게시글2: 오스틴리 전시회 */
     public static final String 게시글제목2 = "오스틴리 전시회";
-    public static final String 게시글내용2 = "오스틴리 전시회 보고, 같이 담소하게 얘기 나누실 분 있으시면 아래 댓글 남겨주세요~";
+    public static final String 게시글내용2 = "오스틴리 전시회 보고, 카페에서 같이 담소하게 얘기 나누실 분 있으시면 아래 댓글 남겨주세요~";
 
     public static final String 전시회제목2 = "오스틴리 전시회";
 
-    public static final int 전시관람인원2 = 3;
+    public static final int 전시관람인원2 = 4;
     public static final LocalDateTime 전시관람희망날짜2 = LocalDateTime.now();
 
     public static final String 오픈채팅방Url2 = "http://ostin.net/";
-    public static final TogetherActivity 함께하고싶은활동2 = TogetherActivity.EAT;
+    public static final TogetherActivity 함께하고싶은활동2 = TogetherActivity.CAFE;
 
     public static final String 게시글이미지2 = "postImage2.png";
 
