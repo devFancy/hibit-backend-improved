@@ -110,17 +110,17 @@ public class PostService {
     }
 
     @Transactional
-    public void update(final LoginMember loginMember, final Long postId, final PostUpdateServiceRequest request) {
-        Member member = memberRepository.getById(loginMember.getId());
+    public void update(final Long memberId, final Long postId, final PostUpdateServiceRequest request) {
+        Member member = memberRepository.getById(memberId);
         Post post = findPostObject(postId);
-        validateProductMembership(loginMember, post);
+        validateProductMembership(memberId, post);
 
         post.change(member, request.getTitle(), request.getContent(), request.getExhibition(), request.getExhibitionAttendance(), request.getPossibleTime(), request.getOpenChatUrl(),
                 request.getTogetherActivity(), request.getImageName(), request.getPostStatus());
     }
 
-    private void validateProductMembership(final LoginMember loginMember, final Post post) {
-        if(!post.isMember(loginMember.getId())) {
+    private void validateProductMembership(final Long memberId, final Post post) {
+        if(!post.isMember(memberId)) {
             throw new AuthorizationException();
         }
     }

@@ -72,7 +72,7 @@ public class PostController {
     public ResponseEntity<PostDetailResponse> update(@AuthenticationPrincipal final LoginMember loginMember,
                                                      @PathVariable(name = "id") final Long postId,
                                                      @Valid @RequestBody final PostUpdateRequest request) {
-        postService.update(loginMember, postId, request.toServiceRequest());
+        postService.update(loginMember.getId(), postId, request.toServiceRequest());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
