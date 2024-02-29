@@ -5,6 +5,7 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
+import com.hibitbackendrefactor.post.dto.request.PostUpdateRequest;
 import com.hibitbackendrefactor.post.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static com.hibitbackendrefactor.common.fixtures.PostFixtures.*;
 import static com.hibitbackendrefactor.post.dto.response.PostResponse.AttendanceAndTogetherActivity;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -30,8 +32,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -259,5 +260,41 @@ class PostControllerTest extends ControllerTestSupport {
                         preprocessResponse(prettyPrint())
                 ))
                 .andExpect(status().isOk());
+    }
+
+    @DisplayName("게시글의 일부 속성을 수정하면 204를 반환한다.")
+    @Test
+    void 게시글의_일부_속성을_수정한다() throws Exception {
+        // given
+        Long postId = 1L;
+        willDoNothing()
+                .given(postService)
+                .update(any(), any(), any());
+
+        PostUpdateRequest request = PostUpdateRequest.builder()
+                .title(게시글제목2)
+                .content(게시글내용2)
+                .exhibition(전시회제목2)
+                .exhibitionAttendance(전시관람인원2)
+                .possibleTime(전시관람희망날짜2)
+                .openChatUrl(오픈채팅방Url2)
+                .togetherActivity(함께하고싶은활동2)
+                .imageName(게시글이미지2)
+                .postStatus(모집상태2)
+                .build();
+
+        // when & then
+        mockMvc.perform(patch("/api/posts/{postId}", postId)
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andDo(document("posts/update/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
+                .andExpect(status().isNoContent());
     }
 }
