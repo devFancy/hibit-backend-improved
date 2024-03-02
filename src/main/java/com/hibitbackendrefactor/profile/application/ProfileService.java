@@ -27,7 +27,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public Long save(final Long memberId, final ProfileCreateRequest request) {
+    public ProfileResponse save(final Long memberId, final ProfileCreateRequest request) {
         validateExistByNickname(request.getNickname());
         if (profileRepository.existsByMemberId(memberId)) {
             throw new InvalidProfileAlreadyException("프로필이 이미 존재합니다.");
@@ -37,7 +37,7 @@ public class ProfileService {
         Profile savedProfile = profileRepository.save(profile);
 
         updateMemberInfo(foundMember, savedProfile);
-        return savedProfile.getId();
+        return ProfileResponse.of(savedProfile);
     }
 
     private Profile createProfile(final ProfileCreateRequest request, final Member foundMember) {

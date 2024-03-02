@@ -46,14 +46,12 @@ public class PostService {
     }
 
     @Transactional
-    public Long save(final Long memberId, final PostCreateRequest request) {
-        validateMember(memberId);
-        Member foundMember = memberRepository.getById(memberId);
-
+    public PostDetailResponse save(final LoginMember loginMember, final PostCreateRequest request) {
+        validateMember(loginMember.getId());
+        Member foundMember = memberRepository.getById(loginMember.getId());
         Post savedPost = request.toEntity(foundMember, request);
         postRepository.save(savedPost);
-
-        return savedPost.getId();
+        return PostDetailResponse.of(savedPost, loginMember);
     }
 
     private void validateMember(final Long memberId) {

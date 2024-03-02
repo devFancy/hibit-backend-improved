@@ -1,6 +1,7 @@
 package com.hibitbackendrefactor.auth.presentation;
 
 import com.hibitbackendrefactor.ControllerTestSupport;
+import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.exception.InvalidTokenException;
 import com.hibitbackendrefactor.infrastructure.oauth.exception.OAuthException;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +13,10 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import javax.servlet.http.Cookie;
 
 import static com.hibitbackendrefactor.common.AuthFixtures.*;
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.FANCY_ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -23,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AuthControllerTest extends ControllerTestSupport {
+
+    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaaaaaa.bbbbbbbb.cccccccc";
 
     @DisplayName("OAuth 소셜 로그인을 위한 링크와 상태코드 200을 반환한다.")
     @Test
@@ -44,7 +50,9 @@ class AuthControllerTest extends ControllerTestSupport {
                                 parameterWithName("redirectUri").description("OAuth Redirect URI")
                         ),
                         responseFields(
-                                fieldWithPath("oAuthUri").type(JsonFieldType.STRING).description("OAuth 소셜 로그인 링크")
+                                fieldWithPath("meta.code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("meta.message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("data.oAuthUri").type(JsonFieldType.STRING).description("OAuth 소셜 로그인 링크")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -74,9 +82,11 @@ class AuthControllerTest extends ControllerTestSupport {
                                         .description("OAuth Redirect URI")
                         ),
                         responseFields(
-                                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("히빗 Access Token"),
-                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("히빗 Refresh Token"),
-                                fieldWithPath("isProfileRegistered").type(JsonFieldType.NUMBER).description("프로필 등록 여부")
+                                fieldWithPath("meta.code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("meta.message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("히빗 Access Token"),
+                                fieldWithPath("data.refreshToken").type(JsonFieldType.STRING).description("히빗 Refresh Token"),
+                                fieldWithPath("data.isProfileRegistered").type(JsonFieldType.NUMBER).description("프로필 등록 여부")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -145,5 +155,26 @@ class AuthControllerTest extends ControllerTestSupport {
                         preprocessResponse(prettyPrint())
                 ))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @DisplayName("로그아웃을 정상적으로 하면 204을 반환한다.")
+    @Test
+    void 로그아웃을_정상적으로_하면_204을_반환한다() throws Exception {
+        // given
+        LoginMember loginMember = new LoginMember(FANCY_ID);
+        willDoNothing().given(authService).deleteToken(loginMember.getId());
+
+        // when & then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/auth/logout")
+                        .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .cookie(new Cookie("refreshToken", "ccccc.bbbbb.aaaaa")))
+                .andDo(print())
+                .andDo(document("auth/logout/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
+                .andExpect(status().isNoContent());
     }
 }

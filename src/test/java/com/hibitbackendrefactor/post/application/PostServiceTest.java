@@ -1,6 +1,7 @@
 package com.hibitbackendrefactor.post.application;
 
 import com.hibitbackendrefactor.IntegrationTestSupport;
+import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.member.domain.MemberRepository;
 import com.hibitbackendrefactor.post.domain.Post;
@@ -76,23 +77,24 @@ class PostServiceTest extends IntegrationTestSupport {
         Profile 팬시_프로필 = 팬시_프로필(member);
         profileRepository.save(팬시_프로필);
 
-        // when
         PostCreateRequest request = getPostCreateRequest();
-        Long newPostId = postService.save(팬시_프로필.getMember().getId(), request);
-        Post actual = postRepository.findById(newPostId).orElseThrow();
+
+        // when
+        LoginMember loginMember = new LoginMember(팬시.getId());
+        PostDetailResponse response = postService.save(loginMember, request);
+        Post actual = postRepository.findById(response.getId()).orElseThrow();
 
         // then
-        assertThat(newPostId).isNotNull();
+        assertThat(response.getTitle()).isNotNull();
         assertAll(
-                () -> assertEquals(게시글제목1, actual.getTitle()),
-                () -> assertEquals(게시글내용1, actual.getContent()),
-                () -> assertEquals(전시회제목1, actual.getExhibition()),
-                () -> assertEquals(전시관람인원1, actual.getExhibitionAttendance()),
-                () -> assertEquals(전시관람희망날짜1, actual.getPossibleTime()),
-                () -> assertEquals(오픈채팅방Url1, actual.getOpenChatUrl()),
-                () -> assertEquals(함께하고싶은활동1, actual.getTogetherActivity()),
-                () -> assertEquals(전시관람인원1, actual.getExhibitionAttendance()),
-                () -> assertEquals(게시글이미지1, actual.getImageName())
+                () -> assertEquals(request.getTitle(), actual.getTitle()),
+                () -> assertEquals(request.getContent(), actual.getContent()),
+                () -> assertEquals(request.getExhibition(), actual.getExhibition()),
+                () -> assertEquals(request.getExhibitionAttendance(), actual.getExhibitionAttendance()),
+                () -> assertEquals(request.getPossibleTime(), actual.getPossibleTime()),
+                () -> assertEquals(request.getOpenChatUrl(), actual.getOpenChatUrl()),
+                () -> assertEquals(request.getTogetherActivity(), actual.getTogetherActivity()),
+                () -> assertEquals(request.getImageName(), actual.getImageName())
         );
     }
 

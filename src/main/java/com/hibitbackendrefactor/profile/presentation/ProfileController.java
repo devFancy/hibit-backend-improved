@@ -3,6 +3,7 @@ package com.hibitbackendrefactor.profile.presentation;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
+import com.hibitbackendrefactor.global.ApiResponse;
 import com.hibitbackendrefactor.profile.application.ProfileService;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,35 +27,40 @@ public class ProfileController {
     }
 
     @PostMapping("/api/profiles/new")
-    public ResponseEntity<Void> saveMyProfile(@AuthenticationPrincipal final LoginMember loginMember,
-                                              @Valid @RequestBody final ProfileCreateRequest request) {
-        Long profileId = profileService.save(loginMember.getId(), request);
-        return ResponseEntity.created(URI.create("/api/profiles/" + profileId)).build();
+    public ResponseEntity<ApiResponse<ProfileResponse>> saveMyProfile(@AuthenticationPrincipal final LoginMember loginMember,
+                                                          @Valid @RequestBody final ProfileCreateRequest request) {
+        ProfileResponse profileResponse = profileService.save(loginMember.getId(), request);
+        ApiResponse<ProfileResponse> apiResponse = ApiResponse.created(profileResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/profiles/personalities")
-    public ResponseEntity<List<PersonalityType>> getAvailablePersonalities() {
+    public ResponseEntity<ApiResponse<List<PersonalityType>>> getAvailablePersonalities() {
         List<PersonalityType> personalities = Arrays.asList(PersonalityType.values());
-        return ResponseEntity.ok(personalities);
+        ApiResponse<List<PersonalityType>> apiResponse = ApiResponse.ok(personalities);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/api/profiles/me")
-    public ResponseEntity<ProfileResponse> findMyProfile(@AuthenticationPrincipal final LoginMember loginMember) {
-        ProfileResponse response = profileService.findMyProfile(loginMember.getId());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ApiResponse<ProfileResponse>> findMyProfile(@AuthenticationPrincipal final LoginMember loginMember) {
+        ProfileResponse profileResponse = profileService.findMyProfile(loginMember.getId());
+        ApiResponse<ProfileResponse> apiResponse = ApiResponse.ok(profileResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/api/profiles/other/{id}")
-    public ResponseEntity<ProfileOtherResponse> findOtherProfile(@AuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ApiResponse<ProfileOtherResponse>> findOtherProfile(@AuthenticationPrincipal final LoginMember loginMember,
                                                                  @PathVariable(name = "id") final Long otherMemberId) {
-        ProfileOtherResponse response = profileService.findOtherProfile(otherMemberId);
-        return ResponseEntity.ok(response);
+        ProfileOtherResponse profileOtherResponse = profileService.findOtherProfile(otherMemberId);
+        ApiResponse<ProfileOtherResponse> apiResponse = ApiResponse.ok(profileOtherResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PutMapping("/api/profiles/me")
-    public ResponseEntity<Void> update(@AuthenticationPrincipal final LoginMember loginMember,
+    public ResponseEntity<ApiResponse<Void>> update(@AuthenticationPrincipal final LoginMember loginMember,
                                        @Valid @RequestBody final ProfileUpdateRequest request) {
         profileService.update(loginMember.getId(), request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        ApiResponse<Void> apiResponse = ApiResponse.noContent();
+        return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
     }
 }

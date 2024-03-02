@@ -28,11 +28,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,8 +77,10 @@ class PostControllerTest extends ControllerTestSupport {
                 .postStatus(모집상태1)
                 .build();
 
+        given(postService.save(any(), any())).willReturn(프로필_등록_응답());
+
         // when & then
-        mockMvc.perform(post("/api/posts/new")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/posts/new")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -101,7 +101,23 @@ class PostControllerTest extends ControllerTestSupport {
                                         fieldWithPath("openChatUrl").type(JsonFieldType.STRING).description("오픈 채팅방 URL 주소"),
                                         fieldWithPath("togetherActivity").type(JsonFieldType.STRING).optional().description("함께하고싶은 활동 타입(EAT | CAFE | ONLY | LATER)"),
                                         fieldWithPath("imageName").type(JsonFieldType.STRING).description("게시글 이미지"),
-                                        fieldWithPath("postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)"))
+                                        fieldWithPath("postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)")),
+                                responseFields(
+                                        fieldWithPath("meta.code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                        fieldWithPath("meta.message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                        fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("로그인한 사용자 ID"),
+                                        fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("로그인한 사용자 닉네임"),
+                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("data.exhibition").type(JsonFieldType.STRING).description("전시회 제목"),
+                                        fieldWithPath("data.exhibitionAttendanceAndTogetherActivity").type(JsonFieldType.ARRAY).description("[ \"3인 관람\", \"맛집 가기\" ]"),
+                                        fieldWithPath("data.possibleTime").type(JsonFieldType.STRING).description("관람 희망 날짜"),
+                                        fieldWithPath("data.openChatUrl").type(JsonFieldType.STRING).description("오픈 채팅방 URL 주소"),
+                                        fieldWithPath("data.togetherActivity").type(JsonFieldType.STRING).optional().description("함께하고싶은 활동 타입(EAT | CAFE | ONLY | LATER)"),
+                                        fieldWithPath("data.imageName").type(JsonFieldType.STRING).description("게시글 이미지"),
+                                        fieldWithPath("data.postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)"),
+                                        fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("게시글 조회수"))
                         )
                 )
                 .andExpect(status().isCreated());
@@ -119,7 +135,7 @@ class PostControllerTest extends ControllerTestSupport {
         given(postService.findAll()).willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/api/posts")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -181,7 +197,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.countPostWithQuery(any())).thenReturn(countResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/count?query=제목|내용")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/count?query=제목|내용")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -205,7 +221,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -227,7 +243,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목2|제목1&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목2|제목1&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -250,7 +266,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목2&제목1&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목2&제목1&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -284,7 +300,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .build();
 
         // when & then
-        mockMvc.perform(patch("/api/posts/{postId}", postId)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/posts/{postId}", postId)
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -308,7 +324,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .update(any(), any(), any());
 
         // when
-        mockMvc.perform(delete("/api/posts/{postId}", postId)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}", postId)
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)

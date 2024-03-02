@@ -80,7 +80,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void deleteToken(Long id) {
+    public void deleteToken(final Long id) {
         oAuthTokenRepository.deleteAllByMemberId(id);
     }
 }
