@@ -28,8 +28,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -79,8 +78,10 @@ class PostControllerTest extends ControllerTestSupport {
                 .postStatus(모집상태1)
                 .build();
 
+        given(postService.save(any(), any())).willReturn(프로필_등록_응답());
+
         // when & then
-        mockMvc.perform(post("/api/posts/new")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/posts/new")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -101,7 +102,23 @@ class PostControllerTest extends ControllerTestSupport {
                                         fieldWithPath("openChatUrl").type(JsonFieldType.STRING).description("오픈 채팅방 URL 주소"),
                                         fieldWithPath("togetherActivity").type(JsonFieldType.STRING).optional().description("함께하고싶은 활동 타입(EAT | CAFE | ONLY | LATER)"),
                                         fieldWithPath("imageName").type(JsonFieldType.STRING).description("게시글 이미지"),
-                                        fieldWithPath("postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)"))
+                                        fieldWithPath("postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)")),
+                                responseFields(
+                                        fieldWithPath("meta.code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                        fieldWithPath("meta.message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("게시글 ID"),
+                                        fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("로그인한 사용자 ID"),
+                                        fieldWithPath("data.writerName").type(JsonFieldType.STRING).description("로그인한 사용자 닉네임"),
+                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data.content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                        fieldWithPath("data.exhibition").type(JsonFieldType.STRING).description("전시회 제목"),
+                                        fieldWithPath("data.exhibitionAttendanceAndTogetherActivity").type(JsonFieldType.ARRAY).description("[ \"3인 관람\", \"맛집 가기\" ]"),
+                                        fieldWithPath("data.possibleTime").type(JsonFieldType.STRING).description("관람 희망 날짜"),
+                                        fieldWithPath("data.openChatUrl").type(JsonFieldType.STRING).description("오픈 채팅방 URL 주소"),
+                                        fieldWithPath("data.togetherActivity").type(JsonFieldType.STRING).optional().description("함께하고싶은 활동 타입(EAT | CAFE | ONLY | LATER)"),
+                                        fieldWithPath("data.imageName").type(JsonFieldType.STRING).description("게시글 이미지"),
+                                        fieldWithPath("data.postStatus").type(JsonFieldType.STRING).optional().description("모집상태 타입(HOLDING | CANCELLED | COMPLETED)"),
+                                        fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("게시글 조회수"))
                         )
                 )
                 .andExpect(status().isCreated());

@@ -10,6 +10,8 @@ include::{snippets}/posts/save/success/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/posts/save/success/http-response.adoc[]
 
+==== Response Fields
+include::{snippets}/posts/save/success/response-fields.adoc[]
 
 === 게시글 상세 조회
 ==== HTTP Request

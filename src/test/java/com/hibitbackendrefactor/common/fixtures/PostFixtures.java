@@ -4,14 +4,22 @@ import com.hibitbackendrefactor.member.domain.Member;
 import com.hibitbackendrefactor.post.domain.Post;
 import com.hibitbackendrefactor.post.domain.PostStatus;
 import com.hibitbackendrefactor.post.domain.TogetherActivity;
+import com.hibitbackendrefactor.post.dto.response.PostDetailResponse;
 
 import java.time.LocalDateTime;
 
-import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.팬시;
+import static com.hibitbackendrefactor.common.fixtures.MemberFixtures.*;
+import static com.hibitbackendrefactor.post.dto.response.PostResponse.AttendanceAndTogetherActivity;
 
 public class PostFixtures {
 
+
     /* 게시글1 : 해시태크 */
+    public static final Long 게시글_ID1 = 1L;
+
+    public static final Long 로그인한_사용자_ID = 1L;
+
+    public static final String 게시글_작성한_사용자_닉네임 = "팬시";
     public static final String 게시글제목1 = "프로젝트_해시테크";
     public static final String 게시글내용1 = "프로젝트 해시 태크(http://projecthashtag.net/) 보러가실 분 있으면 아래 댓글 남겨주세요~";
 
@@ -24,6 +32,7 @@ public class PostFixtures {
 
     public static final String 게시글이미지1 = "postImage1.png";
     public static final PostStatus 모집상태1 = PostStatus.HOLDING;
+    public static final int 게시글_조회수1 = 0;
 
     /* 게시글1-2 : 해시태크-2 */
     public static final String 게시글제목1_2 = "프로젝트_해시테크";
@@ -55,6 +64,10 @@ public class PostFixtures {
     public static final String 게시글이미지2 = "postImage2.png";
 
     public static final PostStatus 모집상태2 = PostStatus.HOLDING;
+
+    public static PostDetailResponse 프로필_등록_응답() {
+        return new PostDetailResponse(게시글_ID1, 로그인한_사용자_ID, 게시글_작성한_사용자_닉네임, 게시글제목1, 게시글내용1, 전시회제목1, AttendanceAndTogetherActivity(전시관람인원1, 함께하고싶은활동1), 전시관람희망날짜1, 오픈채팅방Url1, 모집상태1, 게시글이미지1, 게시글_조회수1);
+    }
 
     public static Post 프로젝트_해시테크_2(Member member) {
         return Post.builder()

@@ -33,17 +33,18 @@ public class PostController {
     }
 
     @PostMapping(path = "/api/posts/new")
-    public ResponseEntity<ApiResponse<Void>> save(@AuthenticationPrincipal final LoginMember loginMember
+    public ResponseEntity<ApiResponse<PostDetailResponse>> save(@AuthenticationPrincipal final LoginMember loginMember
             , @Valid @RequestBody final PostCreateRequest request) {
         PostDetailResponse response = postService.save(loginMember, request);
-        ApiResponse apiResponse = ApiResponse.created(response);
+        ApiResponse<PostDetailResponse> apiResponse = ApiResponse.created(response);
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/posts")
-    public ResponseEntity<PostsResponse> findAll() {
+    public ResponseEntity<ApiResponse<PostsResponse>> findAll() {
         PostsResponse responses = postService.findAll();
-        return ResponseEntity.ok(responses);
+        ApiResponse apiResponse = ApiResponse.ok(responses);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/posts/{id}")
