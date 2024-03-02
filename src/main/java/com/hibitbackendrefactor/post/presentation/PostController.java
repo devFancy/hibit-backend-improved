@@ -2,6 +2,7 @@ package com.hibitbackendrefactor.post.presentation;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
+import com.hibitbackendrefactor.global.ApiResponse;
 import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.request.PostUpdateRequest;
@@ -19,7 +20,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -33,10 +33,11 @@ public class PostController {
     }
 
     @PostMapping(path = "/api/posts/new")
-    public ResponseEntity<Void> save(@AuthenticationPrincipal final LoginMember loginMember
+    public ResponseEntity<ApiResponse<Void>> save(@AuthenticationPrincipal final LoginMember loginMember
             , @Valid @RequestBody final PostCreateRequest request) {
-        Long postId = postService.save(loginMember.getId(), request);
-        return ResponseEntity.created(URI.create("/posts/" + postId)).build();
+        PostDetailResponse response = postService.save(loginMember, request);
+        ApiResponse apiResponse = ApiResponse.created(response);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/posts")
