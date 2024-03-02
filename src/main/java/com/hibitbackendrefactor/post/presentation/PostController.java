@@ -43,45 +43,53 @@ public class PostController {
     @GetMapping(path = "/api/posts")
     public ResponseEntity<ApiResponse<PostsResponse>> findAll() {
         PostsResponse responses = postService.findAll();
-        ApiResponse apiResponse = ApiResponse.ok(responses);
+        ApiResponse<PostsResponse> apiResponse = ApiResponse.ok(responses);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/posts/{id}")
-    public ResponseEntity<PostDetailResponse> findPost(@PathVariable(name = "id") final Long postId,
-                                                       @AuthenticationPrincipal final LoginMember loginMember,
-                                                       @CookieValue(value = "viewedPost", required = false, defaultValue = "") final String postLog) {
+    public ResponseEntity<ApiResponse<PostDetailResponse>> findPost(@PathVariable(name = "id") final Long postId,
+                                                                    @AuthenticationPrincipal final LoginMember loginMember,
+                                                                    @CookieValue(value = "viewedPost", required = false, defaultValue = "") final String postLog) {
         PostDetailResponse response = postService.findPost(postId, loginMember, postLog);
         String updatedLog = postService.updatePostLog(postId, postLog);
         ResponseCookie responseCookie = ResponseCookie.from("viewedPost", updatedLog).maxAge(86400L).build();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie.toString()).body(response);
+
+        ApiResponse<PostDetailResponse> apiResponse = ApiResponse.ok(response);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .body(apiResponse);
     }
 
     @GetMapping(path = "/api/posts/count")
-    public ResponseEntity<PostsCountResponse> searchPostCount(@RequestParam @Nullable String query) {
+    public ResponseEntity<ApiResponse<PostsCountResponse>> searchPostCount(@RequestParam @Nullable String query) {
         PostsCountResponse postsCountResponse = postService.countPostWithQuery(query);
-        return ResponseEntity.ok(postsCountResponse);
+        ApiResponse<PostsCountResponse> apiResponse = ApiResponse.ok(postsCountResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/posts/search")
-    public ResponseEntity<PostsSliceResponse> searchSlicePosts(@RequestParam @Nullable String query,
-                                                               @PageableDefault(sort = "created_date_time", direction = DESC) Pageable pageable) {
+    public ResponseEntity<ApiResponse<PostsSliceResponse>> searchSlicePosts(@RequestParam @Nullable String query,
+                                                                            @PageableDefault(sort = "created_date_time", direction = DESC) Pageable pageable) {
         PostsSliceResponse postsSliceResponse = postService.searchSlickWithQuery(query, pageable);
-        return ResponseEntity.ok(postsSliceResponse);
+        ApiResponse<PostsSliceResponse> apiResponse = ApiResponse.ok(postsSliceResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PatchMapping(path = "/api/posts/{id}")
-    public ResponseEntity<PostDetailResponse> update(@AuthenticationPrincipal final LoginMember loginMember,
-                                                     @PathVariable(name = "id") final Long postId,
-                                                     @Valid @RequestBody final PostUpdateRequest request) {
+    public ResponseEntity<ApiResponse<PostDetailResponse>> update(@AuthenticationPrincipal final LoginMember loginMember,
+                                                                  @PathVariable(name = "id") final Long postId,
+                                                                  @Valid @RequestBody final PostUpdateRequest request) {
         postService.update(loginMember.getId(), postId, request.toServiceRequest());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        ApiResponse<PostDetailResponse> apiResponse = ApiResponse.noContent();
+        return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/api/posts/{id}")
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal final LoginMember loginMember,
-                                       @PathVariable(name = "id") final Long postId) {
+    public ResponseEntity<ApiResponse<Void>> delete(@AuthenticationPrincipal final LoginMember loginMember,
+                                                    @PathVariable(name = "id") final Long postId) {
         postService.delete(loginMember.getId(), postId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        ApiResponse<Void> apiResponse = ApiResponse.noContent();
+        return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
     }
 }
