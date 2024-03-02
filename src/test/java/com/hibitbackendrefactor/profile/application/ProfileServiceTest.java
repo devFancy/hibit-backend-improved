@@ -61,11 +61,11 @@ class ProfileServiceTest extends IntegrationTestSupport {
                 .build();
 
         // when
-        Long newProfileId = profileService.save(member.getId(), request);
+        ProfileResponse response = profileService.save(member.getId(), request);
         Profile savedProfile = profileRepository.findByMemberId(팬시.getId()).orElse(null);
 
         // then
-        assertThat(newProfileId).isNotNull();
+        assertThat(response).isNotNull();
         assertNotNull(savedProfile);
         assertEquals("devFancy", savedProfile.getNickname());
     }
