@@ -51,3 +51,10 @@ include::{snippets}/auth/generate/renewalAccessToken/success/http-response.adoc[
 
 ==== HTTP Response
 include::{snippets}/auth/generate/renewalAccessToken/fail/isUnauthorized/http-response.adoc[]
+
+=== 로그아웃 시 리프레시 토큰 무효화
+==== HTTP Request
+include::{snippets}/auth/logout/success/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/auth/logout/success/http-response.adoc[]
