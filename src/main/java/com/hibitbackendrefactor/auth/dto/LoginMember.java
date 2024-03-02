@@ -7,7 +7,7 @@ public class LoginMember {
     public LoginMember() {
     }
 
-    public LoginMember(Long id) {
+    public LoginMember(final Long id) {
         this.id = id;
     }
 
