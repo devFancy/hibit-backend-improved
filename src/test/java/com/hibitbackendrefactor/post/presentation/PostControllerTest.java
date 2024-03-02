@@ -31,7 +31,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -136,7 +135,7 @@ class PostControllerTest extends ControllerTestSupport {
         given(postService.findAll()).willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/api/posts")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -198,7 +197,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.countPostWithQuery(any())).thenReturn(countResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/count?query=제목|내용")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/count?query=제목|내용")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -222,7 +221,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -244,7 +243,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목2|제목1&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목2|제목1&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -267,7 +266,7 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.searchSlickWithQuery(any(), any())).thenReturn(pagePostsResponse);
 
         // then
-        mockMvc.perform(get("/api/posts/search?query=제목2&제목1&size=2&page=0")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/search?query=제목2&제목1&size=2&page=0")
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -301,7 +300,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .build();
 
         // when & then
-        mockMvc.perform(patch("/api/posts/{postId}", postId)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/posts/{postId}", postId)
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
@@ -325,7 +324,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .update(any(), any(), any());
 
         // when
-        mockMvc.perform(delete("/api/posts/{postId}", postId)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}", postId)
                         .header(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
