@@ -10,7 +10,8 @@ import com.hibitbackendrefactor.auth.dto.request.TokenRequest;
 import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.OAuthUriResponse;
-import com.hibitbackendrefactor.global.token.Login;
+import com.hibitbackendrefactor.global.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,25 +32,28 @@ public class AuthController {
     }
 
     @GetMapping("/{oauthProvider}/oauth-uri")
-    public ResponseEntity<OAuthUriResponse> generateLink(@PathVariable final String oauthProvider,
+    public ResponseEntity<ApiResponse<OAuthUriResponse>> generateLink(@PathVariable final String oauthProvider,
                                                          @RequestParam final String redirectUri) {
         OAuthUriResponse oAuthUriResponse = new OAuthUriResponse(oAuthUri.generate(redirectUri));
-        return ResponseEntity.ok(oAuthUriResponse);
+        ApiResponse<OAuthUriResponse> apiResponse = ApiResponse.ok(oAuthUriResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     @PostMapping("/{oauthProvider}/token")
-    public ResponseEntity<AccessAndRefreshTokenResponse> generateAccessAndRefreshToken(
+    public ResponseEntity<ApiResponse<AccessAndRefreshTokenResponse>> generateAccessAndRefreshToken(
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthMember oAuthMember = oAuthClient.getOAuthMember(tokenRequest.getCode(), tokenRequest.getRedirectUri());
-        AccessAndRefreshTokenResponse authResponse = authService.generateAccessAndRefreshToken(oAuthMember);
-        return ResponseEntity.ok(authResponse);
+        AccessAndRefreshTokenResponse accessAndRefreshTokenResponse = authService.generateAccessAndRefreshToken(oAuthMember);
+        ApiResponse<AccessAndRefreshTokenResponse> apiResponse = ApiResponse.ok(accessAndRefreshTokenResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PostMapping("/token/access")
-    public ResponseEntity<AccessTokenResponse> generateAccessToken(
+    public ResponseEntity<ApiResponse<AccessTokenResponse>> generateAccessToken(
            @CookieValue("refreshToken") String refreshToken) {
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
-        AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
-        return ResponseEntity.ok(response);
+        AccessTokenResponse accessTokenResponse = authService.generateAccessToken(tokenRenewalRequest);
+        ApiResponse<AccessTokenResponse> apiResponse = ApiResponse.ok(accessTokenResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/validate/token")
@@ -57,8 +61,9 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(@Login LoginMember loginMember) {
+    public ResponseEntity<ApiResponse<Void>> logout(@AuthenticationPrincipal final LoginMember loginMember) {
         authService.deleteToken(loginMember.getId());
-        return ResponseEntity.noContent().build();
+        ApiResponse<Void> apiResponse = ApiResponse.noContent();
+        return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
     }
 }
