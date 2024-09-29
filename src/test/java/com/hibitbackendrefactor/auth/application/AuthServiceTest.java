@@ -101,9 +101,9 @@ class AuthServiceTest extends IntegrationTestSupport {
         // then
         assertThat(accessTokenResponse.getAccessToken()).isNotEmpty();
     }
-    @DisplayName("리프레시 토큰으로 새로운 엑세스 토큰을 발급 할 때, 리프레시 토큰이 존재하지 않으면 예외를 던진다.")
+    @DisplayName("리프레시 토큰으로 새로운 엑세스 토큰을 발급 할 때, 리프레시 토큰이 유효하지 않으면 예외를 던진다.")
     @Test
-    void 리프레시_토큰으로_새로운_엑세스_토큰을_발급_할_때_리프레시_토큰이_존재하지_않으면_예외를_던진다() {
+    void 리프레시_토큰으로_새로운_엑세스_토큰을_발급_할_때_리프레시_토큰이_유효하지_않으면_예외를_던진다() {
         // given
         authService.generateAccessAndRefreshToken(MEMBER.getOAuthMember());
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest("DummyRefreshToken");

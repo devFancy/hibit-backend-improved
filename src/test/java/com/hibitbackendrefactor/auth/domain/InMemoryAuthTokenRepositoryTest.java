@@ -52,7 +52,6 @@ class InMemoryAuthTokenRepositoryTest {
     void MemberId에_해당하는_토큰이_없으면_false를_반환한다() {
         // given
         Long dummyMemberId = 1L;
-        String dummyRefreshToken = "dummy token";
 
         // when
         boolean actual = tokenRepository.exist(dummyMemberId);
