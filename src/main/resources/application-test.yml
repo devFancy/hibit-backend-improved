@@ -1,20 +1,9 @@
 spring:
   datasource:
-    source:
-      jdbc-url:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username:
-      password:
-    replica1:
-      jdbc-url:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username:
-      password:
-    replica2:
-      jdbc-url:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: admin
-      password: kevin7296!
+    url: jdbc:h2:mem:db?serverTimezone=Asia/Seoul;MODE=MYSQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
   jpa:
     open-in-view: false
@@ -59,8 +48,8 @@ cors:
 
 oauth:
   google:
-    client-id:
-    client-secret:
+    client-id: 399248394633-9rauhsoftsh2po6vsk01r55toncv36al.apps.googleusercontent.com
+    client-secret: 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
     oauth-end-point: https://accounts.google.com/o/oauth2/v2/auth
     response-type: code
     scopes:
