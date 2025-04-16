@@ -1,11 +1,11 @@
-package com.hibitbackendrefactor.global.error;
+package com.hibitbackendrefactor.exceptionhandler;
 
 import com.hibitbackendrefactor.auth.exception.EmptyAuthorizationHeaderException;
 import com.hibitbackendrefactor.auth.exception.InvalidTokenException;
 import com.hibitbackendrefactor.auth.exception.NotFoundOAuthTokenException;
 import com.hibitbackendrefactor.auth.exception.NotFoundTokenException;
-import com.hibitbackendrefactor.global.error.dto.ErrorReportRequest;
-import com.hibitbackendrefactor.global.error.dto.ErrorResponse;
+import com.hibitbackendrefactor.support.error.dto.ErrorReportRequest;
+import com.hibitbackendrefactor.support.error.dto.ErrorResponse;
 import com.hibitbackendrefactor.infrastructure.oauth.exception.OAuthException;
 import com.hibitbackendrefactor.member.exception.InvalidMemberException;
 import com.hibitbackendrefactor.member.exception.NotFoundMemberException;
@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
-public class ControllerAdvice {
-    private static final Logger log = LoggerFactory.getLogger(ControllerAdvice.class);
+public class GlobalExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     private static final String INVALID_DTO_FIELD_ERROR_MESSAGE_FORMAT = "%s 필드는 %s (전달된 값: %s)";
 

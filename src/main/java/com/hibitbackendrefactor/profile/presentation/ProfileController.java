@@ -3,7 +3,7 @@ package com.hibitbackendrefactor.profile.presentation;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
-import com.hibitbackendrefactor.global.ApiResponse;
+import com.hibitbackendrefactor.support.ApiResponse;
 import com.hibitbackendrefactor.profile.application.ProfileService;
 import com.hibitbackendrefactor.profile.domain.PersonalityType;
 import com.hibitbackendrefactor.profile.dto.request.ProfileCreateRequest;

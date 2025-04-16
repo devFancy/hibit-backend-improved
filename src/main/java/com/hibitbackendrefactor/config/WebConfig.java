@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.config;
+package com.hibitbackendrefactor.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

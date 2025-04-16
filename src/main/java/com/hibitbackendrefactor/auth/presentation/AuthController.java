@@ -10,7 +10,7 @@ import com.hibitbackendrefactor.auth.dto.request.TokenRequest;
 import com.hibitbackendrefactor.auth.dto.response.AccessAndRefreshTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.AccessTokenResponse;
 import com.hibitbackendrefactor.auth.dto.response.OAuthUriResponse;
-import com.hibitbackendrefactor.global.ApiResponse;
+import com.hibitbackendrefactor.support.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.config.replication;
+package com.hibitbackendrefactor.config.replication;
 
 import java.util.Arrays;
 import java.util.List;

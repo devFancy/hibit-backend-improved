@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.error.dto;
+package com.hibitbackendrefactor.support.error.dto;
 
 import javax.servlet.http.HttpServletRequest;
 

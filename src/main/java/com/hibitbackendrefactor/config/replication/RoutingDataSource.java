@@ -1,9 +1,7 @@
-package com.hibitbackendrefactor.global.config.replication;
+package com.hibitbackendrefactor.config.replication;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import static com.hibitbackendrefactor.global.config.replication.DataSourceKey.SOURCE;
 
 public class RoutingDataSource extends AbstractRoutingDataSource {
 
@@ -19,6 +17,6 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
             return randomReplicaKeys.next();
         }
         System.out.println("Source 서버로 요청합니다.");
-        return SOURCE;
+        return DataSourceKey.SOURCE;
     }
 }

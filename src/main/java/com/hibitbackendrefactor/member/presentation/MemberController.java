@@ -2,7 +2,7 @@ package com.hibitbackendrefactor.member.presentation;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
-import com.hibitbackendrefactor.global.ApiResponse;
+import com.hibitbackendrefactor.support.ApiResponse;
 import com.hibitbackendrefactor.member.application.MemberService;
 import com.hibitbackendrefactor.member.dto.MemberResponse;
 import org.springframework.beans.factory.annotation.Autowired;

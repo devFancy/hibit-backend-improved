@@ -4,7 +4,7 @@ import com.hibitbackendrefactor.auth.domain.TokenRepository;
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.common.DatabaseCleaner;
 import com.hibitbackendrefactor.config.ExternalApiConfig;
-import com.hibitbackendrefactor.global.config.JpaAuditingConfig;
+import com.hibitbackendrefactor.config.JpaAuditingConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

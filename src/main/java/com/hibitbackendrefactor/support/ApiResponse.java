@@ -1,6 +1,6 @@
-package com.hibitbackendrefactor.global;
+package com.hibitbackendrefactor.support;
 
-import com.hibitbackendrefactor.global.error.dto.ErrorResponse;
+import com.hibitbackendrefactor.support.error.dto.ErrorResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

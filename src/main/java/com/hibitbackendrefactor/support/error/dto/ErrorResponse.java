@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.error.dto;
+package com.hibitbackendrefactor.support.error.dto;
 
 public class ErrorResponse {
     private final String message;

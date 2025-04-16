@@ -2,7 +2,7 @@ package com.hibitbackendrefactor.post.presentation;
 
 import com.hibitbackendrefactor.auth.dto.LoginMember;
 import com.hibitbackendrefactor.auth.presentation.AuthenticationPrincipal;
-import com.hibitbackendrefactor.global.ApiResponse;
+import com.hibitbackendrefactor.support.ApiResponse;
 import com.hibitbackendrefactor.post.application.PostService;
 import com.hibitbackendrefactor.post.dto.request.PostCreateRequest;
 import com.hibitbackendrefactor.post.dto.request.PostUpdateRequest;
