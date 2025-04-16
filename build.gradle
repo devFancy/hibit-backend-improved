@@ -1,16 +1,16 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.10'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
     id 'jacoco'
-    id "org.asciidoctor.jvm.convert" version "3.3.2" // (1) plugin 추가
+    id "org.asciidoctor.jvm.convert" version "${asciidoctorConvertVersion}" // (1) plugin 추가
 }
 
-group = 'com'
-version = '0.0.1-SNAPSHOT'
+group = projectGroup
+version = applicationVersion
 
 java {
-    sourceCompatibility = '11'
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
 configurations {
@@ -34,7 +34,7 @@ dependencies {
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
 
     //테스트에서 lombok 사용
     testCompileOnly 'org.projectlombok:lombok'
@@ -44,14 +44,14 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // h2
+    // h2, mysql
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
 
     // jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
     // spring restdocs (3), (4)
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
