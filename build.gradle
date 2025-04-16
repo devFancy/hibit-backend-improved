@@ -104,18 +104,21 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(
                 files(classDirectories.files.collect {
-                    fileTree(dir: it, excludes: [
-                            '**/*Application*',
-                            '**/*Exception*',
-                            '**/auth/event/**',
-                            '**/dto/**',
-                            '**/common/**',
-                            '**/global/**',
-                            '**/infrastructure/**',
-                            '**/BaseEntity**',
-                            '**/AuthorizationExtractor*',
-                            '**/AuthenticationPrincipal*'
-                    ])
+                    fileTree(
+                            dir: "$buildDir/classes/java/main",
+                            excludes: [
+                                    '**/*Application*',
+                                    '**/*Exception*',
+                                    '**/auth/event/**',
+                                    '**/dto/**',
+                                    '**/common/**',
+                                    '**/support/**',
+                                    '**/infrastructure/**',
+                                    '**/exceptionhandler/**',
+                                    '**/BaseEntity**',
+                                    '**/AuthorizationExtractor*',
+                                    '**/AuthenticationPrincipal*'
+                            ])
                 })
         )
     }
@@ -141,11 +144,11 @@ jacocoTestCoverageVerification {
                     '**.auth.event.*',
                     '*.dto.*',
                     '*.common.*',
-                    '*.global.*',
+                    '*.support.*',
                     '*.infrastructure.*',
-                    '*.global.config.*',
+                    '*.config.*',
                     '*.BaseEntity',
-                    '*.ControllerAdvice',
+                    '*.GlobalExceptionHandler',
                     '*.AuthorizationExtractor',
                     '*.AuthenticationPrincipal.*'
             ]
