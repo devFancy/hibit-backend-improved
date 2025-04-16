@@ -24,7 +24,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+    env:
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
     steps:
       - name: 레포지토리를 가져옵니다
         uses: actions/checkout@v3
