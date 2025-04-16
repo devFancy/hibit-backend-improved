@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hibitbackendrefactor.auth.application.OAuthClient;
 import com.hibitbackendrefactor.auth.dto.OAuthMember;
 import com.hibitbackendrefactor.auth.dto.response.OAuthAccessTokenResponse;
-import com.hibitbackendrefactor.global.config.properties.GoogleProperties;
-import com.hibitbackendrefactor.infrastructure.dto.GoogleTokenResponse;
-import com.hibitbackendrefactor.infrastructure.oauth.dto.UserInfo;
+import com.hibitbackendrefactor.config.properties.GoogleProperties;
+import com.hibitbackendrefactor.infrastructure.oauth.dto.GoogleTokenResponse;
+import com.hibitbackendrefactor.infrastructure.oauth.dto.GoogleUserInfo;
 import com.hibitbackendrefactor.infrastructure.oauth.exception.OAuthException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -44,10 +44,10 @@ public class GoogleOAuthClient implements OAuthClient {
     public OAuthMember getOAuthMember(final String code, final String redirectUri) {
         GoogleTokenResponse googleTokenResponse = requestGoogleToken(code, redirectUri);
         String payload = getPayload(googleTokenResponse.getIdToken());
-        UserInfo userInfo = parseUserInfo(payload);
+        GoogleUserInfo googleUserInfo = parseUserInfo(payload);
 
         String refreshToken = googleTokenResponse.getRefreshToken();
-        return new OAuthMember(userInfo.getEmail(), userInfo.getName(), refreshToken);
+        return new OAuthMember(googleUserInfo.getEmail(), googleUserInfo.getName(), refreshToken);
     }
 
     private GoogleTokenResponse requestGoogleToken(final String code, final String redirectUri) {
@@ -82,10 +82,10 @@ public class GoogleOAuthClient implements OAuthClient {
         return jwt.split(JWT_DELIMITER)[1];
     }
 
-    private UserInfo parseUserInfo(final String payload) {
+    private GoogleUserInfo parseUserInfo(final String payload) {
         String decodedPayload = decodeJwtPayload(payload);
         try {
-            return objectMapper.readValue(decodedPayload, UserInfo.class);
+            return objectMapper.readValue(decodedPayload, GoogleUserInfo.class);
         } catch (final JsonProcessingException e) {
             throw new OAuthException("id 토큰을 읽을 수 없습니다.", e);
         }

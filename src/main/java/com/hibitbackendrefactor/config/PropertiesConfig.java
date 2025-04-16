@@ -1,6 +1,6 @@
-package com.hibitbackendrefactor.global.config;
+package com.hibitbackendrefactor.config;
 
-import com.hibitbackendrefactor.global.config.properties.GoogleProperties;
+import com.hibitbackendrefactor.config.properties.GoogleProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

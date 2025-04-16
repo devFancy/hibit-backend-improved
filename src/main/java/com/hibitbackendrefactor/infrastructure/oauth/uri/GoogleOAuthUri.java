@@ -1,7 +1,7 @@
 package com.hibitbackendrefactor.infrastructure.oauth.uri;
 
 import com.hibitbackendrefactor.auth.application.OAuthUri;
-import com.hibitbackendrefactor.global.config.properties.GoogleProperties;
+import com.hibitbackendrefactor.config.properties.GoogleProperties;
 import org.springframework.stereotype.Component;
 
 @Component

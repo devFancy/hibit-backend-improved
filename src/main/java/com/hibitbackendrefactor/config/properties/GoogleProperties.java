@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.config.properties;
+package com.hibitbackendrefactor.config.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

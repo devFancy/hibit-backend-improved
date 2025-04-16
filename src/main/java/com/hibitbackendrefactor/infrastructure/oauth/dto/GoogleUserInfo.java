@@ -1,15 +1,15 @@
 package com.hibitbackendrefactor.infrastructure.oauth.dto;
 
-public class UserInfo {
+public class GoogleUserInfo {
 
     private String email;
     private String name;
 
 
-    private UserInfo() {
+    private GoogleUserInfo() {
     }
 
-    public UserInfo(String email, String name) {
+    public GoogleUserInfo(String email, String name) {
         this.email = email;
         this.name = name;
     }

@@ -1,4 +1,4 @@
-package com.hibitbackendrefactor.global.config.replication;
+package com.hibitbackendrefactor.config.replication;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,8 +12,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import javax.sql.DataSource;
 import java.util.Map;
 
-import static com.hibitbackendrefactor.global.config.replication.DataSourceKey.KeyName.*;
-import static com.hibitbackendrefactor.global.config.replication.DataSourceKey.*;
+import static com.hibitbackendrefactor.config.replication.DataSourceKey.KeyName.*;
+import static com.hibitbackendrefactor.config.replication.DataSourceKey.*;
 
 @Configuration
 @Profile("prod")
