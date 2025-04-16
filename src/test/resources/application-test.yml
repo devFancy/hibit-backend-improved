@@ -48,8 +48,8 @@ cors:
 
 oauth:
   google:
-    client-id: 399248394633-9rauhsoftsh2po6vsk01r55toncv36al.apps.googleusercontent.com
-    client-secret: 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
+    client-id: ${GOOGLE_CLIENT_ID}
+    client-secret: ${GOOGLE_CLIENT_SECRET}
     oauth-end-point: https://accounts.google.com/o/oauth2/v2/auth
     response-type: code
     scopes:
@@ -61,7 +61,7 @@ oauth:
 security:
   jwt:
     token:
-      secret-key: hibit@ZqwRtnfwjstlghlaoclbaAhdyasdbav2Cltnfwjstlghlaocldtjqltm7sdkSs2n42dx9vsnasd
+      secret-key: ${JWT_SECRET_KEY}
       access:
         expire-length : 3600000 #1시간
       refresh:
