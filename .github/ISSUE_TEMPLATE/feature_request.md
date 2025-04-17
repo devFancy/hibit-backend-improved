@@ -1,28 +1,28 @@
 ---
 name: Feature request
-about: 기능을 추가하는 템플릿입니다.
+about: Template for adding a new feature
 title: ''
-labels: 기능 추가
+labels: feature
 assignees: ''
 
 ---
 
-## 구현할 기능
+## Description
 
-> 구현할 기능에 대해 설명해 주세요.
+> Please describe the feature to be implemented.
 
 -
 
-## 세부 작업 내용
+## Tasks
 
 - [ ] To-do 1
 - [ ] To-do 2
 - [ ] To-do 3
 
-## 예상 소요시간
+## Estimated Time
 
-- 
+- Minimum: H
 
-## 참고 자료
+## Reference
 
 -

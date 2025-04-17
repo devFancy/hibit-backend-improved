@@ -1,16 +1,22 @@
 ---
 name: Bug report
-about: 버그를 알려주는 템플릿입니다.
+about: Template for reporting a bug
 title: ''
-labels: 버그
+labels: bug
 assignees: ''
 
 ---
 
-## 작업 내용
+## Description
 
-- [ ] 버그에 대한 내용을 알려주세요.
+> Please describe the bug in detail.
 
-## 스크린샷
+- 
 
-## 참고 자료
+## Screenshots
+
+- 
+
+## References
+
+- 
